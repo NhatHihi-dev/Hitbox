@@ -1,138 +1,945 @@
-( function (...) local _IIlIlIIllI=game:GetService("\067\111\114\101\071\117\105") local Players=game:GetService("\080\108\097\121\101\114\115") local RunService=game:GetService("\082\117\110\083\101\114\118\105\099\101") local _IIlIlIIlll=game:GetService("\085\115\101\114\073\110\112\117\116\083\101\114\118\105\099\101") local _lIIIIllIll=Players.LocalPlayer pcall( function () local _llIIIlIIIl=_IIlIlIIllI:FindFirstChild("\080\108\097\121\101\114\072\105\116\098\111\120\071\117\105") if _llIIIlIIIl then _llIIIlIIIl:Destroy() end
- local _IIlIlIlIlI=_lIIIIllIll:FindFirstChild("\080\108\097\121\101\114\071\117\105") if _IIlIlIlIlI then local _IIllIIIIIl=_IIlIlIlIlI:FindFirstChild("\080\108\097\121\101\114\072\105\116\098\111\120\071\117\105") if _IIllIIIIIl then _IIllIIIIIl:Destroy() end
- end
- end
- ) local _IIIllllIll=Instance.new("\083\099\114\101\101\110\071\117\105") _IIIllllIll.Name="\080\108\097\121\101\114\072\105\116\098\111\120\071\117\105" _IIIllllIll.ResetOnSpawn=false pcall( function () _IIIllllIll.Parent=_IIlIlIIllI end
- ) if not _IIIllllIll.Parent then _IIIllllIll.Parent=_lIIIIllIll:WaitForChild("\080\108\097\121\101\114\071\117\105") end
- local _IIIIllIlll=0xA local _IlIIllIIII=0.7 local _IlIIlIlIll=false local _IIlllIlIll=false local _IllIIlIIll=false local _IIllIlIIII=false local _IlIllIIIII=false local _llIIIIIlll=false local _IlIIIIIlll=0x1E local _llIIlllIII=0x15E local _IlllllIllI=false local _IIlIlIIlIl=false local _IlllllIIIl={} local _IllIlIlIIl={} local _llIlllIIII=false local _IIllIlIIIl=nil local _lIlIIllIlI=nil local _lllllIllll=false local _llIlllIIII=false local _IIIlllIlIl=Instance.new("\070\114\097\109\101",_IIIllllIll) _IIIlllIlIl.Name="\077\097\105\110" _IIIlllIlIl.Size=UDim2.new(0x0,0xDC,0x0,0xF0) _IIIlllIlIl.Position=UDim2.new(0.5,-0x6E,0.5,-0x78) _IIIlllIlIl.BackgroundColor3=Color3.fromRGB(0x12,0x12,0x18) _IIIlllIlIl.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_IIIlllIlIl).CornerRadius=UDim.new(0x0,0x8) local _IllIllIIlI=Instance.new("\085\073\083\116\114\111\107\101",_IIIlllIlIl) _IllIllIIlI.Color=Color3.fromRGB(0x0,0xAA,0xFF) _IllIllIIlI.Thickness=1.5 local _IIIIlIIIlI=Instance.new("\084\101\120\116\076\097\098\101\108",_IIIlllIlIl) _IIIIlIIIlI.Size=UDim2.new(0x1,-0x46,0x0,0x1C) _IIIIlIIIlI.Position=UDim2.new(0x0,0xA,0x0,0x2) _IIIIlIIIlI.BackgroundTransparency=0x1 _IIIIlIIIlI.Text="\072\073\084\066\079\088\032\043\032\069\083\080" _IIIIlIIIlI.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _IIIIlIIIlI.Font=Enum.Font.Cartoon _IIIIlIIIlI.TextSize=0x12 _IIIIlIIIlI.TextXAlignment=Enum.TextXAlignment.Left local _lIIlIllIII=Instance.new("\084\101\120\116\066\117\116\116\111\110",_IIIlllIlIl) _lIIlIllIII.Size=UDim2.new(0x0,0x1C,0x0,0x19) _lIIlIllIII.Position=UDim2.new(0x1,-0x3E,0x0,0x3) _lIIlIllIII.BackgroundColor3=Color3.fromRGB(0x19,0x1E,0x28) _lIIlIllIII.Text="\9660" _lIIlIllIII.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _lIIlIllIII.Font=Enum.Font.Cartoon _lIIlIllIII.TextSize=0x10 _lIIlIllIII.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_lIIlIllIII).CornerRadius=UDim.new(0x0,0x6) local _IlllIIlIIl=Instance.new("\084\101\120\116\066\117\116\116\111\110",_IIIlllIlIl) _IlllIIlIIl.Size=UDim2.new(0x0,0x1C,0x0,0x19) _IlllIIlIIl.Position=UDim2.new(0x1,-0x20,0x0,0x3) _IlllIIlIIl.BackgroundColor3=Color3.fromRGB(0x19,0x1E,0x28) _IlllIIlIIl.Text="\088" _IlllIIlIIl.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _IlllIIlIIl.Font=Enum.Font.Cartoon _IlllIIlIIl.TextSize=0x10 _IlllIIlIIl.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_IlllIIlIIl).CornerRadius=UDim.new(0x0,0x6) local _IllIIlIIlI=Instance.new("\083\099\114\111\108\108\105\110\103\070\114\097\109\101",_IIIlllIlIl) _IllIIlIIlI.Size=UDim2.new(0x1,-0xA,0x1,-0x26) _IllIIlIIlI.Position=UDim2.new(0x0,0x5,0x0,0x21) _IllIIlIIlI.BackgroundTransparency=0x1 _IllIIlIIlI.BorderSizePixel=0x0 _IllIIlIIlI.ScrollBarThickness=0x3 _IllIIlIIlI.ScrollBarImageColor3=Color3.fromRGB(0x0,0xAA,0xFF) _IllIIlIIlI.CanvasSize=UDim2.new(0x0,0x0,0x0,0x1C2) _IllIIlIIlI.ScrollingDirection=Enum.ScrollingDirection.Y local _IIlIIIIlIl=Instance.new("\070\114\097\109\101",_IllIIlIIlI) _IIlIIIIlIl.Size=UDim2.new(0x1,-0x5,0x0,0x1C2) _IIlIIIIlIl.BackgroundTransparency=0x1 local function _IIIlIllIIl(Object) local _IIIIIllIll=Instance.new("\085\073\083\116\114\111\107\101",Object) _IIIIIllIll.Name="\066\108\117\101\083\116\114\111\107\101" _IIIIIllIll.Color=Color3.fromRGB(0x0,0xAA,0xFF) _IIIIIllIll.Thickness=1.5 _IIIIIllIll.Enabled=false return _IIIIIllIll end
- local function _llIIIIllll(Button,State) local _IIIIIllIll=Button:FindFirstChild("\066\108\117\101\083\116\114\111\107\101") if _IIIIIllIll then _IIIIIllIll.Enabled=State end
- end
- local function _IllllIIllI(_lIIIIIIlll,Y) local _llIIIIIlIl=Instance.new("\084\101\120\116\066\117\116\116\111\110",_IIlIIIIlIl) _llIIIIIlIl.Size=UDim2.new(0x1,-0xA,0x0,0x1C) _llIIIIIlIl.Position=UDim2.new(0x0,0x5,0x0,Y) _llIIIIIlIl.BackgroundColor3=Color3.fromRGB(0x18,0x1D,0x26) _llIIIIIlIl.BorderSizePixel=0x0 _llIIIIIlIl.Text=_lIIIIIIlll _llIIIIIlIl.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _llIIIIIlIl.Font=Enum.Font.Cartoon _llIIIIIlIl.TextSize=0xF Instance.new("\085\073\067\111\114\110\101\114",_llIIIIIlIl).CornerRadius=UDim.new(0x0,0x6) _IIIlIllIIl(_llIIIIIlIl) return _llIIIIIlIl end
- local _IlllllIlII=_IllllIIllI("\080\076\065\089\069\082\032\072\073\084\066\079\088",0x5) local _IIIIIIlIII=_IllllIIllI("\077\079\066\032\072\073\084\066\079\088",0x26) local _llIlIIIIII=_IllllIIllI("\069\083\080",0x47) local _IllIlIIIlI=Instance.new("\084\101\120\116\076\097\098\101\108",_IIlIIIIlIl) _IllIlIIIlI.Size=UDim2.new(0x0,0x82,0x0,0x19) _IllIlIIIlI.Position=UDim2.new(0x0,0x8,0x0,0x68) _IllIlIIIlI.BackgroundTransparency=0x1 _IllIlIIIlI.Text="\072\105\116\098\111\120\032\115\105\122\101\058" _IllIlIIIlI.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _IllIlIIIlI.Font=Enum.Font.Cartoon _IllIlIIIlI.TextSize=0xF _IllIlIIIlI.TextXAlignment=Enum.TextXAlignment.Left local _llllIIllll=Instance.new("\084\101\120\116\066\111\120",_IIlIIIIlIl) _llllIIllll.Size=UDim2.new(0x0,0x41,0x0,0x19) _llllIIllll.Position=UDim2.new(0x1,-0x4B,0x0,0x68) _llllIIllll.BackgroundColor3=Color3.fromRGB(0x19,0x1E,0x28) _llllIIllll.BorderSizePixel=0x0 _llllIIllll.Text=tostring(_IIIIllIlll) _llllIIllll.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _llllIIllll.Font=Enum.Font.Cartoon _llllIIllll.TextSize=0xE _llllIIllll.ClearTextOnFocus=false Instance.new("\085\073\067\111\114\110\101\114",_llllIIllll).CornerRadius=UDim.new(0x0,0x5) local _IIIllIlIIl=_IllllIIllI("\084\080\032\078\071\431\7900\073\032\071\7846\078",0x89) local _llIIlIIlll=Instance.new("\084\101\120\116\076\097\098\101\108",_IIlIIIIlIl) _llIIlIIlll.Size=UDim2.new(0x1,-0xA,0x0,0x14) _llIIlIIlll.Position=UDim2.new(0x0,0x5,0x0,0xAA) _llIIlIIlll.BackgroundTransparency=0x1 _llIIlIIlll.Text="\083\097\102\101\032\077\111\100\101\058\032\051\048\037" _llIIlIIlll.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _llIIlIIlll.Font=Enum.Font.Cartoon _llIIlIIlll.TextSize=0xE _llIIlIIlll.TextXAlignment=Enum.TextXAlignment.Left local _IlIIIlIIII=Instance.new("\084\101\120\116\066\111\120",_IIlIIIIlIl) _IlIIIlIIII.Size=UDim2.new(0x0,0x2D,0x0,0x16) _IlIIIlIIII.Position=UDim2.new(0x1,-0x32,0x0,0xA9) _IlIIIlIIII.BackgroundColor3=Color3.fromRGB(0x19,0x1E,0x28) _IlIIIlIIII.BorderSizePixel=0x0 _IlIIIlIIII.Text="\051\048" _IlIIIlIIII.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _IlIIIlIIII.Font=Enum.Font.Cartoon _IlIIIlIIII.TextSize=0xD _IlIIIlIIII.ClearTextOnFocus=false Instance.new("\085\073\067\111\114\110\101\114",_IlIIIlIIII).CornerRadius=UDim.new(0x0,0x5) local _lIlIlllllI=Instance.new("\070\114\097\109\101",_IIlIIIIlIl) _lIlIlllllI.Size=UDim2.new(0x1,-0xA,0x0,0x8) _lIlIlllllI.Position=UDim2.new(0x0,0x5,0x0,0xC5) _lIlIlllllI.BackgroundColor3=Color3.fromRGB(0x23,0x28,0x32) _lIlIlllllI.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_lIlIlllllI).CornerRadius=UDim.new(0x0,0x5) local _lIIIlIIlll=Instance.new("\070\114\097\109\101",_lIlIlllllI) _lIIIlIIlll.Size=UDim2.new(0.3,0x0,0x1,0x0) _lIIIlIIlll.BackgroundColor3=Color3.fromRGB(0x0,0xAA,0xFF) _lIIIlIIlll.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_lIIIlIIlll).CornerRadius=UDim.new(0x0,0x5) local _lllllIllll=Instance.new("\084\101\120\116\076\097\098\101\108",_IIlIIIIlIl) _lllllIllll.Size=UDim2.new(0x0,0x87,0x0,0x16) _lllllIllll.Position=UDim2.new(0x0,0x5,0x0,0xDA) _lllllIllll.BackgroundTransparency=0x1 _lllllIllll.Text="\084\7889\099\032\273\7897\032\108\101\114\112\058\032\051\053\048\047\115" _lllllIllll.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _lllllIllll.Font=Enum.Font.Cartoon _lllllIllll.TextSize=0xE _lllllIllll.TextXAlignment=Enum.TextXAlignment.Left local _IIIllllIIl=Instance.new("\084\101\120\116\066\111\120",_IIlIIIIlIl) _IIIllllIIl.Size=UDim2.new(0x0,0x37,0x0,0x16) _IIIllllIIl.Position=UDim2.new(0x1,-0x3C,0x0,0xDA) _IIIllllIIl.BackgroundColor3=Color3.fromRGB(0x19,0x1E,0x28) _IIIllllIIl.BorderSizePixel=0x0 _IIIllllIIl.Text="\051\053\048" _IIIllllIIl.TextColor3=Color3.fromRGB(0xFF,0xFF,0xFF) _IIIllllIIl.Font=Enum.Font.Cartoon _IIIllllIIl.TextSize=0xD _IIIllllIIl.ClearTextOnFocus=false Instance.new("\085\073\067\111\114\110\101\114",_IIIllllIIl).CornerRadius=UDim.new(0x0,0x5) local _IIllIIIlII=Instance.new("\070\114\097\109\101",_IIlIIIIlIl) _IIllIIIlII.Size=UDim2.new(0x1,-0xA,0x0,0x8) _IIllIIIlII.Position=UDim2.new(0x0,0x5,0x0,0xF6) _IIllIIIlII.BackgroundColor3=Color3.fromRGB(0x23,0x28,0x32) _IIllIIIlII.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_IIllIIIlII).CornerRadius=UDim.new(0x0,0x5) local _lIIIlllllI=Instance.new("\070\114\097\109\101",_IIllIIIlII) _lIIIlllllI.Size=UDim2.new(0x1,0x0,0x1,0x0) _lIIIlllllI.BackgroundColor3=Color3.fromRGB(0x0,0xAA,0xFF) _lIIIlllllI.BorderSizePixel=0x0 Instance.new("\085\073\067\111\114\110\101\114",_lIIIlllllI).CornerRadius=UDim.new(0x0,0x5) local _IllIlIIlII=_IllllIIllI("\084\7888\073\032\431\085\032\067\080\085\032\032\032\032\032\032\062",0x113) local function _IlIlIIllIl(_lIlllllIII) if not _lIlllllIII or not _lIlllllIII:IsA("\066\097\115\101\080\097\114\116") then return end
- if _IlllllIIIl[_lIlllllIII] then return end
- _IlllllIIIl[_lIlllllIII]={ Size=_lIlllllIII.Size, Transparency=_lIlllllIII.Transparency, CanCollide=_lIlllllIII.CanCollide, CanTouch=_lIlllllIII.CanTouch, CanQuery=_lIlllllIII.CanQuery } end
- local function _lIllIllIII(_lIlllllIII) local _IIIlIIlIlI=_IlllllIIIl[_lIlllllIII] if _IIIlIIlIlI and _lIlllllIII and _lIlllllIII.Parent then _lIlllllIII.Size=_IIIlIIlIlI.Size _lIlllllIII.Transparency=_IIIlIIlIlI.Transparency _lIlllllIII.CanCollide=_IIIlIIlIlI.CanCollide _lIlllllIII.CanTouch=_IIIlIIlIlI.CanTouch _lIlllllIII.CanQuery=_IIIlIIlIlI.CanQuery local _IlllllIIll=_lIlllllIII.Parent:FindFirstChild("\086\105\115\105\098\108\101\072\105\116\098\111\120") if _IlllllIIll then _IlllllIIll:Destroy() end
- end
- _IlllllIIIl[_lIlllllIII]=nil end
- local function _lIIIIIllll(Model,Color) local _lIlllllIII=Model and Model:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") if not _lIlllllIII or not _lIlllllIII:IsA("\066\097\115\101\080\097\114\116") then return end
- _IlIlIIllIl(_lIlllllIII) _lIlllllIII.Size=Vector3.new(_IIIIllIlll,_IIIIllIlll,_IIIIllIlll) _lIlllllIII.Transparency=_IlIIllIIII _lIlllllIII.CanCollide=false _lIlllllIII.CanTouch=false _lIlllllIII.CanQuery=true local _IlllllIIll=Model:FindFirstChild("\086\105\115\105\098\108\101\072\105\116\098\111\120") if not _IlllllIIll then _IlllllIIll=Instance.new("\066\111\120\072\097\110\100\108\101\065\100\111\114\110\109\101\110\116") _IlllllIIll.Name="\086\105\115\105\098\108\101\072\105\116\098\111\120" _IlllllIIll.Adornee=_lIlllllIII _IlllllIIll.AlwaysOnTop=true _IlllllIIll.ZIndex=0x5 _IlllllIIll.Parent=Model end
- _IlllllIIll.Size=Vector3.new(_IIIIllIlll,_IIIIllIlll,_IIIIllIlll) _IlllllIIll.Color3=Color _IlllllIIll.Transparency=_IlIIllIIII end
- local function _llIllllIlI(Player) if Player.Team then if Player.Team.Name=="\077\097\114\105\110\101\115" then return Color3.fromRGB(0x0,0xAA,0xFF) elseif Player.Team.Name=="\080\105\114\097\116\101\115" then return Color3.fromRGB(0xFF,0x3C,0x3C) end
- end
- return Color3.fromRGB(0xFF,0x3C,0x3C) end
- local function _IlIlIIIIlI() for _lIlllllIII in pairs(_IlllllIIIl) do _lIllIllIII(_lIlllllIII) end
- end
- local function _lIlIlllllI() if not _IlIIlIlIll then return end
- for _,Player in ipairs(Players:GetPlayers()) do if Player~=_lIIIIllIll and Player.Character then _lIIIIIllll(Player.Character,_llIllllIlI(Player)) end
- end
- end
- local function _IIIIIlllII() if not _IIlllIlIll then return end
- local _IIIIIllllI=game:GetService("\087\111\114\107\115\112\097\099\101") for _,Obj in ipairs(_IIIIIllllI:GetDescendants()) do if Obj:IsA("\077\111\100\101\108") and Obj~=_lIIIIllIll.Character and not Players:GetPlayerFromCharacter(Obj) then local _lIlIllIllI=Obj:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") if _lIlIllIllI and _lIlIllIllI.Health>0x0 and Obj:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") then _lIIIIIllll(Obj,Color3.fromRGB(0xFF,0xAA,0x0)) end
- end
- end
- end
- local function _IIIIllllIl(Object) if Object then for _,V in pairs(Object) do if V and V.Parent then V:Destroy() end
- end
- end
- end
- local function _lIIIllllII() for Player,Obj in pairs(_IllIlIlIIl) do _IIIIllllIl(Obj) _IllIlIlIIl[Player]=nil end
- end
- local function _IIIIlIllll(Player) if Player==_lIIIIllIll or not _IllIIlIIll then return end
- local _llIIlIlIIl=Player.Character local _lIlllllIII=_llIIlIlIIl and _llIIlIlIIl:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _lIlIllIllI=_llIIlIlIIl and _llIIlIlIIl:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") if not _lIlllllIII or not _lIlIllIllI then return end
- _IIIIllllIl(_IllIlIlIIl[Player]) local _llIllIIllI=Instance.new("\066\105\108\108\098\111\097\114\100\071\117\105") _llIllIIllI.Name="\080\108\097\121\101\114\069\083\080" _llIllIIllI.Adornee=_lIlllllIII _llIllIIllI.Size=UDim2.new(0x0,0xB4,0x0,0x37) _llIllIIllI.StudsOffset=Vector3.new(0x0,3.2,0x0) _llIllIIllI.AlwaysOnTop=true _llIllIIllI.Parent=_lIlllllIII local _lIIIIIIlll=Instance.new("\084\101\120\116\076\097\098\101\108",_llIllIIllI) _lIIIIIIlll.Size=UDim2.new(0x1,0x0,0x1,0x0) _lIIIIIIlll.BackgroundTransparency=0x1 _lIIIIIIlll.TextColor3=_llIllllIlI(Player) _lIIIIIIlll.Font=Enum.Font.Cartoon _lIIIIIIlll.TextSize=0xC _lIIIIIIlll.TextStrokeTransparency=0x0 _lIIIIIIlll.TextWrapped=true _IllIlIlIIl[Player]={_llIllIIllI,_lIIIIIIlll} end
- local function _llIllIlIlI() if not _IllIIlIIll then _lIIIllllII() return end
- for _,Player in ipairs(Players:GetPlayers()) do if Player~=_lIIIIllIll then _IIIIlIllll(Player) end
- end
- end
- local function _IIIlIlIIlI() if not _IllIIlIIll then return end
- local _IIIIllIIII=_lIIIIllIll.Character local _IlIIIlIlll=_IIIIllIIII and _IIIIllIIII:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") if not _IlIIIlIlll then return end
- for Player,Obj in pairs(_IllIlIlIIl) do local _llIIlIlIIl=Player.Character local _lIlllllIII=_llIIlIlIIl and _llIIlIlIIl:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _lIlIllIllI=_llIIlIlIIl and _llIIlIlIIl:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") local _lIIIIIIlll=Obj and Obj[0x2] if _lIlllllIII and _lIlIllIllI and _lIIIIIIlll then local _llIIllllIl=math.floor((_IlIIIlIlll.Position-_lIlllllIII.Position).Magnitude/0xA+0.5) local _IIIIIIlllI=math.floor(_lIlIllIllI.Health+0.5) local _llIIIlIIll=math.floor(_lIlIllIllI.MaxHealth+0.5) _lIIIIIIlll.Text=Player.DisplayName.."\032\124\032"..M.."\109\092\110\072\101\097\108\116\104\058\032"..Health.."\032\047\032"..MaxHealth _lIIIIIIlll.TextColor3=_llIllllIlI(Player) end
- end
- end
- local function _lIllIIIllI(_IIIIllIIII) _IIIIllIIII=math.clamp(math.floor(tonumber(_IIIIllIIII) or 0x1E),0x0,0x64) _IlIIIIIlll=_IIIIllIIII _IlIIIlIIII.Text=tostring(_IIIIllIIII) if _IIIIllIIII==0x0 then _llIIlIIlll.Text="\083\097\102\101\032\077\111\100\101\058\032\079\070\070" else _llIIlIIlll.Text="\083\097\102\101\032\077\111\100\101\058\032"..Value.."\037" end
- _lIIIlIIlll.Size=UDim2.new(_IIIIllIIII/0x64,0x0,0x1,0x0) end
- local function _IIIIlIIllI(_IIIIllIIII) _IIIIllIIII=math.clamp(math.floor(tonumber(_IIIIllIIII) or 0x15E),0xA,0x15E) _llIIlllIII=_IIIIllIIII _IIIllllIIl.Text=tostring(_IIIIllIIII) _lllllIllll.Text="\084\119\101\101\110\032\083\112\101\101\100\058\032"..Value.."\047\115" _lIIIlllllI.Size=UDim2.new((_IIIIllIIII-0xA)/0x154,0x0,0x1,0x0) end
- _llllIIllll.FocusLost:Connect( function () local _IIIIllIIII=tonumber(_llllIIllll.Text) if _IIIIllIIII then _IIIIllIlll=math.clamp(math.floor(_IIIIllIIII),0x1,0x64) end
- _llllIIllll.Text=tostring(_IIIIllIlll) end
- ) _IlIIIlIIII.FocusLost:Connect( function () _lIllIIIllI(_IlIIIlIIII.Text) end
- ) _IIIllllIIl.FocusLost:Connect( function () _IIIIlIIllI(_IIIllllIIl.Text) end
- ) _lIlIlllllI.InputBegan:Connect( function (Input) if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then _lllllIllll=true local _IlllIIIlIl=Input.Position.X local _IlIlIIlllI=_lIlIlllllI.AbsolutePosition.X local _IIllllIlll=_lIlIlllllI.AbsoluteSize.X _lIllIIIllI(math.floor(math.clamp((_IlllIIIlIl-_IlIlIIlllI)/_IIllllIlll,0x0,0x1)*0x64+0.5)) end
- end
- ) _IIllIIIlII.InputBegan:Connect( function (Input) if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then _llIlllIIII=true local _IlllIIIlIl=Input.Position.X local _IlIlIIlllI=_IIllIIIlII.AbsolutePosition.X local _IIllllIlll=_IIllIIIlII.AbsoluteSize.X local _IlIlIIIIII=math.clamp((_IlllIIIlIl-_IlIlIIlllI)/_IIllllIlll,0x0,0x1) _IIIIlIIllI(math.floor(0xA+_IlIlIIIIII*0x154+0.5)) end
- end
- ) _IIlIlIIlll.InputChanged:Connect( function (Input) if _lllllIllll and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then local _IlllIIIlIl=Input.Position.X local _IlIlIIlllI=_lIlIlllllI.AbsolutePosition.X local _IIllllIlll=_lIlIlllllI.AbsoluteSize.X _lIllIIIllI(math.floor(math.clamp((_IlllIIIlIl-_IlIlIIlllI)/_IIllllIlll,0x0,0x1)*0x64+0.5)) end
- if _llIlllIIII and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then local _IlllIIIlIl=Input.Position.X local _IlIlIIlllI=_IIllIIIlII.AbsolutePosition.X local _IIllllIlll=_IIllIIIlII.AbsoluteSize.X local _IlIlIIIIII=math.clamp((_IlllIIIlIl-_IlIlIIlllI)/_IIllllIlll,0x0,0x1) _IIIIlIIllI(math.floor(0xA+_IlIlIIIIII*0x154+0.5)) end
- end
- ) _IIlIlIIlll.InputEnded:Connect( function (Input) if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then _lllllIllll=false _llIlllIIII=false end
- end
- ) local function _IlIlIlIIII() local _IIIIllIIII=_lIIIIllIll.Character local _IlIIIlIlll=_IIIIllIIII and _IIIIllIIII:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") if not _IlIIIlIlll then return nil end
- local _IIIllllIII=nil local _lIIIIIIllI=math.huge for _,Player in ipairs(Players:GetPlayers()) do if Player~=_lIIIIllIll and Player.Character then local _lIlllllIII=Player.Character:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _lIlIllIllI=Player.Character:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") if _lIlllllIII and _lIlIllIllI and _lIlIllIllI.Health>0x0 then local _llIIIlIlII=(_IlIIIlIlll.Position-_lIlllllIII.Position).Magnitude if _llIIIlIlII<_lIIIIIIllI then _lIIIIIIllI=_llIIIlIlII _IIIllllIII=Player end
- end
- end
- end
- return _IIIllllIII end
- local function _lIllIlIlII(_IlIIlIlIII) if not _IlIIlIlIII or _IlIIlIlIII<=0x0 then return false end
- return (0x1/_IlIIlIlIII)<0x3 end
- local function _IIlllIlIIl(_IlIIIlIlll) _IIlIlIIlIl=true local _lIIIIIlIII=_IlIIIlIlll.Position.Y+0x3E8 while _IlllllIllI and _IlIIIlIlll.Parent do local _IllIlllIIl=_IlIIIlIlll.Position local _llIIIlIlII=math.abs(_lIIIIIlIII-_IllIlllIIl.Y) if _llIIIlIlII<=0x1 then _IlIIIlIlll.CFrame=CFrame.new(_IllIlllIIl.X,_lIIIIIlIII,_IllIlllIIl.Z) break end
- local _IlIIlIlIII=RunService.Heartbeat:Wait() if _lIllIlIlII(_IlIIlIlIII) then continue end
- local _IlIlIIIIII=math.clamp((_llIIlllIII*_IlIIlIlIII)/_llIIIlIlII,0x0,0x1) local _lIIIlIllII=_IllIlllIIl.Y+(_lIIIIIlIII-_IllIlllIIl.Y)*_IlIlIIIIII _IlIIIlIlll.CFrame=CFrame.new(_IllIlllIIl.X,_lIIIlIllII,_IllIlllIIl.Z) end
- while _IlllllIllI and _IlIIIlIlll.Parent and _IIlIlIIlIl do RunService.Heartbeat:Wait() local _lIlIIIlIII=_IlIIIlIlll.Position _IlIIIlIlll.CFrame=CFrame.new(_lIlIIIlIII.X,_lIIIIIlIII,_lIlIIIlIII.Z) end
- _IIlIlIIlIl=false end
- local function _IllIIllllI() if _IlllllIllI or _IlIIIIIlll<=0x0 then return end
- local _IIIIllIIII=_lIIIIllIll.Character local _IlIIIlIlll=_IIIIllIIII and _IIIIllIIII:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _IIIllIlIIl=_IIIIllIIII and _IIIIllIIII:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") if not _IlIIIlIlll or not _IIIllIlIIl or _IIIllIlIIl.MaxHealth<=0x0 then return end
- local _IIIIIIlIlI=(_IIIllIlIIl.Health/_IIIllIlIIl.MaxHealth)*0x64 if _IIIIIIlIlI<=_IlIIIIIlll then _IlllllIllI=true task.spawn( function () _IIlllIlIIl(_IlIIIlIlll) _IlllllIllI=false _IIlIlIIlIl=false end
- ) end
- end
- local function _llIIlIlIII() if _IlllllIllI then return end
- local _IIlIllIlIl=_IlIlIlIIII() if not _IIlIllIlIl then return end
- _IlllllIllI=true _llIIIIllll(_IIIllIlIIl,true) task.spawn( function () while _IlllllIllI do local _IIIIllIIII=_lIIIIllIll.Character local _IlIIIlIlll=_IIIIllIIII and _IIIIllIIII:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _IIIllIlIIl=_IIIIllIIII and _IIIIllIIII:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") local _llIllIlIlI=_IIlIllIlIl.Character local _IlIIllllIl=_llIllIlIlI and _llIllIlIlI:FindFirstChild("\072\117\109\097\110\111\105\100\082\111\111\116\080\097\114\116") local _IIlIlIIllI=_llIllIlIlI and _llIllIlIlI:FindFirstChildOfClass("\072\117\109\097\110\111\105\100") if not _IlIIIlIlll or not _IIIllIlIIl or not _IlIIllllIl or not _IIlIlIIllI or _IIlIlIIllI.Health<=0x0 then break end
- if _IlIIIIIlll>0x0 and _IIIllIlIIl.MaxHealth>0x0 then local _IIIIIIlIlI=(_IIIllIlIIl.Health/_IIIllIlIIl.MaxHealth)*0x64 if _IIIIIIlIlI<=_IlIIIIIlll then _IIlllIlIIl(_IlIIIlIlll) break end
- end
- local _IlIlIIlIII=_IlIIllllIl.Position-Vector3.new(0x0,0x5,0x0) local _IllIlllIIl=_IlIIIlIlll.Position local _llIIIlIlII=(_IlIlIIlIII-_IllIlllIIl).Magnitude if _llIIIlIlII<=0x1 then break end
- local _lIIlIlllIl=_llIIIlIlII<=0x64 and 0x5DC or _llIIlllIII local _IlIIlIlIII=RunService.Heartbeat:Wait() if _lIllIlIlII(_IlIIlIlIII) then continue end
- local _IlIlIIIIII=math.clamp((_lIIlIlllIl*_IlIIlIlIII)/_llIIIlIlII,0x0,0x1) local _llIIlIIlII=_IllIlllIIl:Lerp(_IlIlIIlIII,_IlIlIIIIII) _IlIIIlIlll.CFrame=CFrame.new(_llIIlIIlII) end
- _IlllllIllI=false _IIlIlIIlIl=false _llIIIIllll(_IIIllIlIIl,false) end
- ) end
- _IlllllIlII.MouseButton1Click:Connect( function () _IlIIlIlIll= not _IlIIlIlIll _llIIIIllll(_IlllllIlII,_IlIIlIlIll) if not _IlIIlIlIll then for _lIlllllIII in pairs(_IlllllIIIl) do if _lIlllllIII and _lIlllllIII.Parent and Players:GetPlayerFromCharacter(_lIlllllIII.Parent) then _lIllIllIII(_lIlllllIII) end
- end
- end
- end
- ) _IIIIIIlIII.MouseButton1Click:Connect( function () _IIlllIlIll= not _IIlllIlIll _llIIIIllll(_IIIIIIlIII,_IIlllIlIll) if not _IIlllIlIll then for _lIlllllIII in pairs(_IlllllIIIl) do if _lIlllllIII and _lIlllllIII.Parent and not Players:GetPlayerFromCharacter(_lIlllllIII.Parent) then _lIllIllIII(_lIlllllIII) end
- end
- end
- end
- ) _llIlIIIIII.MouseButton1Click:Connect( function () _IllIIlIIll= not _IllIIlIIll _llIIIIllll(_llIlIIIIII,_IllIIlIIll) if _IllIIlIIll then _llIllIlIlI() else _lIIIllllII() end
- end
- ) _IIIllIlIIl.MouseButton1Click:Connect( function () if _IlllllIllI then _IlllllIllI=false _IIlIlIIlIl=false _llIIIIllll(_IIIllIlIIl,false) else _llIIlIlIII() end
- end
- ) _IllIlIIlII.MouseButton1Click:Connect( function () _IIllIlIIII= not _IIllIlIIII _llIIIIllll(_IllIlIIlII,_IIllIlIIII) if _IIllIlIIII and not _IlIllIIIII then _IlIllIIIII=true task.spawn( function () while _IIllIlIIII and _IIIllllIll.Parent do pcall( function () settings().Rendering.QualityLevel=Enum.QualityLevel.Level01 end
- ) task.wait(0x1) end
- _IlIllIIIII=false end
- ) end
- end
- ) local function _IllllIlIlI() if _IlIIlIlIll then _lIlIlllllI() end
- if _IIlllIlIll then _IIIIIlllII() end
- if _IllIIlIIll then _llIllIlIlI() end
- end
- Players.PlayerAdded:Connect( function (Player) Player.CharacterAdded:Connect( function () task.wait(0.5) if _IllIIlIIll then _IIIIlIllll(Player) end
- if _IlIIlIlIll and Player.Character then _lIIIIIllll(Player.Character,_llIllllIlI(Player)) end
- end
- ) end
- ) Players.PlayerRemoving:Connect( function (Player) _IIIIllllIl(_IllIlIlIIl[Player]) _IllIlIlIIl[Player]=nil end
- ) task.spawn( function () while _IIIllllIll.Parent do _IllllIlIlI() task.wait(0.5) end
- end
- ) task.spawn( function () while _IIIllllIll.Parent do _IIIlIlIIlI() task.wait(0.1) end
- end
- ) task.spawn( function () while _IIIllllIll.Parent do _IllIIllllI() task.wait(0.1) end
- end
- ) local function _IIIlIIIIll(Input) if Input.UserInputType~=Enum.UserInputType.MouseButton1 and Input.UserInputType~=Enum.UserInputType.Touch then return end
- _llIlllIIII=true _IIllIlIIIl=Input.Position _lIlIIllIlI=_IIIlllIlIl.Position end
- _IIIIlIIIlI.InputBegan:Connect(_IIIlIIIIll) _IIlIlIIlll.InputChanged:Connect( function (Input) if _llIlllIIII and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then local _IlIIlIlIII=Input.Position-_IIllIlIIIl _IIIlllIlIl.Position=UDim2.new( _lIlIIllIlI.X.Scale, _lIlIIllIlI.X.Offset+_IlIIlIlIII.X, _lIlIIllIlI.Y.Scale, _lIlIIllIlI.Y.Offset+_IlIIlIlIII.Y ) end
- end
- ) _IIlIlIIlll.InputEnded:Connect( function (Input) if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then _llIlllIIII=false end
- end
- ) _lIIlIllIII.MouseButton1Click:Connect( function () _llIIIIIlll= not _llIIIIIlll if _llIIIIIlll then _IllIIlIIlI.Visible=false _IIIlllIlIl.Size=UDim2.new(0x0,0xDC,0x0,0x23) _lIIlIllIII.Text="\9650" else _IllIIlIIlI.Visible=true _IIIlllIlIl.Size=UDim2.new(0x0,0xDC,0x0,0xF0) _lIIlIllIII.Text="\9660" end
- end
- ) _IlllIIlIIl.MouseButton1Click:Connect( function () _IlllllIllI=false _IIlIlIIlIl=false _lllllIllll=false _llIlllIIII=false _llIlllIIII=false _IlIlIIIIlI() _lIIIllllII() _IIIllllIll:Destroy() end
- ) _lIllIIIllI(0x1E) _IIIIlIIllI(0x15E) end
- )(...)
+local CoreGui=game:GetService("CoreGui")
+local Players=game:GetService("Players")
+local RunService=game:GetService("RunService")
+local UIS=game:GetService("UserInputService")
+local LocalPlayer=Players.LocalPlayer
+local Workspace=game:GetService("Workspace")
+
+pcall(function()
+	local Old=CoreGui:FindFirstChild("PlayerHitboxGui")
+	if Old then Old:Destroy() end
+end)
+
+pcall(function()
+	local Old=LocalPlayer:WaitForChild("PlayerGui"):FindFirstChild("PlayerHitboxGui")
+	if Old then Old:Destroy() end
+end)
+
+local HitboxSize=10
+local HitboxTransparency=0.7
+local PlayerHitboxEnabled=false
+local MobHitboxEnabled=false
+local ESPEnabled=false
+local LowCpuEnabled=false
+local LowCpuRunning=false
+local Minimized=false
+
+local HealthThreshold=30
+local LerpSpeed=350
+local TPLerping=false
+local HoldingAltitude=false
+
+local SafeFlyEnabled=false
+local SafeFlyHealth=30
+local SafeFlySpeed=350
+local SafeFlying=false
+local SafeFlyTargetY=nil
+local DangerDistance=1000
+local TargetHeight=1000
+
+local HealthDragging=false
+local SpeedDragging=false
+local SafeHealthDragging=false
+local SafeSpeedDragging=false
+
+local Gui=Instance.new("ScreenGui")
+Gui.Name="PlayerHitboxGui"
+Gui.ResetOnSpawn=false
+Gui.IgnoreGuiInset=true
+Gui.Parent=CoreGui
+
+local Main=Instance.new("Frame",Gui)
+Main.Size=UDim2.new(0,220,0,240)
+Main.Position=UDim2.new(0.5,-110,0.5,-120)
+Main.BackgroundColor3=Color3.fromRGB(18,18,24)
+Main.BorderSizePixel=0
+
+local MainCorner=Instance.new("UICorner",Main)
+MainCorner.CornerRadius=UDim.new(0,8)
+
+local MainStroke=Instance.new("UIStroke",Main)
+MainStroke.Color=Color3.fromRGB(0,170,255)
+MainStroke.Thickness=1.5
+
+local Title=Instance.new("TextLabel",Main)
+Title.Size=UDim2.new(1,-55,0,35)
+Title.Position=UDim2.new(0,10,0,0)
+Title.BackgroundTransparency=1
+Title.Text="PLAYER HITBOX"
+Title.TextColor3=Color3.fromRGB(100,200,255)
+Title.Font=Enum.Font.Cartoon
+Title.TextSize=18
+Title.TextXAlignment=Enum.TextXAlignment.Left
+
+local MinBtn=Instance.new("TextButton",Main)
+MinBtn.Size=UDim2.new(0,25,0,25)
+MinBtn.Position=UDim2.new(1,-55,0,5)
+MinBtn.BackgroundColor3=Color3.fromRGB(25,30,40)
+MinBtn.Text="−"
+MinBtn.TextColor3=Color3.new(1,1,1)
+MinBtn.Font=Enum.Font.Cartoon
+MinBtn.TextSize=20
+MinBtn.BorderSizePixel=0
+Instance.new("UICorner",MinBtn).CornerRadius=UDim.new(0,6)
+
+local CloseBtn=Instance.new("TextButton",Main)
+CloseBtn.Size=UDim2.new(0,25,0,25)
+CloseBtn.Position=UDim2.new(1,-30,0,5)
+CloseBtn.BackgroundColor3=Color3.fromRGB(45,25,30)
+CloseBtn.Text="X"
+CloseBtn.TextColor3=Color3.fromRGB(255,100,100)
+CloseBtn.Font=Enum.Font.Cartoon
+CloseBtn.TextSize=16
+CloseBtn.BorderSizePixel=0
+Instance.new("UICorner",CloseBtn).CornerRadius=UDim.new(0,6)
+
+local Scroll=Instance.new("ScrollingFrame",Main)
+Scroll.Size=UDim2.new(1,-10,1,-40)
+Scroll.Position=UDim2.new(0,5,0,35)
+Scroll.BackgroundTransparency=1
+Scroll.BorderSizePixel=0
+Scroll.ScrollBarThickness=3
+Scroll.ScrollBarImageColor3=Color3.fromRGB(0,170,255)
+Scroll.CanvasSize=UDim2.new(0,0,0,560)
+
+local Content=Instance.new("Frame",Scroll)
+Content.Size=UDim2.new(1,0,0,560)
+Content.BackgroundTransparency=1
+
+local function AddBlueStroke(Object)
+	local S=Instance.new("UIStroke",Object)
+	S.Name="BlueStroke"
+	S.Color=Color3.fromRGB(0,170,255)
+	S.Thickness=1.5
+	S.Enabled=false
+	return S
+end
+
+local function SetButtonState(Button,State)
+	local S=Button:FindFirstChild("BlueStroke")
+	if S then S.Enabled=State end
+end
+
+local function MakeButton(Text,Y)
+	local B=Instance.new("TextButton",Content)
+	B.Size=UDim2.new(1,-10,0,28)
+	B.Position=UDim2.new(0,5,0,Y)
+	B.BackgroundColor3=Color3.fromRGB(25,30,40)
+	B.BorderSizePixel=0
+	B.Text=Text
+	B.TextColor3=Color3.fromRGB(230,240,255)
+	B.Font=Enum.Font.Cartoon
+	B.TextSize=14
+	Instance.new("UICorner",B).CornerRadius=UDim.new(0,6)
+	AddBlueStroke(B)
+	return B
+end
+
+local PlayerHitboxButton=MakeButton("PLAYER HITBOX",5)
+local MobHitboxButton=MakeButton("MOB HITBOX",38)
+local ESPButton=MakeButton("ESP",71)
+local TPNearestButton=MakeButton("TP NGƯỜI GẦN",137)
+local SafeFlyButton=MakeButton("SAFE FLY",170)
+local LowCpuButton=MakeButton("TỐI ƯU CPU",400)
+
+local HitboxLabel=Instance.new("TextLabel",Content)
+HitboxLabel.Size=UDim2.new(1,-10,0,20)
+HitboxLabel.Position=UDim2.new(0,5,0,101)
+HitboxLabel.BackgroundTransparency=1
+HitboxLabel.Text="Hitbox: 10"
+HitboxLabel.TextColor3=Color3.fromRGB(220,230,240)
+HitboxLabel.Font=Enum.Font.Cartoon
+HitboxLabel.TextSize=13
+
+local HitboxBox=Instance.new("TextBox",Content)
+HitboxBox.Size=UDim2.new(0,55,0,24)
+HitboxBox.Position=UDim2.new(1,-60,0,99)
+HitboxBox.BackgroundColor3=Color3.fromRGB(25,30,40)
+HitboxBox.BorderSizePixel=0
+HitboxBox.Text="10"
+HitboxBox.TextColor3=Color3.new(1,1,1)
+HitboxBox.Font=Enum.Font.Cartoon
+HitboxBox.TextSize=13
+HitboxBox.ClearTextOnFocus=false
+Instance.new("UICorner",HitboxBox).CornerRadius=UDim.new(0,5)
+
+local HealthLabel=Instance.new("TextLabel",Content)
+HealthLabel.Size=UDim2.new(1,-10,0,20)
+HealthLabel.Position=UDim2.new(0,5,0,205)
+HealthLabel.BackgroundTransparency=1
+HealthLabel.Text="Safe Mode: 30%"
+HealthLabel.TextColor3=Color3.fromRGB(220,230,240)
+HealthLabel.Font=Enum.Font.Cartoon
+HealthLabel.TextSize=13
+HealthLabel.TextXAlignment=Enum.TextXAlignment.Left
+
+local HealthBox=Instance.new("TextBox",Content)
+HealthBox.Size=UDim2.new(0,45,0,22)
+HealthBox.Position=UDim2.new(1,-50,0,204)
+HealthBox.BackgroundColor3=Color3.fromRGB(25,30,40)
+HealthBox.BorderSizePixel=0
+HealthBox.Text="30"
+HealthBox.TextColor3=Color3.new(1,1,1)
+HealthBox.Font=Enum.Font.Cartoon
+HealthBox.TextSize=12
+HealthBox.ClearTextOnFocus=false
+Instance.new("UICorner",HealthBox).CornerRadius=UDim.new(0,5)
+
+local HealthBarBg=Instance.new("Frame",Content)
+HealthBarBg.Size=UDim2.new(1,-10,0,6)
+HealthBarBg.Position=UDim2.new(0,5,0,228)
+HealthBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
+HealthBarBg.BorderSizePixel=0
+Instance.new("UICorner",HealthBarBg).CornerRadius=UDim.new(0,3)
+
+local HealthBar=Instance.new("Frame",HealthBarBg)
+HealthBar.Size=UDim2.new(0.3,0,1,0)
+HealthBar.BackgroundColor3=Color3.fromRGB(0,170,255)
+HealthBar.BorderSizePixel=0
+Instance.new("UICorner",HealthBar).CornerRadius=UDim.new(0,3)
+
+local SpeedLabel=Instance.new("TextLabel",Content)
+SpeedLabel.Size=UDim2.new(1,-10,0,20)
+SpeedLabel.Position=UDim2.new(0,5,0,253)
+SpeedLabel.BackgroundTransparency=1
+SpeedLabel.Text="Tween Speed: 350/s"
+SpeedLabel.TextColor3=Color3.fromRGB(220,230,240)
+SpeedLabel.Font=Enum.Font.Cartoon
+SpeedLabel.TextSize=13
+SpeedLabel.TextXAlignment=Enum.TextXAlignment.Left
+
+local SpeedBox=Instance.new("TextBox",Content)
+SpeedBox.Size=UDim2.new(0,45,0,22)
+SpeedBox.Position=UDim2.new(1,-50,0,252)
+SpeedBox.BackgroundColor3=Color3.fromRGB(25,30,40)
+SpeedBox.BorderSizePixel=0
+SpeedBox.Text="350"
+SpeedBox.TextColor3=Color3.new(1,1,1)
+SpeedBox.Font=Enum.Font.Cartoon
+SpeedBox.TextSize=12
+SpeedBox.ClearTextOnFocus=false
+Instance.new("UICorner",SpeedBox).CornerRadius=UDim.new(0,5)
+
+local SpeedBarBg=Instance.new("Frame",Content)
+SpeedBarBg.Size=UDim2.new(1,-10,0,6)
+SpeedBarBg.Position=UDim2.new(0,5,0,281)
+SpeedBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
+SpeedBarBg.BorderSizePixel=0
+Instance.new("UICorner",SpeedBarBg).CornerRadius=UDim.new(0,3)
+
+local SpeedBar=Instance.new("Frame",SpeedBarBg)
+SpeedBar.Size=UDim2.new(1,0,1,0)
+SpeedBar.BackgroundColor3=Color3.fromRGB(0,170,255)
+SpeedBar.BorderSizePixel=0
+Instance.new("UICorner",SpeedBar).CornerRadius=UDim.new(0,3)
+
+local SafeHealthLabel=Instance.new("TextLabel",Content)
+SafeHealthLabel.Size=UDim2.new(1,-10,0,20)
+SafeHealthLabel.Position=UDim2.new(0,5,0,302)
+SafeHealthLabel.BackgroundTransparency=1
+SafeHealthLabel.Text="Safe Mode Health: 30%"
+SafeHealthLabel.TextColor3=Color3.fromRGB(220,230,240)
+SafeHealthLabel.Font=Enum.Font.Cartoon
+SafeHealthLabel.TextSize=13
+SafeHealthLabel.TextXAlignment=Enum.TextXAlignment.Left
+
+local SafeHealthBox=Instance.new("TextBox",Content)
+SafeHealthBox.Size=UDim2.new(0,45,0,22)
+SafeHealthBox.Position=UDim2.new(1,-50,0,301)
+SafeHealthBox.BackgroundColor3=Color3.fromRGB(25,30,40)
+SafeHealthBox.BorderSizePixel=0
+SafeHealthBox.Text="30"
+SafeHealthBox.TextColor3=Color3.new(1,1,1)
+SafeHealthBox.Font=Enum.Font.Cartoon
+SafeHealthBox.TextSize=12
+SafeHealthBox.ClearTextOnFocus=false
+Instance.new("UICorner",SafeHealthBox).CornerRadius=UDim.new(0,5)
+
+local SafeHealthBarBg=Instance.new("Frame",Content)
+SafeHealthBarBg.Size=UDim2.new(1,-10,0,6)
+SafeHealthBarBg.Position=UDim2.new(0,5,0,329)
+SafeHealthBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
+SafeHealthBarBg.BorderSizePixel=0
+Instance.new("UICorner",SafeHealthBarBg).CornerRadius=UDim.new(0,3)
+
+local SafeHealthBar=Instance.new("Frame",SafeHealthBarBg)
+SafeHealthBar.Size=UDim2.new(0.3,0,1,0)
+SafeHealthBar.BackgroundColor3=Color3.fromRGB(0,170,255)
+SafeHealthBar.BorderSizePixel=0
+Instance.new("UICorner",SafeHealthBar).CornerRadius=UDim.new(0,3)
+
+local SafeSpeedLabel=Instance.new("TextLabel",Content)
+SafeSpeedLabel.Size=UDim2.new(1,-10,0,20)
+SafeSpeedLabel.Position=UDim2.new(0,5,0,350)
+SafeSpeedLabel.BackgroundTransparency=1
+SafeSpeedLabel.Text="Tween Speed Health: 350/s"
+SafeSpeedLabel.TextColor3=Color3.fromRGB(220,230,240)
+SafeSpeedLabel.Font=Enum.Font.Cartoon
+SafeSpeedLabel.TextSize=13
+SafeSpeedLabel.TextXAlignment=Enum.TextXAlignment.Left
+
+local SafeSpeedBox=Instance.new("TextBox",Content)
+SafeSpeedBox.Size=UDim2.new(0,45,0,22)
+SafeSpeedBox.Position=UDim2.new(1,-50,0,349)
+SafeSpeedBox.BackgroundColor3=Color3.fromRGB(25,30,40)
+SafeSpeedBox.BorderSizePixel=0
+SafeSpeedBox.Text="350"
+SafeSpeedBox.TextColor3=Color3.new(1,1,1)
+SafeSpeedBox.Font=Enum.Font.Cartoon
+SafeSpeedBox.TextSize=12
+SafeSpeedBox.ClearTextOnFocus=false
+Instance.new("UICorner",SafeSpeedBox).CornerRadius=UDim.new(0,5)
+
+local SafeSpeedBarBg=Instance.new("Frame",Content)
+SafeSpeedBarBg.Size=UDim2.new(1,-10,0,6)
+SafeSpeedBarBg.Position=UDim2.new(0,5,0,378)
+SafeSpeedBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
+SafeSpeedBarBg.BorderSizePixel=0
+Instance.new("UICorner",SafeSpeedBarBg).CornerRadius=UDim.new(0,3)
+
+local SafeSpeedBar=Instance.new("Frame",SafeSpeedBarBg)
+SafeSpeedBar.Size=UDim2.new(1,0,1,0)
+SafeSpeedBar.BackgroundColor3=Color3.fromRGB(0,170,255)
+SafeSpeedBar.BorderSizePixel=0
+Instance.new("UICorner",SafeSpeedBar).CornerRadius=UDim.new(0,3)
+
+local function SetHealthThreshold(Value)
+	Value=math.clamp(math.floor(tonumber(Value) or 30),0,100)
+	HealthThreshold=Value
+	HealthBox.Text=tostring(Value)
+	if Value==0 then HealthLabel.Text="Máu kích hoạt: TẮT" else HealthLabel.Text="Máu kích hoạt: "..Value.."%" end
+	HealthBar.Size=UDim2.new(Value/100,0,1,0)
+end
+
+local function SetLerpSpeed(Value)
+	Value=math.clamp(math.floor(tonumber(Value) or 350),10,350)
+	LerpSpeed=Value
+	SpeedBox.Text=tostring(Value)
+	SpeedLabel.Text="Tween Speed: "..Value.."/s"
+	SpeedBar.Size=UDim2.new((Value-10)/340,0,1,0)
+end
+
+local function SetSafeHealth(Value)
+	Value=math.clamp(math.floor(tonumber(Value) or 30),0,100)
+	SafeFlyHealth=Value
+	SafeHealthBox.Text=tostring(Value)
+	if Value==0 then SafeHealthLabel.Text="Safe Fly máu: TẮT" else SafeHealthLabel.Text="Safe Fly máu: "..Value.."%" end
+	SafeHealthBar.Size=UDim2.new(Value/100,0,1,0)
+end
+
+local function SetSafeSpeed(Value)
+	Value=math.clamp(math.floor(tonumber(Value) or 350),10,350)
+	SafeFlySpeed=Value
+	SafeSpeedBox.Text=tostring(Value)
+	SafeSpeedLabel.Text="Tốc độ Safe Fly: "..Value.."/s"
+	SafeSpeedBar.Size=UDim2.new((Value-10)/340,0,1,0)
+end
+
+HitboxBox.FocusLost:Connect(function()
+	local Value=math.clamp(math.floor(tonumber(HitboxBox.Text) or 10),1,100)
+	HitboxSize=Value
+	HitboxBox.Text=tostring(Value)
+	HitboxLabel.Text="Hitbox: "..Value
+end)
+
+HealthBox.FocusLost:Connect(function()
+	SetHealthThreshold(HealthBox.Text)
+end)
+
+SpeedBox.FocusLost:Connect(function()
+	SetLerpSpeed(SpeedBox.Text)
+end)
+
+SafeHealthBox.FocusLost:Connect(function()
+	SetSafeHealth(SafeHealthBox.Text)
+end)
+
+SafeSpeedBox.FocusLost:Connect(function()
+	SetSafeSpeed(SafeSpeedBox.Text)
+end)
+
+UIS.InputChanged:Connect(function(Input)
+	if Input.UserInputType~=Enum.UserInputType.MouseMovement and Input.UserInputType~=Enum.UserInputType.Touch then return end
+	local X=Input.Position.X
+
+	if HealthDragging then
+		local P=math.clamp((X-HealthBarBg.AbsolutePosition.X)/HealthBarBg.AbsoluteSize.X,0,1)
+		SetHealthThreshold(P*100)
+	elseif SpeedDragging then
+		local P=math.clamp((X-SpeedBarBg.AbsolutePosition.X)/SpeedBarBg.AbsoluteSize.X,0,1)
+		SetLerpSpeed(10+P*340)
+	elseif SafeHealthDragging then
+		local P=math.clamp((X-SafeHealthBarBg.AbsolutePosition.X)/SafeHealthBarBg.AbsoluteSize.X,0,1)
+		SetSafeHealth(P*100)
+	elseif SafeSpeedDragging then
+		local P=math.clamp((X-SafeSpeedBarBg.AbsolutePosition.X)/SafeSpeedBarBg.AbsoluteSize.X,0,1)
+		SetSafeSpeed(10+P*340)
+	end
+end)
+
+HealthBarBg.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		HealthDragging=true
+	end
+end)
+
+SpeedBarBg.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SpeedDragging=true
+	end
+end)
+
+SafeHealthBarBg.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SafeHealthDragging=true
+	end
+end)
+
+SafeSpeedBarBg.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SafeSpeedDragging=true
+	end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		HealthDragging=false
+		SpeedDragging=false
+		SafeHealthDragging=false
+		SafeSpeedDragging=false
+	end
+end)
+
+local function GetNearestPlayer()
+	local MyCharacter=LocalPlayer.Character
+	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+	if not MyRoot then return nil end
+	local Nearest=nil
+	local NearestDistance=math.huge
+	for _,Player in ipairs(Players:GetPlayers()) do
+		if Player~=LocalPlayer and Player.Character then
+			local Root=Player.Character:FindFirstChild("HumanoidRootPart")
+			local Humanoid=Player.Character:FindFirstChildOfClass("Humanoid")
+			if Root and Humanoid and Humanoid.Health>0 then
+				local Distance=(MyRoot.Position-Root.Position).Magnitude
+				if Distance<NearestDistance then
+					NearestDistance=Distance
+					Nearest=Player
+				end
+			end
+		end
+	end
+	return Nearest
+end
+local function IsLaggingFPS(Delta)
+	return Delta and Delta>0 and (1/Delta)<3
+end
+
+local OriginalData={}
+
+local function SaveOriginal(Root)
+	if not Root or not Root:IsA("BasePart") then return end
+	if OriginalData[Root] then return end
+	OriginalData[Root]={
+		Size=Root.Size,
+		Transparency=Root.Transparency,
+		CanCollide=Root.CanCollide,
+		CanTouch=Root.CanTouch,
+		CanQuery=Root.CanQuery
+	}
+end
+
+local function RestoreOriginal(Root)
+	local Data=OriginalData[Root]
+	if Data and Root and Root.Parent then
+		Root.Size=Data.Size
+		Root.Transparency=Data.Transparency
+		Root.CanCollide=Data.CanCollide
+		Root.CanTouch=Data.CanTouch
+		Root.CanQuery=Data.CanQuery
+		local BoxPart=Root.Parent:FindFirstChild("VisibleHitbox")
+		if BoxPart then BoxPart:Destroy() end
+	end
+	OriginalData[Root]=nil
+end
+
+local function ModifyHitbox(Model,Color)
+	local Root=Model and Model:FindFirstChild("HumanoidRootPart")
+	if not Root or not Root:IsA("BasePart") then return end
+	SaveOriginal(Root)
+	Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
+	Root.Transparency=HitboxTransparency
+	Root.CanCollide=false
+	Root.CanTouch=false
+	Root.CanQuery=true
+
+	local BoxPart=Model:FindFirstChild("VisibleHitbox")
+	if not BoxPart then
+		BoxPart=Instance.new("BoxHandleAdornment")
+		BoxPart.Name="VisibleHitbox"
+		BoxPart.Adornee=Root
+		BoxPart.AlwaysOnTop=true
+		BoxPart.ZIndex=5
+		BoxPart.Parent=Model
+	end
+	BoxPart.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
+	BoxPart.Color3=Color
+	BoxPart.Transparency=HitboxTransparency
+end
+
+local function GetPlayerColor(Player)
+	if Player.Team then
+		if Player.Team.Name=="Marines" then
+			return Color3.fromRGB(0,170,255)
+		elseif Player.Team.Name=="Pirates" then
+			return Color3.fromRGB(255,60,60)
+		end
+	end
+	return Color3.fromRGB(255,60,60)
+end
+
+local function UpdatePlayerHitbox()
+	if not PlayerHitboxEnabled then return end
+	for _,Player in ipairs(Players:GetPlayers()) do
+		if Player~=LocalPlayer and Player.Character then
+			ModifyHitbox(Player.Character,GetPlayerColor(Player))
+		end
+	end
+end
+
+local function IsMob(Model)
+	if not Model or not Model:IsA("Model") then return false end
+	if Players:GetPlayerFromCharacter(Model) then return false end
+	local Humanoid=Model:FindFirstChildOfClass("Humanoid")
+	local Root=Model:FindFirstChild("HumanoidRootPart")
+	return Humanoid and Root and Humanoid.Health>0
+end
+
+local function UpdateMobHitbox()
+	if not MobHitboxEnabled then return end
+	for _,Obj in ipairs(Workspace:GetDescendants()) do
+		if Obj:IsA("Model") and IsMob(Obj) then
+			ModifyHitbox(Obj,Color3.fromRGB(255,170,0))
+		end
+	end
+end
+
+local ESPFolder=Instance.new("Folder",Gui)
+ESPFolder.Name="ESPFolder"
+
+local ESPData={}
+
+local function ClearESP()
+	for _,Data in pairs(ESPData) do
+		if Data.Billboard then Data.Billboard:Destroy() end
+	end
+	table.clear(ESPData)
+end
+
+local function CreateESP(Player)
+	if Player==LocalPlayer or not Player.Character then return end
+	local Character=Player.Character
+	local Root=Character:FindFirstChild("HumanoidRootPart")
+	local Humanoid=Character:FindFirstChildOfClass("Humanoid")
+	if not Root or not Humanoid then return end
+	if ESPData[Player] and ESPData[Player].Billboard and ESPData[Player].Billboard.Parent then return end
+
+	local Billboard=Instance.new("BillboardGui")
+	Billboard.Name="ESP_"..Player.Name
+	Billboard.Adornee=Root
+	Billboard.Size=UDim2.new(0,180,0,55)
+	Billboard.StudsOffset=Vector3.new(0,3.2,0)
+	Billboard.AlwaysOnTop=true
+	Billboard.Parent=ESPFolder
+
+	local Text=Instance.new("TextLabel",Billboard)
+	Text.Size=UDim2.new(1,0,1,0)
+	Text.BackgroundTransparency=1
+	Text.TextColor3=GetPlayerColor(Player)
+	Text.TextStrokeTransparency=0.4
+	Text.Font=Enum.Font.Cartoon
+	Text.TextSize=12
+	Text.TextWrapped=true
+
+	ESPData[Player]={Billboard=Billboard,Text=Text}
+end
+
+local function UpdateESPText()
+	if not ESPEnabled then return end
+	local MyCharacter=LocalPlayer.Character
+	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+	if not MyRoot then return end
+
+	for _,Player in ipairs(Players:GetPlayers()) do
+		if Player~=LocalPlayer and Player.Character then
+			CreateESP(Player)
+			local Data=ESPData[Player]
+			local Root=Player.Character:FindFirstChild("HumanoidRootPart")
+			local Humanoid=Player.Character:FindFirstChildOfClass("Humanoid")
+			if Data and Root and Humanoid then
+				local M=math.floor((MyRoot.Position-Root.Position).Magnitude/10+0.5)
+				local Health=math.floor(Humanoid.Health+0.5)
+				local MaxHealth=math.floor(Humanoid.MaxHealth+0.5)
+				Data.Text.Text=Player.DisplayName.." | "..M.."m\nHealth: "..Health.." / "..MaxHealth
+				Data.Text.TextColor3=GetPlayerColor(Player)
+			end
+		end
+	end
+end
+
+local function LerpUp(MyRoot)
+	HoldingAltitude=true
+	local TargetY=MyRoot.Position.Y+1000
+
+	while TPLerping and MyRoot.Parent do
+		local CurrentPosition=MyRoot.Position
+		local Distance=math.abs(TargetY-CurrentPosition.Y)
+		if Distance<=1 then
+			MyRoot.CFrame=CFrame.new(CurrentPosition.X,TargetY,CurrentPosition.Z)
+			break
+		end
+
+		local Delta=RunService.Heartbeat:Wait()
+		if IsLaggingFPS(Delta) then continue end
+
+		local Alpha=math.clamp((LerpSpeed*Delta)/Distance,0,1)
+		local NewY=CurrentPosition.Y+(TargetY-CurrentPosition.Y)*Alpha
+		MyRoot.CFrame=CFrame.new(CurrentPosition.X,NewY,CurrentPosition.Z)
+	end
+
+	while TPLerping and MyRoot.Parent and HoldingAltitude do
+		RunService.Heartbeat:Wait()
+		local Position=MyRoot.Position
+		MyRoot.CFrame=CFrame.new(Position.X,TargetY,Position.Z)
+	end
+
+	HoldingAltitude=false
+end
+
+local function StartLowHealthLerp()
+	if TPLerping or HealthThreshold<=0 then return end
+
+	local MyCharacter=LocalPlayer.Character
+	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+	local MyHumanoid=MyCharacter and MyCharacter:FindFirstChildOfClass("Humanoid")
+
+	if not MyRoot or not MyHumanoid or MyHumanoid.MaxHealth<=0 then return end
+
+	local HealthPercent=(MyHumanoid.Health/MyHumanoid.MaxHealth)*100
+	if HealthPercent<=HealthThreshold then
+		TPLerping=true
+		task.spawn(function()
+			LerpUp(MyRoot)
+			TPLerping=false
+			HoldingAltitude=false
+		end)
+	end
+end
+
+local function LerpToNearestPlayer()
+	if TPLerping then return end
+
+	local TargetPlayer=GetNearestPlayer()
+	if not TargetPlayer then return end
+
+	TPLerping=true
+	SetButtonState(TPNearestButton,true)
+
+	task.spawn(function()
+		while TPLerping do
+			local MyCharacter=LocalPlayer.Character
+			local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+			local MyHumanoid=MyCharacter and MyCharacter:FindFirstChildOfClass("Humanoid")
+			local TargetCharacter=TargetPlayer.Character
+			local TargetRoot=TargetCharacter and TargetCharacter:FindFirstChild("HumanoidRootPart")
+			local TargetHumanoid=TargetCharacter and TargetCharacter:FindFirstChildOfClass("Humanoid")
+
+			if not MyRoot or not MyHumanoid or not TargetRoot or not TargetHumanoid or TargetHumanoid.Health<=0 then
+				break
+			end
+
+			local TargetPosition=TargetRoot.Position-Vector3.new(0,5,0)
+			local CurrentPosition=MyRoot.Position
+			local Distance=(TargetPosition-CurrentPosition).Magnitude
+
+			if Distance<=1 then break end
+
+			local Speed=Distance<=100 and 1500 or LerpSpeed
+			local Delta=RunService.Heartbeat:Wait()
+
+			if IsLaggingFPS(Delta) then continue end
+
+			local Alpha=math.clamp((Speed*Delta)/Distance,0,1)
+			MyRoot.CFrame=CFrame.new(CurrentPosition:Lerp(TargetPosition,Alpha))
+		end
+
+		TPLerping=false
+		HoldingAltitude=false
+		SetButtonState(TPNearestButton,false)
+	end)
+end
+
+local function StartSafeFly()
+	if SafeFlying or not SafeFlyEnabled then return end
+
+	local Character=LocalPlayer.Character
+	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
+
+	if not Humanoid or not HRP or Humanoid.Health<=0 then return end
+
+	SafeFlying=true
+	SafeFlyTargetY=HRP.Position.Y+TargetHeight
+	Humanoid.PlatformStand=true
+end
+
+local function StopSafeFly()
+	SafeFlying=false
+	SafeFlyTargetY=nil
+
+	local Character=LocalPlayer.Character
+	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+
+	if Humanoid then
+		Humanoid.PlatformStand=false
+	end
+end
+
+local function CheckSafeFly()
+	if not SafeFlyEnabled then
+		if SafeFlying then StopSafeFly() end
+		return
+	end
+
+	local Character=LocalPlayer.Character
+	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
+
+	if not Humanoid or not HRP or Humanoid.Health<=0 then
+		if SafeFlying then StopSafeFly() end
+		return
+	end
+
+	local HealthPercent=(Humanoid.Health/Humanoid.MaxHealth)*100
+	local NeedFly=false
+
+	if SafeFlyHealth>0 and HealthPercent<=SafeFlyHealth then
+		NeedFly=true
+	end
+
+	if SafeFlyHealth>0 and HealthPercent<=50 then
+		for _,Player in ipairs(Players:GetPlayers()) do
+			if Player~=LocalPlayer and Player.Character then
+				local OtherHRP=Player.Character:FindFirstChild("HumanoidRootPart")
+				local OtherHumanoid=Player.Character:FindFirstChildOfClass("Humanoid")
+
+				if OtherHRP and OtherHumanoid and OtherHumanoid.Health>0 then
+					if (HRP.Position-OtherHRP.Position).Magnitude<=DangerDistance then
+						NeedFly=true
+						break
+					end
+				end
+			end
+		end
+	end
+
+	if NeedFly then
+		if not SafeFlying or not SafeFlyTargetY then
+			StartSafeFly()
+		end
+	else
+		if SafeFlying then StopSafeFly() end
+	end
+end
+
+PlayerHitboxButton.MouseButton1Click:Connect(function()
+	PlayerHitboxEnabled=not PlayerHitboxEnabled
+	SetButtonState(PlayerHitboxButton,PlayerHitboxEnabled)
+
+	if not PlayerHitboxEnabled then
+		for Root in pairs(OriginalData) do
+			if Root and Root.Parent and Players:GetPlayerFromCharacter(Root.Parent) then
+				RestoreOriginal(Root)
+			end
+		end
+	end
+end)
+
+MobHitboxButton.MouseButton1Click:Connect(function()
+	MobHitboxEnabled=not MobHitboxEnabled
+	SetButtonState(MobHitboxButton,MobHitboxEnabled)
+
+	if not MobHitboxEnabled then
+		for Root in pairs(OriginalData) do
+			if Root and Root.Parent and IsMob(Root.Parent) then
+				RestoreOriginal(Root)
+			end
+		end
+	end
+end)
+
+ESPButton.MouseButton1Click:Connect(function()
+	ESPEnabled=not ESPEnabled
+	SetButtonState(ESPButton,ESPEnabled)
+
+	if not ESPEnabled then
+		ClearESP()
+	end
+end)
+
+TPNearestButton.MouseButton1Click:Connect(function()
+	if TPLerping then
+		TPLerping=false
+		HoldingAltitude=false
+		SetButtonState(TPNearestButton,false)
+	else
+		LerpToNearestPlayer()
+	end
+end)
+
+SafeFlyButton.MouseButton1Click:Connect(function()
+	SafeFlyEnabled=not SafeFlyEnabled
+	SetButtonState(SafeFlyButton,SafeFlyEnabled)
+
+	if not SafeFlyEnabled then
+		StopSafeFly()
+	end
+end)
+
+LowCpuButton.MouseButton1Click:Connect(function()
+	LowCpuEnabled=not LowCpuEnabled
+	SetButtonState(LowCpuButton,LowCpuEnabled)
+
+	if LowCpuEnabled and not LowCpuRunning then
+		LowCpuRunning=true
+		task.spawn(function()
+			while LowCpuEnabled and Gui.Parent do
+				pcall(function()
+					settings().Rendering.QualityLevel=Enum.QualityLevel.Level01
+				end)
+				task.wait(1)
+			end
+			LowCpuRunning=false
+		end)
+	end
+end)
+
+local Dragging=false
+local DragStart=nil
+local StartPos=nil
+
+local function StartDrag(Input)
+	Dragging=true
+	DragStart=Input.Position
+	StartPos=Main.Position
+end
+
+local function UpdateDrag(Input)
+	if not Dragging then return end
+	local Delta=Input.Position-DragStart
+	Main.Position=UDim2.new(
+		StartPos.X.Scale,
+		StartPos.X.Offset+Delta.X,
+		StartPos.Y.Scale,
+		StartPos.Y.Offset+Delta.Y
+	)
+end
+
+Title.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		StartDrag(Input)
+	end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch then
+		UpdateDrag(Input)
+	end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		Dragging=false
+	end
+end)
+
+MinBtn.MouseButton1Click:Connect(function()
+	Minimized=not Minimized
+	Scroll.Visible=not Minimized
+
+	if Minimized then
+		Main.Size=UDim2.new(0,220,0,35)
+		MinBtn.Text="+"
+	else
+		Main.Size=UDim2.new(0,220,0,240)
+		MinBtn.Text="−"
+	end
+end)
+
+local ESPTimer=0
+
+RunService.Heartbeat:Connect(function(dt)
+	if PlayerHitboxEnabled then
+		UpdatePlayerHitbox()
+	end
+
+	if MobHitboxEnabled then
+		UpdateMobHitbox()
+	end
+
+	if TPLerping==false and HealthThreshold>0 then
+		StartLowHealthLerp()
+	end
+
+	ESPTimer+=dt
+	if ESPTimer>=0.1 then
+		ESPTimer=0
+		if ESPEnabled then
+			UpdateESPText()
+		end
+	end
+end)
+
+local SafeFlyConnection=RunService.RenderStepped:Connect(function(dt)
+	CheckSafeFly()
+
+	if not SafeFlyEnabled or not SafeFlying then return end
+
+	local Character=LocalPlayer.Character
+	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
+
+	if not Humanoid or not HRP or not SafeFlyTargetY then
+		StopSafeFly()
+		return
+	end
+
+	local CurrentPos=HRP.Position
+	local Distance=math.abs(SafeFlyTargetY-CurrentPos.Y)
+
+	if Distance>1 then
+		local Move=SafeFlySpeed*dt
+		local NewY=CurrentPos.Y+(SafeFlyTargetY-CurrentPos.Y)*math.clamp(Move/Distance,0,1)
+		HRP.CFrame=CFrame.new(CurrentPos.X,NewY,CurrentPos.Z)
+	else
+		HRP.CFrame=CFrame.new(CurrentPos.X,SafeFlyTargetY,CurrentPos.Z)
+	end
+
+	HRP.AssemblyLinearVelocity=Vector3.new(0,0,0)
+	HRP.AssemblyAngularVelocity=Vector3.new(0,0,0)
+	Humanoid.PlatformStand=true
+end)
+
+Players.PlayerRemoving:Connect(function(Player)
+	if ESPData[Player] then
+		if ESPData[Player].Billboard then
+			ESPData[Player].Billboard:Destroy()
+		end
+		ESPData[Player]=nil
+	end
+end)
+
+SetHealthThreshold(30)
+SetLerpSpeed(350)
+SetSafeHealth(30)
+SetSafeSpeed(350)

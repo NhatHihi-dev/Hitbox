@@ -2,6 +2,7 @@ local CoreGui=game:GetService("CoreGui")
 local Players=game:GetService("Players")
 local RunService=game:GetService("RunService")
 local UIS=game:GetService("UserInputService")
+local TweenService=game:GetService("TweenService")
 local LocalPlayer=Players.LocalPlayer
 local Workspace=game:GetService("Workspace")
 
@@ -31,411 +32,600 @@ local HoldingAltitude=false
 
 local SafeFlyEnabled=false
 local SafeFlyHealth=30
-local SafeFlySpeed=350
+local SafeFlySpeed=100
 local SafeFlying=false
 local SafeFlyTargetY=nil
+
 local DangerDistance=1000
 local TargetHeight=1000
 
-local HealthDragging=false
-local SpeedDragging=false
-local SafeHealthDragging=false
-local SafeSpeedDragging=false
+local OriginalData={}
+local ESPs={}
+local Connections={}
 
 local Gui=Instance.new("ScreenGui")
 Gui.Name="PlayerHitboxGui"
 Gui.ResetOnSpawn=false
-Gui.IgnoreGuiInset=true
-Gui.Parent=CoreGui
+Gui.ZIndexBehavior=Enum.ZIndexBehavior.Sibling
 
-local Main=Instance.new("Frame",Gui)
+pcall(function()
+	Gui.Parent=CoreGui
+end)
+
+if not Gui.Parent then
+	Gui.Parent=LocalPlayer:WaitForChild("PlayerGui")
+end
+
+local Main=Instance.new("Frame")
+Main.Name="Main"
 Main.Size=UDim2.new(0,220,0,240)
 Main.Position=UDim2.new(0.5,-110,0.5,-120)
 Main.BackgroundColor3=Color3.fromRGB(18,18,24)
 Main.BorderSizePixel=0
+Main.ClipsDescendants=true
+Main.Active=true
+Main.Parent=Gui
 
-local MainCorner=Instance.new("UICorner",Main)
+local MainCorner=Instance.new("UICorner")
 MainCorner.CornerRadius=UDim.new(0,8)
+MainCorner.Parent=Main
 
-local MainStroke=Instance.new("UIStroke",Main)
-MainStroke.Color=Color3.fromRGB(0,170,255)
+local MainStroke=Instance.new("UIStroke")
 MainStroke.Thickness=1.5
+MainStroke.Color=Color3.fromRGB(0,170,255)
+MainStroke.Parent=Main
 
-local Title=Instance.new("TextLabel",Main)
-Title.Size=UDim2.new(1,-55,0,35)
-Title.Position=UDim2.new(0,10,0,0)
+local Dragging=false
+local DragStart
+local StartPos
+
+Main.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		Dragging=true
+		DragStart=Input.Position
+		StartPos=Main.Position
+	end
+end)
+
+Main.InputChanged:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch then
+		Connections.DragInput=Input
+	end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+	if Input==Connections.DragInput and Dragging then
+		local Delta=Input.Position-DragStart
+		Main.Position=UDim2.new(StartPos.X.Scale,StartPos.X.Offset+Delta.X,StartPos.Y.Scale,StartPos.Y.Offset+Delta.Y)
+	end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		Dragging=false
+	end
+end)
+
+local Title=Instance.new("TextLabel")
+Title.Name="Title"
+Title.Size=UDim2.new(1,-55,0,28)
+Title.Position=UDim2.new(0,10,0,2)
 Title.BackgroundTransparency=1
-Title.Text="PLAYER HITBOX"
-Title.TextColor3=Color3.fromRGB(100,200,255)
+Title.Text="HITBOX + ESP"
+Title.TextColor3=Color3.fromRGB(0,170,255)
+Title.TextSize=14
 Title.Font=Enum.Font.Cartoon
-Title.TextSize=18
 Title.TextXAlignment=Enum.TextXAlignment.Left
+Title.Parent=Main
 
-local MinBtn=Instance.new("TextButton",Main)
-MinBtn.Size=UDim2.new(0,25,0,25)
-MinBtn.Position=UDim2.new(1,-55,0,5)
-MinBtn.BackgroundColor3=Color3.fromRGB(25,30,40)
-MinBtn.Text="−"
-MinBtn.TextColor3=Color3.new(1,1,1)
-MinBtn.Font=Enum.Font.Cartoon
-MinBtn.TextSize=20
-MinBtn.BorderSizePixel=0
-Instance.new("UICorner",MinBtn).CornerRadius=UDim.new(0,6)
+local SubTitle=Instance.new("TextLabel")
+SubTitle.Name="SubTitle"
+SubTitle.Size=UDim2.new(1,-20,0,16)
+SubTitle.Position=UDim2.new(0,10,0,22)
+SubTitle.BackgroundTransparency=1
+SubTitle.Text="Nhat HiHi"
+SubTitle.TextColor3=Color3.fromRGB(130,130,140)
+SubTitle.TextSize=8
+SubTitle.Font=Enum.Font.Cartoon
+SubTitle.TextXAlignment=Enum.TextXAlignment.Left
+SubTitle.Parent=Main
 
-local CloseBtn=Instance.new("TextButton",Main)
-CloseBtn.Size=UDim2.new(0,25,0,25)
-CloseBtn.Position=UDim2.new(1,-30,0,5)
-CloseBtn.BackgroundColor3=Color3.fromRGB(45,25,30)
-CloseBtn.Text="X"
-CloseBtn.TextColor3=Color3.fromRGB(255,100,100)
-CloseBtn.Font=Enum.Font.Cartoon
-CloseBtn.TextSize=16
-CloseBtn.BorderSizePixel=0
-Instance.new("UICorner",CloseBtn).CornerRadius=UDim.new(0,6)
+local Close=Instance.new("TextButton")
+Close.Name="Close"
+Close.Size=UDim2.new(0,25,0,25)
+Close.Position=UDim2.new(1,-30,0,3)
+Close.BackgroundTransparency=1
+Close.Text="X"
+Close.TextColor3=Color3.fromRGB(255,80,80)
+Close.TextSize=16
+Close.Font=Enum.Font.Cartoon
+Close.Parent=Main
 
-local Scroll=Instance.new("ScrollingFrame",Main)
-Scroll.Size=UDim2.new(1,-10,1,-40)
-Scroll.Position=UDim2.new(0,5,0,35)
+local Arrow=Instance.new("TextButton")
+Arrow.Name="Arrow"
+Arrow.Size=UDim2.new(0,25,0,25)
+Arrow.Position=UDim2.new(0,5,0,3)
+Arrow.BackgroundTransparency=1
+Arrow.Text="▼"
+Arrow.TextColor3=Color3.fromRGB(255,255,255)
+Arrow.TextSize=14
+Arrow.Font=Enum.Font.Cartoon
+Arrow.ZIndex=10
+Arrow.Parent=Main
+
+local OpenSize=UDim2.new(0,220,0,240)
+local ClosedSize=UDim2.new(0,40,0,15)
+
+local Scroll=Instance.new("ScrollingFrame")
+Scroll.Name="Scroll"
+Scroll.Size=UDim2.new(1,-10,1,-35)
+Scroll.Position=UDim2.new(0,5,0,32)
 Scroll.BackgroundTransparency=1
 Scroll.BorderSizePixel=0
 Scroll.ScrollBarThickness=3
 Scroll.ScrollBarImageColor3=Color3.fromRGB(0,170,255)
-Scroll.CanvasSize=UDim2.new(0,0,0,560)
+Scroll.CanvasSize=UDim2.new(0,0,0,0)
+Scroll.AutomaticCanvasSize=Enum.AutomaticSize.Y
+Scroll.Parent=Main
 
-local Content=Instance.new("Frame",Scroll)
-Content.Size=UDim2.new(1,0,0,560)
-Content.BackgroundTransparency=1
+local Layout=Instance.new("UIListLayout")
+Layout.Padding=UDim.new(0,5)
+Layout.HorizontalAlignment=Enum.HorizontalAlignment.Center
+Layout.SortOrder=Enum.SortOrder.LayoutOrder
+Layout.Parent=Scroll
 
-local function AddBlueStroke(Object)
-	local S=Instance.new("UIStroke",Object)
-	S.Name="BlueStroke"
-	S.Color=Color3.fromRGB(0,170,255)
-	S.Thickness=1.5
-	S.Enabled=false
-	return S
+local Padding=Instance.new("UIPadding")
+Padding.PaddingTop=UDim.new(0,2)
+Padding.PaddingBottom=UDim.new(0,8)
+Padding.Parent=Scroll
+
+local function SetToggleStyle(Button,Enabled)
+	local Stroke=Button:FindFirstChild("ToggleStroke")
+	if Enabled then
+		if not Stroke then
+			Stroke=Instance.new("UIStroke")
+			Stroke.Name="ToggleStroke"
+			Stroke.Thickness=1.5
+			Stroke.Color=Color3.fromRGB(0,170,255)
+			Stroke.Parent=Button
+		end
+		Stroke.Enabled=true
+	else
+		if Stroke then
+			Stroke.Enabled=false
+		end
+	end
 end
 
-local function SetButtonState(Button,State)
-	local S=Button:FindFirstChild("BlueStroke")
-	if S then S.Enabled=State end
+local function CreateToggle(Text)
+	local Button=Instance.new("TextButton")
+	Button.Size=UDim2.new(1,-10,0,30)
+	Button.BackgroundColor3=Color3.fromRGB(28,30,38)
+	Button.BorderSizePixel=0
+	Button.Text=Text
+	Button.TextColor3=Color3.fromRGB(235,235,235)
+	Button.TextSize=13
+	Button.Font=Enum.Font.Cartoon
+	Button.AutoButtonColor=false
+	Button.Parent=Scroll
+
+	local Corner=Instance.new("UICorner")
+	Corner.CornerRadius=UDim.new(0,6)
+	Corner.Parent=Button
+
+	SetToggleStyle(Button,false)
+	return Button
 end
 
-local function MakeButton(Text,Y)
-	local B=Instance.new("TextButton",Content)
-	B.Size=UDim2.new(1,-10,0,28)
-	B.Position=UDim2.new(0,5,0,Y)
-	B.BackgroundColor3=Color3.fromRGB(25,30,40)
-	B.BorderSizePixel=0
-	B.Text=Text
-	B.TextColor3=Color3.fromRGB(230,240,255)
-	B.Font=Enum.Font.Cartoon
-	B.TextSize=14
-	Instance.new("UICorner",B).CornerRadius=UDim.new(0,6)
-	AddBlueStroke(B)
-	return B
+local function CreateLabel(Text)
+	local Label=Instance.new("TextLabel")
+	Label.Size=UDim2.new(1,-10,0,24)
+	Label.BackgroundTransparency=1
+	Label.Text=Text
+	Label.TextColor3=Color3.fromRGB(210,210,210)
+	Label.TextSize=12
+	Label.Font=Enum.Font.Cartoon
+	Label.TextXAlignment=Enum.TextXAlignment.Left
+	Label.Parent=Scroll
+	return Label
 end
 
-local PlayerHitboxButton=MakeButton("PLAYER HITBOX",5)
-local MobHitboxButton=MakeButton("MOB HITBOX",38)
-local ESPButton=MakeButton("ESP",71)
-local TPNearestButton=MakeButton("TP NGƯỜI GẦN",137)
-local SafeFlyButton=MakeButton("SAFE FLY",170)
-local LowCpuButton=MakeButton("TỐI ƯU CPU",400)
+local function CreateBox(Default)
+	local Box=Instance.new("TextBox")
+	Box.Size=UDim2.new(1,-10,0,30)
+	Box.BackgroundColor3=Color3.fromRGB(28,30,38)
+	Box.BorderSizePixel=0
+	Box.Text=tostring(Default)
+	Box.PlaceholderText=tostring(Default)
+	Box.TextColor3=Color3.fromRGB(255,255,255)
+	Box.PlaceholderColor3=Color3.fromRGB(120,120,120)
+	Box.TextSize=13
+	Box.Font=Enum.Font.Cartoon
+	Box.ClearTextOnFocus=false
+	Box.Parent=Scroll
 
-local HitboxLabel=Instance.new("TextLabel",Content)
-HitboxLabel.Size=UDim2.new(1,-10,0,20)
-HitboxLabel.Position=UDim2.new(0,5,0,101)
-HitboxLabel.BackgroundTransparency=1
-HitboxLabel.Text="Hitbox: 10"
-HitboxLabel.TextColor3=Color3.fromRGB(220,230,240)
-HitboxLabel.Font=Enum.Font.Cartoon
-HitboxLabel.TextSize=13
+	local Corner=Instance.new("UICorner")
+	Corner.CornerRadius=UDim.new(0,6)
+	Corner.Parent=Box
+	return Box
+end
 
-local HitboxBox=Instance.new("TextBox",Content)
-HitboxBox.Size=UDim2.new(0,55,0,24)
-HitboxBox.Position=UDim2.new(1,-60,0,99)
-HitboxBox.BackgroundColor3=Color3.fromRGB(25,30,40)
-HitboxBox.BorderSizePixel=0
-HitboxBox.Text="10"
-HitboxBox.TextColor3=Color3.new(1,1,1)
-HitboxBox.Font=Enum.Font.Cartoon
-HitboxBox.TextSize=13
-HitboxBox.ClearTextOnFocus=false
-Instance.new("UICorner",HitboxBox).CornerRadius=UDim.new(0,5)
+local PlayerToggle=CreateToggle("PLAYER HITBOX")
+local MobToggle=CreateToggle("MOB HITBOX")
+local ESPToggle=CreateToggle("ESP")
 
-local HealthLabel=Instance.new("TextLabel",Content)
-HealthLabel.Size=UDim2.new(1,-10,0,20)
-HealthLabel.Position=UDim2.new(0,5,0,205)
-HealthLabel.BackgroundTransparency=1
-HealthLabel.Text="Safe Mode: 30%"
-HealthLabel.TextColor3=Color3.fromRGB(220,230,240)
-HealthLabel.Font=Enum.Font.Cartoon
-HealthLabel.TextSize=13
-HealthLabel.TextXAlignment=Enum.TextXAlignment.Left
+CreateLabel("HITBOX SIZE")
+local SizeBox=CreateBox(HitboxSize)
 
-local HealthBox=Instance.new("TextBox",Content)
-HealthBox.Size=UDim2.new(0,45,0,22)
-HealthBox.Position=UDim2.new(1,-50,0,204)
-HealthBox.BackgroundColor3=Color3.fromRGB(25,30,40)
-HealthBox.BorderSizePixel=0
-HealthBox.Text="30"
-HealthBox.TextColor3=Color3.new(1,1,1)
-HealthBox.Font=Enum.Font.Cartoon
-HealthBox.TextSize=12
-HealthBox.ClearTextOnFocus=false
-Instance.new("UICorner",HealthBox).CornerRadius=UDim.new(0,5)
+local TPNearestButton=CreateToggle("TWEEN NEARBY PLAYERS")
 
-local HealthBarBg=Instance.new("Frame",Content)
-HealthBarBg.Size=UDim2.new(1,-10,0,6)
-HealthBarBg.Position=UDim2.new(0,5,0,228)
-HealthBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
-HealthBarBg.BorderSizePixel=0
-Instance.new("UICorner",HealthBarBg).CornerRadius=UDim.new(0,3)
+CreateLabel("TWEEN SPEED")
 
-local HealthBar=Instance.new("Frame",HealthBarBg)
-HealthBar.Size=UDim2.new(0.3,0,1,0)
-HealthBar.BackgroundColor3=Color3.fromRGB(0,170,255)
-HealthBar.BorderSizePixel=0
-Instance.new("UICorner",HealthBar).CornerRadius=UDim.new(0,3)
+local SpeedFrame=Instance.new("Frame")
+SpeedFrame.Size=UDim2.new(1,-10,0,42)
+SpeedFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SpeedFrame.BorderSizePixel=0
+SpeedFrame.Parent=Scroll
 
-local SpeedLabel=Instance.new("TextLabel",Content)
-SpeedLabel.Size=UDim2.new(1,-10,0,20)
-SpeedLabel.Position=UDim2.new(0,5,0,253)
-SpeedLabel.BackgroundTransparency=1
-SpeedLabel.Text="Tween Speed: 350/s"
-SpeedLabel.TextColor3=Color3.fromRGB(220,230,240)
-SpeedLabel.Font=Enum.Font.Cartoon
-SpeedLabel.TextSize=13
-SpeedLabel.TextXAlignment=Enum.TextXAlignment.Left
+local SpeedCorner=Instance.new("UICorner")
+SpeedCorner.CornerRadius=UDim.new(0,6)
+SpeedCorner.Parent=SpeedFrame
 
-local SpeedBox=Instance.new("TextBox",Content)
-SpeedBox.Size=UDim2.new(0,45,0,22)
-SpeedBox.Position=UDim2.new(1,-50,0,252)
-SpeedBox.BackgroundColor3=Color3.fromRGB(25,30,40)
-SpeedBox.BorderSizePixel=0
-SpeedBox.Text="350"
-SpeedBox.TextColor3=Color3.new(1,1,1)
-SpeedBox.Font=Enum.Font.Cartoon
-SpeedBox.TextSize=12
-SpeedBox.ClearTextOnFocus=false
-Instance.new("UICorner",SpeedBox).CornerRadius=UDim.new(0,5)
-
-local SpeedBarBg=Instance.new("Frame",Content)
-SpeedBarBg.Size=UDim2.new(1,-10,0,6)
-SpeedBarBg.Position=UDim2.new(0,5,0,281)
-SpeedBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
-SpeedBarBg.BorderSizePixel=0
-Instance.new("UICorner",SpeedBarBg).CornerRadius=UDim.new(0,3)
-
-local SpeedBar=Instance.new("Frame",SpeedBarBg)
-SpeedBar.Size=UDim2.new(1,0,1,0)
-SpeedBar.BackgroundColor3=Color3.fromRGB(0,170,255)
+local SpeedBar=Instance.new("Frame")
+SpeedBar.Size=UDim2.new(1,-60,0,5)
+SpeedBar.Position=UDim2.new(0,10,0.5,-2)
+SpeedBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 SpeedBar.BorderSizePixel=0
-Instance.new("UICorner",SpeedBar).CornerRadius=UDim.new(0,3)
+SpeedBar.Parent=SpeedFrame
 
-local SafeHealthLabel=Instance.new("TextLabel",Content)
-SafeHealthLabel.Size=UDim2.new(1,-10,0,20)
-SafeHealthLabel.Position=UDim2.new(0,5,0,302)
-SafeHealthLabel.BackgroundTransparency=1
-SafeHealthLabel.Text="Safe Mode Health: 30%"
-SafeHealthLabel.TextColor3=Color3.fromRGB(220,230,240)
-SafeHealthLabel.Font=Enum.Font.Cartoon
-SafeHealthLabel.TextSize=13
-SafeHealthLabel.TextXAlignment=Enum.TextXAlignment.Left
+local SpeedFill=Instance.new("Frame")
+SpeedFill.Size=UDim2.new((LerpSpeed-10)/340,0,1,0)
+SpeedFill.BackgroundColor3=Color3.fromRGB(0,170,255)
+SpeedFill.BorderSizePixel=0
+SpeedFill.Parent=SpeedBar
 
-local SafeHealthBox=Instance.new("TextBox",Content)
-SafeHealthBox.Size=UDim2.new(0,45,0,22)
-SafeHealthBox.Position=UDim2.new(1,-50,0,301)
-SafeHealthBox.BackgroundColor3=Color3.fromRGB(25,30,40)
-SafeHealthBox.BorderSizePixel=0
-SafeHealthBox.Text="30"
-SafeHealthBox.TextColor3=Color3.new(1,1,1)
-SafeHealthBox.Font=Enum.Font.Cartoon
-SafeHealthBox.TextSize=12
-SafeHealthBox.ClearTextOnFocus=false
-Instance.new("UICorner",SafeHealthBox).CornerRadius=UDim.new(0,5)
+local SpeedFillCorner=Instance.new("UICorner")
+SpeedFillCorner.CornerRadius=UDim.new(1,0)
+SpeedFillCorner.Parent=SpeedFill
 
-local SafeHealthBarBg=Instance.new("Frame",Content)
-SafeHealthBarBg.Size=UDim2.new(1,-10,0,6)
-SafeHealthBarBg.Position=UDim2.new(0,5,0,329)
-SafeHealthBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
-SafeHealthBarBg.BorderSizePixel=0
-Instance.new("UICorner",SafeHealthBarBg).CornerRadius=UDim.new(0,3)
+local SpeedValue=Instance.new("TextBox")
+SpeedValue.Size=UDim2.new(0,45,0,28)
+SpeedValue.Position=UDim2.new(1,-50,0.5,-14)
+SpeedValue.BackgroundColor3=Color3.fromRGB(38,40,48)
+SpeedValue.BorderSizePixel=0
+SpeedValue.Text=tostring(LerpSpeed)
+SpeedValue.TextColor3=Color3.fromRGB(255,255,255)
+SpeedValue.TextSize=12
+SpeedValue.Font=Enum.Font.Cartoon
+SpeedValue.ClearTextOnFocus=false
+SpeedValue.Parent=SpeedFrame
 
-local SafeHealthBar=Instance.new("Frame",SafeHealthBarBg)
-SafeHealthBar.Size=UDim2.new(0.3,0,1,0)
-SafeHealthBar.BackgroundColor3=Color3.fromRGB(0,170,255)
-SafeHealthBar.BorderSizePixel=0
-Instance.new("UICorner",SafeHealthBar).CornerRadius=UDim.new(0,3)
+local SpeedValueCorner=Instance.new("UICorner")
+SpeedValueCorner.CornerRadius=UDim.new(0,5)
+SpeedValueCorner.Parent=SpeedValue
 
-local SafeSpeedLabel=Instance.new("TextLabel",Content)
-SafeSpeedLabel.Size=UDim2.new(1,-10,0,20)
-SafeSpeedLabel.Position=UDim2.new(0,5,0,350)
-SafeSpeedLabel.BackgroundTransparency=1
-SafeSpeedLabel.Text="Tween Speed Health: 350/s"
-SafeSpeedLabel.TextColor3=Color3.fromRGB(220,230,240)
-SafeSpeedLabel.Font=Enum.Font.Cartoon
-SafeSpeedLabel.TextSize=13
-SafeSpeedLabel.TextXAlignment=Enum.TextXAlignment.Left
+local SpeedDragging=false
 
-local SafeSpeedBox=Instance.new("TextBox",Content)
-SafeSpeedBox.Size=UDim2.new(0,45,0,22)
-SafeSpeedBox.Position=UDim2.new(1,-50,0,349)
-SafeSpeedBox.BackgroundColor3=Color3.fromRGB(25,30,40)
-SafeSpeedBox.BorderSizePixel=0
-SafeSpeedBox.Text="350"
-SafeSpeedBox.TextColor3=Color3.new(1,1,1)
-SafeSpeedBox.Font=Enum.Font.Cartoon
-SafeSpeedBox.TextSize=12
-SafeSpeedBox.ClearTextOnFocus=false
-Instance.new("UICorner",SafeSpeedBox).CornerRadius=UDim.new(0,5)
-
-local SafeSpeedBarBg=Instance.new("Frame",Content)
-SafeSpeedBarBg.Size=UDim2.new(1,-10,0,6)
-SafeSpeedBarBg.Position=UDim2.new(0,5,0,378)
-SafeSpeedBarBg.BackgroundColor3=Color3.fromRGB(40,45,55)
-SafeSpeedBarBg.BorderSizePixel=0
-Instance.new("UICorner",SafeSpeedBarBg).CornerRadius=UDim.new(0,3)
-
-local SafeSpeedBar=Instance.new("Frame",SafeSpeedBarBg)
-SafeSpeedBar.Size=UDim2.new(1,0,1,0)
-SafeSpeedBar.BackgroundColor3=Color3.fromRGB(0,170,255)
-SafeSpeedBar.BorderSizePixel=0
-Instance.new("UICorner",SafeSpeedBar).CornerRadius=UDim.new(0,3)
-
-local function SetHealthThreshold(Value)
-	Value=math.clamp(math.floor(tonumber(Value) or 30),0,100)
-	HealthThreshold=Value
-	HealthBox.Text=tostring(Value)
-	if Value==0 then HealthLabel.Text="Máu kích hoạt: TẮT" else HealthLabel.Text="Máu kích hoạt: "..Value.."%" end
-	HealthBar.Size=UDim2.new(Value/100,0,1,0)
+local function SetTweenSpeed(Value)
+	LerpSpeed=math.clamp(math.floor(Value+0.5),10,350)
+	local Percent=(LerpSpeed-10)/340
+	SpeedFill.Size=UDim2.new(Percent,0,1,0)
+	SpeedValue.Text=tostring(LerpSpeed)
 end
 
-local function SetLerpSpeed(Value)
-	Value=math.clamp(math.floor(tonumber(Value) or 350),10,350)
-	LerpSpeed=Value
-	SpeedBox.Text=tostring(Value)
-	SpeedLabel.Text="Tween Speed: "..Value.."/s"
-	SpeedBar.Size=UDim2.new((Value-10)/340,0,1,0)
+local function UpdateSpeedFromX(X)
+	local StartX=SpeedBar.AbsolutePosition.X
+	local Width=SpeedBar.AbsoluteSize.X
+	local Percent=math.clamp((X-StartX)/Width,0,1)
+	SetTweenSpeed(10+(340*Percent))
 end
 
-local function SetSafeHealth(Value)
-	Value=math.clamp(math.floor(tonumber(Value) or 30),0,100)
-	SafeFlyHealth=Value
-	SafeHealthBox.Text=tostring(Value)
-	if Value==0 then SafeHealthLabel.Text="Safe Fly máu: TẮT" else SafeHealthLabel.Text="Safe Fly máu: "..Value.."%" end
-	SafeHealthBar.Size=UDim2.new(Value/100,0,1,0)
-end
-
-local function SetSafeSpeed(Value)
-	Value=math.clamp(math.floor(tonumber(Value) or 350),10,350)
-	SafeFlySpeed=Value
-	SafeSpeedBox.Text=tostring(Value)
-	SafeSpeedLabel.Text="Tốc độ Safe Fly: "..Value.."/s"
-	SafeSpeedBar.Size=UDim2.new((Value-10)/340,0,1,0)
-end
-
-HitboxBox.FocusLost:Connect(function()
-	local Value=math.clamp(math.floor(tonumber(HitboxBox.Text) or 10),1,100)
-	HitboxSize=Value
-	HitboxBox.Text=tostring(Value)
-	HitboxLabel.Text="Hitbox: "..Value
-end)
-
-HealthBox.FocusLost:Connect(function()
-	SetHealthThreshold(HealthBox.Text)
-end)
-
-SpeedBox.FocusLost:Connect(function()
-	SetLerpSpeed(SpeedBox.Text)
-end)
-
-SafeHealthBox.FocusLost:Connect(function()
-	SetSafeHealth(SafeHealthBox.Text)
-end)
-
-SafeSpeedBox.FocusLost:Connect(function()
-	SetSafeSpeed(SafeSpeedBox.Text)
+SpeedBar.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SpeedDragging=true
+		UpdateSpeedFromX(Input.Position.X)
+	end
 end)
 
 UIS.InputChanged:Connect(function(Input)
-	if Input.UserInputType~=Enum.UserInputType.MouseMovement and Input.UserInputType~=Enum.UserInputType.Touch then return end
-	local X=Input.Position.X
-
-	if HealthDragging then
-		local P=math.clamp((X-HealthBarBg.AbsolutePosition.X)/HealthBarBg.AbsoluteSize.X,0,1)
-		SetHealthThreshold(P*100)
-	elseif SpeedDragging then
-		local P=math.clamp((X-SpeedBarBg.AbsolutePosition.X)/SpeedBarBg.AbsoluteSize.X,0,1)
-		SetLerpSpeed(10+P*340)
-	elseif SafeHealthDragging then
-		local P=math.clamp((X-SafeHealthBarBg.AbsolutePosition.X)/SafeHealthBarBg.AbsoluteSize.X,0,1)
-		SetSafeHealth(P*100)
-	elseif SafeSpeedDragging then
-		local P=math.clamp((X-SafeSpeedBarBg.AbsolutePosition.X)/SafeSpeedBarBg.AbsoluteSize.X,0,1)
-		SetSafeSpeed(10+P*340)
+	if SpeedDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+		UpdateSpeedFromX(Input.Position.X)
 	end
 end)
 
-HealthBarBg.InputBegan:Connect(function(Input)
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SpeedDragging=false
+	end
+end)
+
+SpeedValue.FocusLost:Connect(function()
+	local Number=tonumber(SpeedValue.Text)
+	if Number then
+		SetTweenSpeed(Number)
+	else
+		SpeedValue.Text=tostring(LerpSpeed)
+	end
+end)
+
+SetTweenSpeed(LerpSpeed)
+
+CreateLabel("HEALTH SAFE MODE")
+
+local HealthFrame=Instance.new("Frame")
+HealthFrame.Size=UDim2.new(1,-10,0,42)
+HealthFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+HealthFrame.BorderSizePixel=0
+HealthFrame.Parent=Scroll
+
+local HealthCorner=Instance.new("UICorner")
+HealthCorner.CornerRadius=UDim.new(0,6)
+HealthCorner.Parent=HealthFrame
+
+local HealthBar=Instance.new("Frame")
+HealthBar.Size=UDim2.new(1,-60,0,5)
+HealthBar.Position=UDim2.new(0,10,0.5,-2)
+HealthBar.BackgroundColor3=Color3.fromRGB(55,55,65)
+HealthBar.BorderSizePixel=0
+HealthBar.Parent=HealthFrame
+
+local HealthFill=Instance.new("Frame")
+HealthFill.Size=UDim2.new(HealthThreshold/100,0,1,0)
+HealthFill.BackgroundColor3=Color3.fromRGB(0,170,255)
+HealthFill.BorderSizePixel=0
+HealthFill.Parent=HealthBar
+
+local HealthFillCorner=Instance.new("UICorner")
+HealthFillCorner.CornerRadius=UDim.new(1,0)
+HealthFillCorner.Parent=HealthFill
+
+local HealthValue=Instance.new("TextBox")
+HealthValue.Size=UDim2.new(0,45,0,28)
+HealthValue.Position=UDim2.new(1,-50,0.5,-14)
+HealthValue.BackgroundColor3=Color3.fromRGB(38,40,48)
+HealthValue.BorderSizePixel=0
+HealthValue.Text=tostring(HealthThreshold)
+HealthValue.TextColor3=Color3.fromRGB(255,255,255)
+HealthValue.TextSize=12
+HealthValue.Font=Enum.Font.Cartoon
+HealthValue.ClearTextOnFocus=false
+HealthValue.Parent=HealthFrame
+
+local HealthValueCorner=Instance.new("UICorner")
+HealthValueCorner.CornerRadius=UDim.new(0,5)
+HealthValueCorner.Parent=HealthValue
+
+local HealthDragging=false
+
+local function SetHealthThreshold(Value)
+	HealthThreshold=math.clamp(math.floor(Value+0.5),0,100)
+	local Percent=HealthThreshold/100
+	HealthFill.Size=UDim2.new(Percent,0,1,0)
+	HealthValue.Text=tostring(HealthThreshold)
+end
+
+local function UpdateHealthFromX(X)
+	local StartX=HealthBar.AbsolutePosition.X
+	local Width=HealthBar.AbsoluteSize.X
+	local Percent=math.clamp((X-StartX)/Width,0,1)
+	SetHealthThreshold(100*Percent)
+end
+
+HealthBar.InputBegan:Connect(function(Input)
 	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
 		HealthDragging=true
+		UpdateHealthFromX(Input.Position.X)
 	end
 end)
 
-SpeedBarBg.InputBegan:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		SpeedDragging=true
-	end
-end)
-
-SafeHealthBarBg.InputBegan:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		SafeHealthDragging=true
-	end
-end)
-
-SafeSpeedBarBg.InputBegan:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		SafeSpeedDragging=true
+UIS.InputChanged:Connect(function(Input)
+	if HealthDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+		UpdateHealthFromX(Input.Position.X)
 	end
 end)
 
 UIS.InputEnded:Connect(function(Input)
 	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
 		HealthDragging=false
-		SpeedDragging=false
+	end
+end)
+
+HealthValue.FocusLost:Connect(function()
+	local Number=tonumber(HealthValue.Text)
+	if Number then
+		SetHealthThreshold(Number)
+	else
+		HealthValue.Text=tostring(HealthThreshold)
+	end
+end)
+
+SetHealthThreshold(HealthThreshold)
+
+local SafeFlyButton=CreateToggle("SAFE FLY")
+
+CreateLabel("HEALTH SAFE")
+
+local SafeHealthFrame=Instance.new("Frame")
+SafeHealthFrame.Size=UDim2.new(1,-10,0,42)
+SafeHealthFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SafeHealthFrame.BorderSizePixel=0
+SafeHealthFrame.Parent=Scroll
+
+local SafeHealthCorner=Instance.new("UICorner")
+SafeHealthCorner.CornerRadius=UDim.new(0,6)
+SafeHealthCorner.Parent=SafeHealthFrame
+
+local SafeHealthBar=Instance.new("Frame")
+SafeHealthBar.Size=UDim2.new(1,-60,0,5)
+SafeHealthBar.Position=UDim2.new(0,10,0.5,-2)
+SafeHealthBar.BackgroundColor3=Color3.fromRGB(55,55,65)
+SafeHealthBar.BorderSizePixel=0
+SafeHealthBar.Parent=SafeHealthFrame
+
+local SafeHealthFill=Instance.new("Frame")
+SafeHealthFill.Size=UDim2.new(SafeFlyHealth/100,0,1,0)
+SafeHealthFill.BackgroundColor3=Color3.fromRGB(0,170,255)
+SafeHealthFill.BorderSizePixel=0
+SafeHealthFill.Parent=SafeHealthBar
+
+local SafeHealthFillCorner=Instance.new("UICorner")
+SafeHealthFillCorner.CornerRadius=UDim.new(1,0)
+SafeHealthFillCorner.Parent=SafeHealthFill
+
+local SafeHealthValue=Instance.new("TextBox")
+SafeHealthValue.Size=UDim2.new(0,45,0,28)
+SafeHealthValue.Position=UDim2.new(1,-50,0.5,-14)
+SafeHealthValue.BackgroundColor3=Color3.fromRGB(38,40,48)
+SafeHealthValue.BorderSizePixel=0
+SafeHealthValue.Text=tostring(SafeFlyHealth)
+SafeHealthValue.TextColor3=Color3.fromRGB(255,255,255)
+SafeHealthValue.TextSize=12
+SafeHealthValue.Font=Enum.Font.Cartoon
+SafeHealthValue.ClearTextOnFocus=false
+SafeHealthValue.Parent=SafeHealthFrame
+
+local SafeHealthValueCorner=Instance.new("UICorner")
+SafeHealthValueCorner.CornerRadius=UDim.new(0,5)
+SafeHealthValueCorner.Parent=SafeHealthValue
+
+local SafeHealthDragging=false
+
+local function SetSafeFlyHealth(Value)
+	SafeFlyHealth=math.clamp(math.floor(Value+0.5),0,100)
+	local Percent=SafeFlyHealth/100
+	SafeHealthFill.Size=UDim2.new(Percent,0,1,0)
+	SafeHealthValue.Text=tostring(SafeFlyHealth)
+end
+
+local function UpdateSafeHealthFromX(X)
+	local StartX=SafeHealthBar.AbsolutePosition.X
+	local Width=SafeHealthBar.AbsoluteSize.X
+	local Percent=math.clamp((X-StartX)/Width,0,1)
+	SetSafeFlyHealth(100*Percent)
+end
+
+SafeHealthBar.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SafeHealthDragging=true
+		UpdateSafeHealthFromX(Input.Position.X)
+	end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+	if SafeHealthDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+		UpdateSafeHealthFromX(Input.Position.X)
+	end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
 		SafeHealthDragging=false
+	end
+end)
+
+SafeHealthValue.FocusLost:Connect(function()
+	local Number=tonumber(SafeHealthValue.Text)
+	if Number then
+		SetSafeFlyHealth(Number)
+	else
+		SafeHealthValue.Text=tostring(SafeFlyHealth)
+	end
+end)
+
+SetSafeFlyHealth(SafeFlyHealth)
+
+CreateLabel("SAFE MODE TWEEN SPEED")
+
+local SafeSpeedFrame=Instance.new("Frame")
+SafeSpeedFrame.Size=UDim2.new(1,-10,0,42)
+SafeSpeedFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SafeSpeedFrame.BorderSizePixel=0
+SafeSpeedFrame.Parent=Scroll
+
+local SafeSpeedCorner=Instance.new("UICorner")
+SafeSpeedCorner.CornerRadius=UDim.new(0,6)
+SafeSpeedCorner.Parent=SafeSpeedFrame
+
+local SafeSpeedBar=Instance.new("Frame")
+SafeSpeedBar.Size=UDim2.new(1,-60,0,5)
+SafeSpeedBar.Position=UDim2.new(0,10,0.5,-2)
+SafeSpeedBar.BackgroundColor3=Color3.fromRGB(55,55,65)
+SafeSpeedBar.BorderSizePixel=0
+SafeSpeedBar.Parent=SafeSpeedFrame
+
+local SafeSpeedFill=Instance.new("Frame")
+SafeSpeedFill.Size=UDim2.new((SafeFlySpeed-100)/400,0,1,0)
+SafeSpeedFill.BackgroundColor3=Color3.fromRGB(0,170,255)
+SafeSpeedFill.BorderSizePixel=0
+SafeSpeedFill.Parent=SafeSpeedBar
+
+local SafeSpeedFillCorner=Instance.new("UICorner")
+SafeSpeedFillCorner.CornerRadius=UDim.new(1,0)
+SafeSpeedFillCorner.Parent=SafeSpeedFill
+
+local SafeSpeedValue=Instance.new("TextBox")
+SafeSpeedValue.Size=UDim2.new(0,45,0,28)
+SafeSpeedValue.Position=UDim2.new(1,-50,0.5,-14)
+SafeSpeedValue.BackgroundColor3=Color3.fromRGB(38,40,48)
+SafeSpeedValue.BorderSizePixel=0
+SafeSpeedValue.Text=tostring(SafeFlySpeed)
+SafeSpeedValue.TextColor3=Color3.fromRGB(255,255,255)
+SafeSpeedValue.TextSize=12
+SafeSpeedValue.Font=Enum.Font.Cartoon
+SafeSpeedValue.ClearTextOnFocus=false
+SafeSpeedValue.Parent=SafeSpeedFrame
+
+local SafeSpeedValueCorner=Instance.new("UICorner")
+SafeSpeedValueCorner.CornerRadius=UDim.new(0,5)
+SafeSpeedValueCorner.Parent=SafeSpeedValue
+
+local SafeSpeedDragging=false
+
+local function SetSafeFlySpeed(Value)
+	SafeFlySpeed=math.clamp(math.floor(Value+0.5),100,500)
+	local Percent=(SafeFlySpeed-100)/400
+	SafeSpeedFill.Size=UDim2.new(Percent,0,1,0)
+	SafeSpeedValue.Text=tostring(SafeFlySpeed)
+end
+
+local function UpdateSafeSpeedFromX(X)
+	local StartX=SafeSpeedBar.AbsolutePosition.X
+	local Width=SafeSpeedBar.AbsoluteSize.X
+	local Percent=math.clamp((X-StartX)/Width,0,1)
+	SetSafeFlySpeed(100+(400*Percent))
+end
+
+SafeSpeedBar.InputBegan:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+		SafeSpeedDragging=true
+		UpdateSafeSpeedFromX(Input.Position.X)
+	end
+end)
+
+UIS.InputChanged:Connect(function(Input)
+	if SafeSpeedDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+		UpdateSafeSpeedFromX(Input.Position.X)
+	end
+end)
+
+UIS.InputEnded:Connect(function(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
 		SafeSpeedDragging=false
 	end
 end)
 
-local function GetNearestPlayer()
-	local MyCharacter=LocalPlayer.Character
-	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-	if not MyRoot then return nil end
-	local Nearest=nil
-	local NearestDistance=math.huge
-	for _,Player in ipairs(Players:GetPlayers()) do
-		if Player~=LocalPlayer and Player.Character then
-			local Root=Player.Character:FindFirstChild("HumanoidRootPart")
-			local Humanoid=Player.Character:FindFirstChildOfClass("Humanoid")
-			if Root and Humanoid and Humanoid.Health>0 then
-				local Distance=(MyRoot.Position-Root.Position).Magnitude
-				if Distance<NearestDistance then
-					NearestDistance=Distance
-					Nearest=Player
-				end
-			end
-		end
+SafeSpeedValue.FocusLost:Connect(function()
+	local Number=tonumber(SafeSpeedValue.Text)
+	if Number then
+		SetSafeFlySpeed(Number)
+	else
+		SafeSpeedValue.Text=tostring(SafeFlySpeed)
 	end
-	return Nearest
-end
-local function IsLaggingFPS(Delta)
-	return Delta and Delta>0 and (1/Delta)<3
-end
+end)
 
-local OriginalData={}
+SetSafeFlySpeed(SafeFlySpeed)
+
+local LowCpuToggle=CreateToggle("REDUCE CPU LOAD")
 
 local function SaveOriginal(Root)
 	if not Root or not Root:IsA("BasePart") then return end
@@ -457,8 +647,11 @@ local function RestoreOriginal(Root)
 		Root.CanCollide=Data.CanCollide
 		Root.CanTouch=Data.CanTouch
 		Root.CanQuery=Data.CanQuery
+
 		local BoxPart=Root.Parent:FindFirstChild("VisibleHitbox")
-		if BoxPart then BoxPart:Destroy() end
+		if BoxPart then
+			BoxPart:Destroy()
+		end
 	end
 	OriginalData[Root]=nil
 end
@@ -466,7 +659,9 @@ end
 local function ModifyHitbox(Model,Color)
 	local Root=Model and Model:FindFirstChild("HumanoidRootPart")
 	if not Root or not Root:IsA("BasePart") then return end
+
 	SaveOriginal(Root)
+
 	Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
 	Root.Transparency=HitboxTransparency
 	Root.CanCollide=false
@@ -474,6 +669,7 @@ local function ModifyHitbox(Model,Color)
 	Root.CanQuery=true
 
 	local BoxPart=Model:FindFirstChild("VisibleHitbox")
+
 	if not BoxPart then
 		BoxPart=Instance.new("BoxHandleAdornment")
 		BoxPart.Name="VisibleHitbox"
@@ -482,9 +678,17 @@ local function ModifyHitbox(Model,Color)
 		BoxPart.ZIndex=5
 		BoxPart.Parent=Model
 	end
+
 	BoxPart.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
 	BoxPart.Color3=Color
 	BoxPart.Transparency=HitboxTransparency
+end
+
+local function RestoreAllHitboxes()
+	for Root in pairs(OriginalData) do
+		RestoreOriginal(Root)
+	end
+	table.clear(OriginalData)
 end
 
 local function GetPlayerColor(Player)
@@ -498,8 +702,9 @@ local function GetPlayerColor(Player)
 	return Color3.fromRGB(255,60,60)
 end
 
-local function UpdatePlayerHitbox()
+local function UpdatePlayerHitboxes()
 	if not PlayerHitboxEnabled then return end
+
 	for _,Player in ipairs(Players:GetPlayers()) do
 		if Player~=LocalPlayer and Player.Character then
 			ModifyHitbox(Player.Character,GetPlayerColor(Player))
@@ -507,180 +712,283 @@ local function UpdatePlayerHitbox()
 	end
 end
 
-local function IsMob(Model)
-	if not Model or not Model:IsA("Model") then return false end
-	if Players:GetPlayerFromCharacter(Model) then return false end
-	local Humanoid=Model:FindFirstChildOfClass("Humanoid")
-	local Root=Model:FindFirstChild("HumanoidRootPart")
-	return Humanoid and Root and Humanoid.Health>0
-end
-
-local function UpdateMobHitbox()
+local function UpdateMobHitboxes()
 	if not MobHitboxEnabled then return end
-	for _,Obj in ipairs(Workspace:GetDescendants()) do
-		if Obj:IsA("Model") and IsMob(Obj) then
-			ModifyHitbox(Obj,Color3.fromRGB(255,170,0))
+
+	local Enemies=Workspace:FindFirstChild("Enemies")
+	if not Enemies then return end
+
+	for _,Mob in ipairs(Enemies:GetChildren()) do
+		if Mob:IsA("Model") and Mob:FindFirstChildOfClass("Humanoid") then
+			ModifyHitbox(Mob,Color3.fromRGB(255,170,0))
 		end
 	end
-end
-
-local ESPFolder=Instance.new("Folder",Gui)
-ESPFolder.Name="ESPFolder"
-
-local ESPData={}
-
-local function ClearESP()
-	for _,Data in pairs(ESPData) do
-		if Data.Billboard then Data.Billboard:Destroy() end
-	end
-	table.clear(ESPData)
 end
 
 local function CreateESP(Player)
-	if Player==LocalPlayer or not Player.Character then return end
+	if not ESPEnabled or Player==LocalPlayer then return end
+
 	local Character=Player.Character
-	local Root=Character:FindFirstChild("HumanoidRootPart")
+	if not Character then return end
+
+	local Head=Character:FindFirstChild("Head")
 	local Humanoid=Character:FindFirstChildOfClass("Humanoid")
-	if not Root or not Humanoid then return end
-	if ESPData[Player] and ESPData[Player].Billboard and ESPData[Player].Billboard.Parent then return end
+	local Root=Character:FindFirstChild("HumanoidRootPart")
+
+	if not Head or not Humanoid or not Root then return end
+
+	if ESPs[Player] then
+		ESPs[Player]:Destroy()
+		ESPs[Player]=nil
+	end
 
 	local Billboard=Instance.new("BillboardGui")
-	Billboard.Name="ESP_"..Player.Name
-	Billboard.Adornee=Root
+	Billboard.Name="PlayerESP"
+	Billboard.Adornee=Head
 	Billboard.Size=UDim2.new(0,180,0,55)
 	Billboard.StudsOffset=Vector3.new(0,3.2,0)
 	Billboard.AlwaysOnTop=true
-	Billboard.Parent=ESPFolder
+	Billboard.MaxDistance=math.huge
+	Billboard.Parent=Head
 
-	local Text=Instance.new("TextLabel",Billboard)
+	local Text=Instance.new("TextLabel")
 	Text.Size=UDim2.new(1,0,1,0)
 	Text.BackgroundTransparency=1
-	Text.TextColor3=GetPlayerColor(Player)
-	Text.TextStrokeTransparency=0.4
-	Text.Font=Enum.Font.Cartoon
+	Text.TextColor3=Color3.fromRGB(255,255,255)
+	Text.TextStrokeTransparency=0
 	Text.TextSize=12
-	Text.TextWrapped=true
+	Text.Font=Enum.Font.Cartoon
+	Text.Parent=Billboard
 
-	ESPData[Player]={Billboard=Billboard,Text=Text}
+	ESPs[Player]=Billboard
+
+	task.spawn(function()
+		while ESPEnabled and Billboard.Parent and Player.Parent do
+			local MyCharacter=LocalPlayer.Character
+			local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+
+			if MyRoot and Root.Parent then
+				local Distance=(MyRoot.Position-Root.Position).Magnitude
+				local Meters=math.floor(Distance/10+0.5)
+
+				Text.Text=
+					Player.DisplayName..
+					"\n[Lv."..tostring(Player.Data and Player.Data.Level and Player.Data.Level.Value or "?").."]"..
+					"\nHealth: "..math.floor(Humanoid.Health).." | "..Meters.."m"
+			end
+
+			task.wait(0.1)
+		end
+	end)
 end
 
-local function UpdateESPText()
-	if not ESPEnabled then return end
+local function ClearAllESP()
+	for Player,GuiObject in pairs(ESPs) do
+		if GuiObject then
+			GuiObject:Destroy()
+		end
+		ESPs[Player]=nil
+	end
+end
+
+local function UpdateAllESP()
+	if not ESPEnabled then
+		ClearAllESP()
+		return
+	end
+
+	for _,Player in ipairs(Players:GetPlayers()) do
+		if Player~=LocalPlayer then
+			CreateESP(Player)
+		end
+	end
+end
+
+PlayerToggle.MouseButton1Click:Connect(function()
+	PlayerHitboxEnabled=not PlayerHitboxEnabled
+	SetToggleStyle(PlayerToggle,PlayerHitboxEnabled)
+
+	if not PlayerHitboxEnabled then
+		RestoreAllHitboxes()
+	end
+end)
+
+MobToggle.MouseButton1Click:Connect(function()
+	MobHitboxEnabled=not MobHitboxEnabled
+	SetToggleStyle(MobToggle,MobHitboxEnabled)
+
+	if not MobHitboxEnabled and not PlayerHitboxEnabled then
+		RestoreAllHitboxes()
+	end
+end)
+
+ESPToggle.MouseButton1Click:Connect(function()
+	ESPEnabled=not ESPEnabled
+	SetToggleStyle(ESPToggle,ESPEnabled)
+
+	if ESPEnabled then
+		UpdateAllESP()
+	else
+		ClearAllESP()
+	end
+end)
+
+SizeBox.FocusLost:Connect(function()
+	local Number=tonumber(SizeBox.Text)
+	if Number then
+		HitboxSize=math.clamp(Number,1,100)
+		SizeBox.Text=tostring(HitboxSize)
+	else
+		SizeBox.Text=tostring(HitboxSize)
+	end
+end)
+
+-- =================================================
+local function GetNearestPlayer()
 	local MyCharacter=LocalPlayer.Character
 	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-	if not MyRoot then return end
+	if not MyRoot then return nil end
+
+	local Nearest=nil
+	local NearestDistance=math.huge
 
 	for _,Player in ipairs(Players:GetPlayers()) do
 		if Player~=LocalPlayer and Player.Character then
-			CreateESP(Player)
-			local Data=ESPData[Player]
 			local Root=Player.Character:FindFirstChild("HumanoidRootPart")
 			local Humanoid=Player.Character:FindFirstChildOfClass("Humanoid")
-			if Data and Root and Humanoid then
-				local M=math.floor((MyRoot.Position-Root.Position).Magnitude/10+0.5)
-				local Health=math.floor(Humanoid.Health+0.5)
-				local MaxHealth=math.floor(Humanoid.MaxHealth+0.5)
-				Data.Text.Text=Player.DisplayName.." | "..M.."m\nHealth: "..Health.." / "..MaxHealth
-				Data.Text.TextColor3=GetPlayerColor(Player)
+
+			if Root and Humanoid and Humanoid.Health>0 then
+				local Distance=(MyRoot.Position-Root.Position).Magnitude
+
+				if Distance<NearestDistance then
+					NearestDistance=Distance
+					Nearest=Player
+				end
 			end
 		end
 	end
+
+	return Nearest
+end
+
+local function IsLaggingFPS(Delta)
+	return Delta and Delta>0 and (1/Delta)<3
 end
 
 local function LerpUp(MyRoot)
-	HoldingAltitude=true
-	local TargetY=MyRoot.Position.Y+1000
+	local StartY=MyRoot.Position.Y
+	local TargetY=StartY+TargetHeight
+	HoldingAltitude=false
 
-	while TPLerping and MyRoot.Parent do
-		local CurrentPosition=MyRoot.Position
-		local Distance=math.abs(TargetY-CurrentPosition.Y)
+	while TPLerping and MyRoot and MyRoot.Parent do
+		local Delta=RunService.Heartbeat:Wait()
+
+		if IsLaggingFPS(Delta) then
+			continue
+		end
+
+		local Current=MyRoot.Position
+		local Target=Vector3.new(Current.X,TargetY,Current.Z)
+		local Distance=math.abs(Current.Y-TargetY)
+
 		if Distance<=1 then
-			MyRoot.CFrame=CFrame.new(CurrentPosition.X,TargetY,CurrentPosition.Z)
+			MyRoot.CFrame=CFrame.new(Current.X,TargetY,Current.Z)
+			HoldingAltitude=true
 			break
 		end
 
-		local Delta=RunService.Heartbeat:Wait()
-		if IsLaggingFPS(Delta) then continue end
-
-		local Alpha=math.clamp((LerpSpeed*Delta)/Distance,0,1)
-		local NewY=CurrentPosition.Y+(TargetY-CurrentPosition.Y)*Alpha
-		MyRoot.CFrame=CFrame.new(CurrentPosition.X,NewY,CurrentPosition.Z)
+		local Alpha=math.clamp((LerpSpeed*Delta)/math.max(Distance,1),0,1)
+		MyRoot.CFrame=MyRoot.CFrame:Lerp(CFrame.new(Current.X,TargetY,Current.Z),Alpha)
 	end
 
-	while TPLerping and MyRoot.Parent and HoldingAltitude do
+	while TPLerping and HoldingAltitude and MyRoot and MyRoot.Parent do
 		RunService.Heartbeat:Wait()
-		local Position=MyRoot.Position
-		MyRoot.CFrame=CFrame.new(Position.X,TargetY,Position.Z)
-	end
 
-	HoldingAltitude=false
+		if not TPLerping then
+			break
+		end
+
+		local Pos=MyRoot.Position
+		MyRoot.CFrame=CFrame.new(Pos.X,TargetY,Pos.Z)
+		MyRoot.AssemblyLinearVelocity=Vector3.zero
+		MyRoot.AssemblyAngularVelocity=Vector3.zero
+	end
 end
 
 local function StartLowHealthLerp()
-	if TPLerping or HealthThreshold<=0 then return end
+	if TPLerping then return end
+	if HealthThreshold<=0 then return end
 
-	local MyCharacter=LocalPlayer.Character
-	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-	local MyHumanoid=MyCharacter and MyCharacter:FindFirstChildOfClass("Humanoid")
+	local Character=LocalPlayer.Character
+	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+	local MyRoot=Character and Character:FindFirstChild("HumanoidRootPart")
 
-	if not MyRoot or not MyHumanoid or MyHumanoid.MaxHealth<=0 then return end
+	if not Humanoid or not MyRoot or Humanoid.MaxHealth<=0 then return end
 
-	local HealthPercent=(MyHumanoid.Health/MyHumanoid.MaxHealth)*100
+	local HealthPercent=(Humanoid.Health/Humanoid.MaxHealth)*100
+
 	if HealthPercent<=HealthThreshold then
 		TPLerping=true
+		HoldingAltitude=false
+
 		task.spawn(function()
 			LerpUp(MyRoot)
-			TPLerping=false
-			HoldingAltitude=false
 		end)
 	end
 end
 
 local function LerpToNearestPlayer()
-	if TPLerping then return end
+	while TPLerping do
+		local Delta=RunService.Heartbeat:Wait()
 
-	local TargetPlayer=GetNearestPlayer()
-	if not TargetPlayer then return end
-
-	TPLerping=true
-	SetButtonState(TPNearestButton,true)
-
-	task.spawn(function()
-		while TPLerping do
-			local MyCharacter=LocalPlayer.Character
-			local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-			local MyHumanoid=MyCharacter and MyCharacter:FindFirstChildOfClass("Humanoid")
-			local TargetCharacter=TargetPlayer.Character
-			local TargetRoot=TargetCharacter and TargetCharacter:FindFirstChild("HumanoidRootPart")
-			local TargetHumanoid=TargetCharacter and TargetCharacter:FindFirstChildOfClass("Humanoid")
-
-			if not MyRoot or not MyHumanoid or not TargetRoot or not TargetHumanoid or TargetHumanoid.Health<=0 then
-				break
-			end
-
-			local TargetPosition=TargetRoot.Position-Vector3.new(0,5,0)
-			local CurrentPosition=MyRoot.Position
-			local Distance=(TargetPosition-CurrentPosition).Magnitude
-
-			if Distance<=1 then break end
-
-			local Speed=Distance<=100 and 1500 or LerpSpeed
-			local Delta=RunService.Heartbeat:Wait()
-
-			if IsLaggingFPS(Delta) then continue end
-
-			local Alpha=math.clamp((Speed*Delta)/Distance,0,1)
-			MyRoot.CFrame=CFrame.new(CurrentPosition:Lerp(TargetPosition,Alpha))
+		if IsLaggingFPS(Delta) then
+			continue
 		end
 
-		TPLerping=false
-		HoldingAltitude=false
-		SetButtonState(TPNearestButton,false)
-	end)
+		local Character=LocalPlayer.Character
+		local MyRoot=Character and Character:FindFirstChild("HumanoidRootPart")
+
+		if not MyRoot then
+			continue
+		end
+
+		local TargetPlayer=GetNearestPlayer()
+
+		if not TargetPlayer or not TargetPlayer.Character then
+			continue
+		end
+
+		local TargetRoot=TargetPlayer.Character:FindFirstChild("HumanoidRootPart")
+		local TargetHumanoid=TargetPlayer.Character:FindFirstChildOfClass("Humanoid")
+
+		if not TargetRoot or not TargetHumanoid or TargetHumanoid.Health<=0 then
+			continue
+		end
+
+		local Distance=(MyRoot.Position-TargetRoot.Position).Magnitude
+		local Speed=Distance<=100 and 1500 or LerpSpeed
+		local TargetPosition=TargetRoot.Position-Vector3.new(0,5,0)
+
+		local Alpha=math.clamp((Speed*Delta)/math.max(Distance,1),0,1)
+
+		MyRoot.CFrame=MyRoot.CFrame:Lerp(CFrame.new(TargetPosition),Alpha)
+	end
 end
 
+TPNearestButton.MouseButton1Click:Connect(function()
+	TPLerping=not TPLerping
+	HoldingAltitude=false
+
+	SetToggleStyle(TPNearestButton,TPLerping)
+
+	if TPLerping then
+		task.spawn(LerpToNearestPlayer)
+	end
+end)
+
 local function StartSafeFly()
-	if SafeFlying or not SafeFlyEnabled then return end
+	if SafeFlying then return end
+	if not SafeFlyEnabled then return end
 
 	local Character=LocalPlayer.Character
 	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
@@ -707,7 +1015,9 @@ end
 
 local function CheckSafeFly()
 	if not SafeFlyEnabled then
-		if SafeFlying then StopSafeFly() end
+		if SafeFlying then
+			StopSafeFly()
+		end
 		return
 	end
 
@@ -716,7 +1026,9 @@ local function CheckSafeFly()
 	local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
 
 	if not Humanoid or not HRP or Humanoid.Health<=0 then
-		if SafeFlying then StopSafeFly() end
+		if SafeFlying then
+			StopSafeFly()
+		end
 		return
 	end
 
@@ -734,7 +1046,9 @@ local function CheckSafeFly()
 				local OtherHumanoid=Player.Character:FindFirstChildOfClass("Humanoid")
 
 				if OtherHRP and OtherHumanoid and OtherHumanoid.Health>0 then
-					if (HRP.Position-OtherHRP.Position).Magnitude<=DangerDistance then
+					local Distance=(HRP.Position-OtherHRP.Position).Magnitude
+
+					if Distance<=DangerDistance then
 						NeedFly=true
 						break
 					end
@@ -748,198 +1062,267 @@ local function CheckSafeFly()
 			StartSafeFly()
 		end
 	else
-		if SafeFlying then StopSafeFly() end
+		if SafeFlying then
+			StopSafeFly()
+		end
 	end
 end
 
-PlayerHitboxButton.MouseButton1Click:Connect(function()
-	PlayerHitboxEnabled=not PlayerHitboxEnabled
-	SetButtonState(PlayerHitboxButton,PlayerHitboxEnabled)
-
-	if not PlayerHitboxEnabled then
-		for Root in pairs(OriginalData) do
-			if Root and Root.Parent and Players:GetPlayerFromCharacter(Root.Parent) then
-				RestoreOriginal(Root)
-			end
-		end
-	end
-end)
-
-MobHitboxButton.MouseButton1Click:Connect(function()
-	MobHitboxEnabled=not MobHitboxEnabled
-	SetButtonState(MobHitboxButton,MobHitboxEnabled)
-
-	if not MobHitboxEnabled then
-		for Root in pairs(OriginalData) do
-			if Root and Root.Parent and IsMob(Root.Parent) then
-				RestoreOriginal(Root)
-			end
-		end
-	end
-end)
-
-ESPButton.MouseButton1Click:Connect(function()
-	ESPEnabled=not ESPEnabled
-	SetButtonState(ESPButton,ESPEnabled)
-
-	if not ESPEnabled then
-		ClearESP()
-	end
-end)
-
-TPNearestButton.MouseButton1Click:Connect(function()
-	if TPLerping then
-		TPLerping=false
-		HoldingAltitude=false
-		SetButtonState(TPNearestButton,false)
-	else
-		LerpToNearestPlayer()
-	end
-end)
-
 SafeFlyButton.MouseButton1Click:Connect(function()
 	SafeFlyEnabled=not SafeFlyEnabled
-	SetButtonState(SafeFlyButton,SafeFlyEnabled)
+	SetToggleStyle(SafeFlyButton,SafeFlyEnabled)
 
 	if not SafeFlyEnabled then
 		StopSafeFly()
 	end
 end)
 
-LowCpuButton.MouseButton1Click:Connect(function()
-	LowCpuEnabled=not LowCpuEnabled
-	SetButtonState(LowCpuButton,LowCpuEnabled)
+Connections.SafeFly=RunService.RenderStepped:Connect(function(Delta)
+	CheckSafeFly()
 
-	if LowCpuEnabled and not LowCpuRunning then
-		LowCpuRunning=true
-		task.spawn(function()
-			while LowCpuEnabled and Gui.Parent do
-				pcall(function()
-					settings().Rendering.QualityLevel=Enum.QualityLevel.Level01
-				end)
-				task.wait(1)
+	if SafeFlying and SafeFlyTargetY then
+		local Character=LocalPlayer.Character
+		local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+		local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
+
+		if Humanoid and HRP then
+			Humanoid.PlatformStand=true
+
+			local CurrentY=HRP.Position.Y
+			local Difference=SafeFlyTargetY-CurrentY
+
+			if math.abs(Difference)<=1 then
+				HRP.CFrame=CFrame.new(HRP.Position.X,SafeFlyTargetY,HRP.Position.Z)
+			else
+				local Move=math.min(math.abs(Difference),SafeFlySpeed*Delta)
+				local Direction=Difference>0 and 1 or -1
+
+				HRP.CFrame=HRP.CFrame+Vector3.new(0,Move*Direction,0)
 			end
-			LowCpuRunning=false
+
+			HRP.AssemblyLinearVelocity=Vector3.zero
+			HRP.AssemblyAngularVelocity=Vector3.zero
+		end
+	end
+end)
+
+local function LowCpuSmooth()
+	if LowCpuRunning then return end
+	LowCpuRunning=true
+
+	local Lighting=game:GetService("Lighting")
+
+	pcall(function()
+		Workspace.Terrain.WaterWaveSize=0
+		Workspace.Terrain.WaterWaveSpeed=0
+		Workspace.Terrain.WaterReflectance=0
+		Workspace.Terrain.WaterTransparency=0
+	end)
+
+	pcall(function()
+		Lighting.GlobalShadows=false
+		Lighting.FogEnd=9e9
+		Lighting.Brightness=0
+	end)
+
+	pcall(function()
+		settings().Rendering.QualityLevel="Level01"
+	end)
+
+	for _,Object in ipairs(Lighting:GetChildren()) do
+		if Object:IsA("BlurEffect")
+		or Object:IsA("SunRaysEffect")
+		or Object:IsA("ColorCorrectionEffect")
+		or Object:IsA("BloomEffect")
+		or Object:IsA("DepthOfFieldEffect") then
+			pcall(function()
+				Object.Enabled=false
+			end)
+		end
+	end
+
+	local Objects=Workspace:GetDescendants()
+	local Batch=50
+
+	for Index,Object in ipairs(Objects) do
+		if not LowCpuEnabled then
+			break
+		end
+
+		pcall(function()
+			if Object:IsA("Part")
+			or Object:IsA("UnionOperation")
+			or Object:IsA("CornerWedgePart")
+			or Object:IsA("TrussPart") then
+				Object.Material=Enum.Material.Plastic
+				Object.Reflectance=0
+
+			elseif Object:IsA("Decal") or Object:IsA("Texture") then
+				Object.Transparency=1
+
+			elseif Object:IsA("ParticleEmitter") or Object:IsA("Trail") then
+				Object.Lifetime=NumberRange.new(0)
+
+			elseif Object:IsA("Explosion") then
+				Object.BlastPressure=1
+				Object.BlastRadius=1
+
+			elseif Object:IsA("Fire")
+			or Object:IsA("SpotLight")
+			or Object:IsA("Smoke")
+			or Object:IsA("Sparkles") then
+				Object.Enabled=false
+
+			elseif Object:IsA("MeshPart") then
+				Object.Material=Enum.Material.Plastic
+				Object.Reflectance=0
+				Object.TextureID="rbxassetid://10385902758728957"
+			end
+		end)
+
+		if Index%Batch==0 then
+			RunService.Heartbeat:Wait()
+		end
+	end
+
+	LowCpuRunning=false
+end
+
+LowCpuToggle.MouseButton1Click:Connect(function()
+	LowCpuEnabled=not LowCpuEnabled
+	SetToggleStyle(LowCpuToggle,LowCpuEnabled)
+
+	if LowCpuEnabled then
+		task.spawn(LowCpuSmooth)
+	end
+end)
+
+local function SetChildrenVisible(State)
+	Title.Visible=State
+	Close.Visible=State
+	Scroll.Visible=State
+end
+
+Arrow.MouseButton1Click:Connect(function()
+	Minimized=not Minimized
+
+	if Minimized then
+		Arrow.Text="▲"
+		Arrow.Size=UDim2.new(0,20,0,15)
+		Arrow.Position=UDim2.new(0,10,0,0)
+
+		SetChildrenVisible(false)
+
+		TweenService:Create(
+			Main,
+			TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+			{Size=ClosedSize}
+		):Play()
+	else
+		Arrow.Text="▼"
+		Arrow.Size=UDim2.new(0,25,0,25)
+		Arrow.Position=UDim2.new(0,-30,0,4)
+
+		TweenService:Create(
+			Main,
+			TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+			{Size=OpenSize}
+		):Play()
+
+		task.delay(0.2,function()
+			if not Minimized and Main.Parent then
+				SetChildrenVisible(true)
+			end
 		end)
 	end
 end)
 
-local Dragging=false
-local DragStart=nil
-local StartPos=nil
-
-local function StartDrag(Input)
-	Dragging=true
-	DragStart=Input.Position
-	StartPos=Main.Position
-end
-
-local function UpdateDrag(Input)
-	if not Dragging then return end
-	local Delta=Input.Position-DragStart
-	Main.Position=UDim2.new(
-		StartPos.X.Scale,
-		StartPos.X.Offset+Delta.X,
-		StartPos.Y.Scale,
-		StartPos.Y.Offset+Delta.Y
-	)
-end
-
-Title.InputBegan:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		StartDrag(Input)
-	end
-end)
-
-UIS.InputChanged:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch then
-		UpdateDrag(Input)
-	end
-end)
-
-UIS.InputEnded:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		Dragging=false
-	end
-end)
-
-MinBtn.MouseButton1Click:Connect(function()
-	Minimized=not Minimized
-	Scroll.Visible=not Minimized
-
-	if Minimized then
-		Main.Size=UDim2.new(0,220,0,35)
-		MinBtn.Text="+"
-	else
-		Main.Size=UDim2.new(0,220,0,240)
-		MinBtn.Text="−"
-	end
-end)
-
-local ESPTimer=0
-
-RunService.Heartbeat:Connect(function(dt)
+Connections.HitboxLoop=RunService.Heartbeat:Connect(function()
 	if PlayerHitboxEnabled then
-		UpdatePlayerHitbox()
+		UpdatePlayerHitboxes()
 	end
 
 	if MobHitboxEnabled then
-		UpdateMobHitbox()
+		UpdateMobHitboxes()
 	end
+end)
 
-	if TPLerping==false and HealthThreshold>0 then
-		StartLowHealthLerp()
-	end
-
-	ESPTimer+=dt
-	if ESPTimer>=0.1 then
-		ESPTimer=0
-		if ESPEnabled then
-			UpdateESPText()
+Connections.ESPLoop=RunService.Heartbeat:Connect(function()
+	if ESPEnabled then
+		for _,Player in ipairs(Players:GetPlayers()) do
+			if Player~=LocalPlayer and Player.Character then
+				if not ESPs[Player] then
+					CreateESP(Player)
+				end
+			end
 		end
 	end
 end)
 
-local SafeFlyConnection=RunService.RenderStepped:Connect(function(dt)
-	CheckSafeFly()
+Connections.PlayerAdded=Players.PlayerAdded:Connect(function(Player)
+	Player.CharacterAdded:Connect(function(Character)
+		task.wait(0.5)
 
-	if not SafeFlyEnabled or not SafeFlying then return end
+		if PlayerHitboxEnabled then
+			ModifyHitbox(Character,GetPlayerColor(Player))
+		end
 
-	local Character=LocalPlayer.Character
-	local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
-	local HRP=Character and Character:FindFirstChild("HumanoidRootPart")
+		if ESPEnabled then
+			CreateESP(Player)
+		end
+	end)
+end)
 
-	if not Humanoid or not HRP or not SafeFlyTargetY then
-		StopSafeFly()
+for _,Player in ipairs(Players:GetPlayers()) do
+	if Player~=LocalPlayer then
+		Player.CharacterAdded:Connect(function(Character)
+			task.wait(0.5)
+
+			if PlayerHitboxEnabled then
+				ModifyHitbox(Character,GetPlayerColor(Player))
+			end
+
+			if ESPEnabled then
+				CreateESP(Player)
+			end
+		end)
+	end
+end
+
+Connections.HealthLoop=RunService.Heartbeat:Connect(function()
+	if TPLerping then
 		return
 	end
 
-	local CurrentPos=HRP.Position
-	local Distance=math.abs(SafeFlyTargetY-CurrentPos.Y)
-
-	if Distance>1 then
-		local Move=SafeFlySpeed*dt
-		local NewY=CurrentPos.Y+(SafeFlyTargetY-CurrentPos.Y)*math.clamp(Move/Distance,0,1)
-		HRP.CFrame=CFrame.new(CurrentPos.X,NewY,CurrentPos.Z)
-	else
-		HRP.CFrame=CFrame.new(CurrentPos.X,SafeFlyTargetY,CurrentPos.Z)
-	end
-
-	HRP.AssemblyLinearVelocity=Vector3.new(0,0,0)
-	HRP.AssemblyAngularVelocity=Vector3.new(0,0,0)
-	Humanoid.PlatformStand=true
+	StartLowHealthLerp()
 end)
 
-Players.PlayerRemoving:Connect(function(Player)
-	if ESPData[Player] then
-		if ESPData[Player].Billboard then
-			ESPData[Player].Billboard:Destroy()
-		end
-		ESPData[Player]=nil
+Close.MouseButton1Click:Connect(function()
+	TPLerping=false
+	HoldingAltitude=false
+
+	SafeFlyEnabled=false
+	StopSafeFly()
+
+	RestoreAllHitboxes()
+	ClearAllESP()
+
+	for _,Connection in pairs(Connections) do
+		pcall(function()
+			Connection:Disconnect()
+		end)
+	end
+
+	table.clear(Connections)
+
+	if Gui then
+		Gui:Destroy()
 	end
 end)
 
-SetHealthThreshold(30)
-SetLerpSpeed(350)
-SetSafeHealth(30)
-SetSafeSpeed(350)
+SetToggleStyle(PlayerToggle,false)
+SetToggleStyle(MobToggle,false)
+SetToggleStyle(ESPToggle,false)
+SetToggleStyle(TPNearestButton,false)
+SetToggleStyle(SafeFlyButton,false)
+SetToggleStyle(LowCpuToggle,false)

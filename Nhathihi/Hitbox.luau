@@ -30,6 +30,7 @@ local JumpPowerValue=150
 local OriginalData={}
 local ESPs={}
 local Connections={}
+local GraphicsBackup={}
 
 local Gui=Instance.new("ScreenGui")
 Gui.Name="PlayerHitboxGui"
@@ -119,7 +120,6 @@ Layout.SortOrder=Enum.SortOrder.LayoutOrder
 
 local function SetToggleStyle(Button,Enabled)
 local ToggleStroke=Button:FindFirstChild("ToggleStroke")
-
 if Enabled then
 if not ToggleStroke then
 ToggleStroke=Instance.new("UIStroke")
@@ -130,9 +130,7 @@ ToggleStroke.Parent=Button
 end
 ToggleStroke.Enabled=true
 else
-if ToggleStroke then
-ToggleStroke.Enabled=false
-end
+if ToggleStroke then ToggleStroke.Enabled=false end
 end
 end
 
@@ -224,15 +222,9 @@ SpeedFill.Size=UDim2.new((Value-1)/14,0,1,0)
 end
 
 local function UpdateSpeedFromInput(Input)
-local X=math.clamp(
-Input.Position.X-SpeedBar.AbsolutePosition.X,
-0,
-SpeedBar.AbsoluteSize.X
-)
-
+local X=math.clamp(Input.Position.X-SpeedBar.AbsolutePosition.X,0,SpeedBar.AbsoluteSize.X)
 local Percent=X/SpeedBar.AbsoluteSize.X
 local Value=math.floor(1+(Percent*14)+0.5)
-
 SetSpeed(Value)
 end
 
@@ -271,11 +263,8 @@ JumpToggle.LayoutOrder=5
 local function UpdateJumpBoost()
 local Character=LocalPlayer.Character
 local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
-
 if not Humanoid then return end
-
 Humanoid.UseJumpPower=true
-
 if JumpBoostEnabled then
 Humanoid.JumpPower=JumpPowerValue
 else
@@ -320,13 +309,9 @@ SizeLabel.TextXAlignment=Enum.TextXAlignment.Left
 
 Box.FocusLost:Connect(function()
 local Value=tonumber(Box.Text)
-
-if Value then
-HitboxSize=math.clamp(Value,1,100)
-end
-
+if Value then HitboxSize=math.clamp(Value,1,100) end
 Box.Text=tostring(HitboxSize)
-SizeLabel.Text="Size: "..HitboxSize
+SizeLabel.Text="Size Hitbox: "..HitboxSize
 end)
 
 --// LOW CPU
@@ -336,10 +321,8 @@ LowCpuToggle.LayoutOrder=7
 --// PLAYER HITBOX
 local function ApplyPlayerHitbox(Player)
 if Player==LocalPlayer or not PlayerHitboxEnabled then return end
-
 local Character=Player.Character
 if not Character then return end
-
 local Root=Character:FindFirstChild("HumanoidRootPart")
 if not Root then return end
 
@@ -361,7 +344,6 @@ end
 local function RestorePlayerHitbox(Player)
 local Data=OriginalData[Player]
 if not Data then return end
-
 local Character=Player.Character
 local Root=Character and Character:FindFirstChild("HumanoidRootPart")
 
@@ -391,16 +373,13 @@ end
 local function IsMob(Model)
 if not Model:IsA("Model") then return false end
 if Players:GetPlayerFromCharacter(Model) then return false end
-
 local Humanoid=Model:FindFirstChildOfClass("Humanoid")
 local Root=Model:FindFirstChild("HumanoidRootPart")
-
 return Humanoid~=nil and Root~=nil
 end
 
 local function ApplyMobHitbox(Model)
 if not MobHitboxEnabled then return end
-
 local Root=Model:FindFirstChild("HumanoidRootPart")
 if not Root then return end
 
@@ -422,7 +401,6 @@ end
 local function RestoreMobHitbox(Model)
 local Data=OriginalData[Model]
 if not Data then return end
-
 local Root=Model:FindFirstChild("HumanoidRootPart")
 
 if Root then
@@ -446,19 +424,16 @@ end
 end
 end
 end
-
 --// ESP
 local function GetPlayerColor(Player)
 if Player.Team and Player.Team.TeamColor then
 return Player.Team.TeamColor.Color
 end
-
 return Color3.fromRGB(255,255,255)
 end
 
 local function RemoveESP(Player)
 local Billboard=ESPs[Player]
-
 if Billboard then
 Billboard:Destroy()
 ESPs[Player]=nil
@@ -543,51 +518,152 @@ end
 end
 end
 
-local function UpdateDistanceDots()
-if not ESPEnabled then return end
+--// LOW CPU GRAPHICS
+local function SaveGraphics()
+if GraphicsBackup.Saved then return end
 
-for _,Player in ipairs(Players:GetPlayers()) do
-if Player~=LocalPlayer then
-local Character=Player.Character
-local Root=Character and Character:FindFirstChild("HumanoidRootPart")
+local Lighting=game:GetService("Lighting")
+local Terrain=Workspace.Terrain
 
-if Root then
-local MyCharacter=LocalPlayer.Character
-local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+GraphicsBackup.Saved=true
+GraphicsBackup.GlobalShadows=Lighting.GlobalShadows
+GraphicsBackup.FogEnd=Lighting.FogEnd
+GraphicsBackup.Brightness=Lighting.Brightness
+GraphicsBackup.WaterWaveSize=Terrain.WaterWaveSize
+GraphicsBackup.WaterWaveSpeed=Terrain.WaterWaveSpeed
+GraphicsBackup.WaterReflectance=Terrain.WaterReflectance
+GraphicsBackup.WaterTransparency=Terrain.WaterTransparency
+GraphicsBackup.Effects={}
+GraphicsBackup.QualityLevel=nil
 
-if MyRoot then  
- local Distance=(MyRoot.Position-Root.Position).Magnitude  
- local Billboard=ESPs[Player]  
+pcall(function()
+GraphicsBackup.QualityLevel=settings().Rendering.QualityLevel
+end)
 
- if not Billboard then  
-  CreateESP(Player)  
-  Billboard=ESPs[Player]  
- end  
-
- if Billboard then  
-  Billboard.Enabled=true  
- end  
+for _,Obj in ipairs(Lighting:GetChildren()) do
+if Obj:IsA("BlurEffect")
+or Obj:IsA("SunRaysEffect")
+or Obj:IsA("ColorCorrectionEffect")
+or Obj:IsA("BloomEffect")
+or Obj:IsA("DepthOfFieldEffect") then
+GraphicsBackup.Effects[Obj]=Obj.Enabled
+end
+end
 end
 
+local function RestoreGraphics()
+if not GraphicsBackup.Saved then return end
+
+local Lighting=game:GetService("Lighting")
+local Terrain=Workspace.Terrain
+
+Lighting.GlobalShadows=GraphicsBackup.GlobalShadows
+Lighting.FogEnd=GraphicsBackup.FogEnd
+Lighting.Brightness=GraphicsBackup.Brightness
+
+Terrain.WaterWaveSize=GraphicsBackup.WaterWaveSize
+Terrain.WaterWaveSpeed=GraphicsBackup.WaterWaveSpeed
+Terrain.WaterReflectance=GraphicsBackup.WaterReflectance
+Terrain.WaterTransparency=GraphicsBackup.WaterTransparency
+
+pcall(function()
+if GraphicsBackup.QualityLevel then
+settings().Rendering.QualityLevel=GraphicsBackup.QualityLevel
 end
-end
+end)
+
+for Obj,Enabled in pairs(GraphicsBackup.Effects or {}) do
+if Obj and Obj.Parent then
+Obj.Enabled=Enabled
 end
 end
 
---// LOW CPU
-local function StartLowCpu()
+GraphicsBackup={}
+end
+
+local function LowCpuSmooth()
 if LowCpuRunning then return end
 
 LowCpuRunning=true
+SaveGraphics()
+
+local Lighting=game:GetService("Lighting")
+local Terrain=Workspace.Terrain
+
+Terrain.WaterWaveSize=0
+Terrain.WaterWaveSpeed=0
+Terrain.WaterReflectance=0
+Terrain.WaterTransparency=0
+
+Lighting.GlobalShadows=false
+Lighting.FogEnd=9e9
+Lighting.Brightness=0
+
+pcall(function()
+settings().Rendering.QualityLevel="Level01"
+end)
+
+for _,Obj in ipairs(Lighting:GetChildren()) do
+if not LowCpuEnabled then break end
+
+if Obj:IsA("BlurEffect")
+or Obj:IsA("SunRaysEffect")
+or Obj:IsA("ColorCorrectionEffect")
+or Obj:IsA("BloomEffect")
+or Obj:IsA("DepthOfFieldEffect") then
+Obj.Enabled=false
+end
+
+RunService.Heartbeat:Wait()
+end
+
+local Descendants=game:GetDescendants()
+local BATCH_SIZE=50
 
 task.spawn(function()
-while LowCpuEnabled do
-UpdatePlayerHitboxes()
-UpdateMobHitboxes()
-task.wait(0.5)
+for i,Obj in ipairs(Descendants) do
+if not LowCpuEnabled then break end
+
+if Obj:IsA("Part")
+or Obj:IsA("UnionOperation")
+or Obj:IsA("CornerWedgePart")
+or Obj:IsA("TrussPart") then
+Obj.Material=Enum.Material.Plastic
+Obj.Reflectance=0
+
+elseif Obj:IsA("Decal")
+or Obj:IsA("Texture") then
+Obj.Transparency=1
+
+elseif Obj:IsA("ParticleEmitter")
+or Obj:IsA("Trail") then
+Obj.Lifetime=NumberRange.new(0)
+
+elseif Obj:IsA("Explosion") then
+Obj.BlastPressure=1
+Obj.BlastRadius=1
+
+elseif Obj:IsA("Fire")
+or Obj:IsA("SpotLight")
+or Obj:IsA("Smoke")
+or Obj:IsA("Sparkles") then
+Obj.Enabled=false
+
+elseif Obj:IsA("MeshPart") then
+Obj.Material=Enum.Material.Plastic
+Obj.Reflectance=0
+end
+
+if i%BATCH_SIZE==0 then
+RunService.Heartbeat:Wait()
+end
 end
 
 LowCpuRunning=false
+
+if LowCpuEnabled then
+SetToggleStyle(LowCpuToggle,true)
+end
 end)
 end
 
@@ -611,11 +687,15 @@ UpdateESP()
 end)
 
 LowCpuToggle.MouseButton1Click:Connect(function()
+if LowCpuRunning then return end
+
 LowCpuEnabled=not LowCpuEnabled
 SetToggleStyle(LowCpuToggle,LowCpuEnabled)
 
 if LowCpuEnabled then
-StartLowCpu()
+LowCpuSmooth()
+else
+RestoreGraphics()
 end
 end)
 
@@ -659,14 +739,12 @@ end)
 
 --// HITBOX UPDATE
 Connections[#Connections+1]=RunService.Heartbeat:Connect(function()
-if not LowCpuEnabled then
 if PlayerHitboxEnabled then
 UpdatePlayerHitboxes()
 end
 
 if MobHitboxEnabled then
 UpdateMobHitboxes()
-end
 end
 end)
 
@@ -681,17 +759,6 @@ local Root=Character and Character:FindFirstChild("HumanoidRootPart")
 if Humanoid and Root and not Humanoid.SeatPart and Humanoid.MoveDirection.Magnitude>0 then
 Root.CanCollide=false
 Root.CFrame=Root.CFrame+(Humanoid.MoveDirection*WalkSpeedValue)
-end
-end)
-
---// DISTANCE UPDATE
-task.spawn(function()
-while Gui.Parent do
-if ESPEnabled then
-UpdateDistanceDots()
-end
-
-task.wait(0.25)
 end
 end)
 
@@ -738,12 +805,18 @@ end
 end)
 end
 end)
+
 --// CLOSE
 Close.MouseButton1Click:Connect(function()
 for _,Connection in ipairs(Connections) do
 pcall(function()
 Connection:Disconnect()
 end)
+end
+
+if LowCpuEnabled then
+LowCpuEnabled=false
+RestoreGraphics()
 end
 
 for _,Player in ipairs(Players:GetPlayers()) do

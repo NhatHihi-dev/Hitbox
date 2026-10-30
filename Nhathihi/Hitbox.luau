@@ -332,6 +332,25 @@ end)
 --// LOW CPU
 local LowCpuToggle=MakeToggle("TỐI ƯU CPU >")
 LowCpuToggle.LayoutOrder=7
+--// HITBOX OUTLINE
+local function AddHitboxOutline(Root,Color)
+	local Old=Root:FindFirstChild("HitboxOutline")
+	if Old then Old:Destroy() end
+
+	local Box=Instance.new("SelectionBox")
+	Box.Name="HitboxOutline"
+	Box.Adornee=Root
+	Box.LineThickness=0.03
+	Box.SurfaceTransparency=1
+	Box.Color3=Color
+	Box.Parent=Root
+end
+
+local function RemoveHitboxOutline(Root)
+	if not Root then return end
+	local Outline=Root:FindFirstChild("HitboxOutline")
+	if Outline then Outline:Destroy() end
+end
 
 --// PLAYER HITBOX
 local function ApplyPlayerHitbox(Player)
@@ -356,6 +375,7 @@ local function ApplyPlayerHitbox(Player)
 	Root.Transparency=HitboxTransparency
 	Root.CanCollide=false
 	Root.Massless=true
+	AddHitboxOutline(Root,Color3.fromRGB(0,170,255))
 end
 
 local function RestorePlayerHitbox(Player)
@@ -370,6 +390,7 @@ local function RestorePlayerHitbox(Player)
 		Root.Transparency=Data.Transparency
 		Root.CanCollide=Data.CanCollide
 		Root.Massless=Data.Massless
+		RemoveHitboxOutline(Root)
 	end
 
 	OriginalData[Player]=nil
@@ -407,6 +428,7 @@ local function ApplyMobHitbox(Model)
 	Root.Transparency=HitboxTransparency
 	Root.CanCollide=false
 	Root.Massless=true
+	AddHitboxOutline(Root,Color3.fromRGB(255,170,0))
 end
 
 local function RestoreMobHitbox(Model)
@@ -420,6 +442,7 @@ local function RestoreMobHitbox(Model)
 		Root.Transparency=Data.Transparency
 		Root.CanCollide=Data.CanCollide
 		Root.Massless=Data.Massless
+		RemoveHitboxOutline(Root)
 	end
 
 	OriginalData[Model]=nil
@@ -439,102 +462,6 @@ local function UpdateMobHitboxes()
 				else
 					RestoreMobHitbox(Mob)
 				end
-			end
-		end
-	end
-end
-
---// ESP
-local function GetPlayerColor(Player)
-	if Player.Team and Player.Team.TeamColor then
-		return Player.Team.TeamColor.Color
-	end
-
-	return Color3.fromRGB(255,255,255)
-end
-
-local function RemoveESP(Player)
-	local Billboard=ESPs[Player]
-
-	if Billboard then
-		Billboard:Destroy()
-		ESPs[Player]=nil
-	end
-end
-
-local function CreateESP(Player)
-	if Player==LocalPlayer or not ESPEnabled then return end
-
-	local Character=Player.Character
-	if not Character then return end
-
-	local Head=Character:FindFirstChild("Head")
-	local Humanoid=Character:FindFirstChildOfClass("Humanoid")
-
-	if not Head or not Humanoid then return end
-
-	RemoveESP(Player)
-
-	local Billboard=Instance.new("BillboardGui")
-	Billboard.Name="PlayerInfoESP"
-	Billboard.Adornee=Head
-	Billboard.Size=UDim2.new(0,180,0,55)
-	Billboard.StudsOffset=Vector3.new(0,3.2,0)
-	Billboard.AlwaysOnTop=true
-	Billboard.MaxDistance=math.huge
-	Billboard.Parent=Head
-
-	local Text=Instance.new("TextLabel",Billboard)
-	Text.Name="Info"
-	Text.Size=UDim2.new(1,0,1,0)
-	Text.BackgroundTransparency=1
-	Text.TextStrokeTransparency=0.25
-	Text.Font=Enum.Font.Cartoon
-	Text.TextSize=13
-	Text.TextWrapped=true
-	Text.TextYAlignment=Enum.TextYAlignment.Center
-
-	ESPs[Player]=Billboard
-
-	task.spawn(function()
-		while Billboard.Parent and Player.Parent and Character.Parent and ESPEnabled do
-			local Health=math.floor(Humanoid.Health+0.5)
-			local MaxHealth=math.floor(Humanoid.MaxHealth+0.5)
-
-			local Root=Character:FindFirstChild("HumanoidRootPart")
-			local MyCharacter=LocalPlayer.Character
-			local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
-
-			local M=0
-
-			if Root and MyRoot then
-				local Distance=(MyRoot.Position-Root.Position).Magnitude
-				M=math.floor(Distance/10+0.5)
-			end
-
-			Text.Text=Player.DisplayName.." | "..M.."m\nHealth: "..Health.." / "..MaxHealth
-			Text.TextColor3=GetPlayerColor(Player)
-
-			task.wait(0.1)
-		end
-
-		if Billboard.Parent then
-			Billboard:Destroy()
-		end
-
-		if ESPs[Player]==Billboard then
-			ESPs[Player]=nil
-		end
-	end)
-end
-
-local function UpdateESP()
-	for _,Player in ipairs(Players:GetPlayers()) do
-		if Player~=LocalPlayer then
-			if ESPEnabled then
-				CreateESP(Player)
-			else
-				RemoveESP(Player)
 			end
 		end
 	end
@@ -917,7 +844,12 @@ local StartPos
 local function UpdateDrag(Input)
 	local Delta=Input.Position-DragStart
 
-	Main.Position=UDim2.new(StartPos.X.Scale,StartPos.X.Offset+Delta.X,StartPos.Y.Scale,StartPos.Y.Offset+Delta.Y)
+	Main.Position=UDim2.new(
+		StartPos.X.Scale,
+		StartPos.X.Offset+Delta.X,
+		StartPos.Y.Scale,
+		StartPos.Y.Offset+Delta.Y
+	)
 end
 
 Title.InputBegan:Connect(function(Input)

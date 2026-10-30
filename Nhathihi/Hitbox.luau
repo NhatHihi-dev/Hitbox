@@ -1,3 +1,4 @@
+-- PLEASE DO NOT COPY OR CLAIM IT AS YOUR OWN. IF YOU DO COPY, PLEASE INCLUDE CREDIT.
 local Players=game:GetService("Players")
 local RunService=game:GetService("RunService")
 local TweenService=game:GetService("TweenService")
@@ -7,8 +8,8 @@ local Workspace=game:GetService("Workspace")
 local LocalPlayer=Players.LocalPlayer
 
 pcall(function()
- local Old=CoreGui:FindFirstChild("PlayerHitboxGui")
- if Old then Old:Destroy() end
+local Old=CoreGui:FindFirstChild("PlayerHitboxGui")
+if Old then Old:Destroy() end
 end)
 
 local HitboxSize=10
@@ -55,14 +56,14 @@ Title.BackgroundTransparency=1
 Title.Text="HITBOX + ESP"
 Title.TextColor3=Color3.fromRGB(100,200,255)
 Title.Font=Enum.Font.Cartoon
-Title.TextSize=17
+Title.TextSize=15
 Title.TextXAlignment=Enum.TextXAlignment.Left
 
 local SubTitle=Instance.new("TextLabel",Main)
 SubTitle.Size=UDim2.new(1,-80,0,16)
 SubTitle.Position=UDim2.new(0,11,0,25)
 SubTitle.BackgroundTransparency=1
-SubTitle.Text="Player Hitbox • ESP • CPU"
+SubTitle.Text="Nhat HiHi"
 SubTitle.TextColor3=Color3.fromRGB(130,135,150)
 SubTitle.Font=Enum.Font.Cartoon
 SubTitle.TextSize=9
@@ -117,37 +118,37 @@ Layout.Padding=UDim.new(0,6)
 Layout.SortOrder=Enum.SortOrder.LayoutOrder
 
 local function SetToggleStyle(Button,Enabled)
- local ToggleStroke=Button:FindFirstChild("ToggleStroke")
+local ToggleStroke=Button:FindFirstChild("ToggleStroke")
 
- if Enabled then
-  if not ToggleStroke then
-   ToggleStroke=Instance.new("UIStroke")
-   ToggleStroke.Name="ToggleStroke"
-   ToggleStroke.Thickness=1.5
-   ToggleStroke.Color=Color3.fromRGB(0,170,255)
-   ToggleStroke.Parent=Button
-  end
-  ToggleStroke.Enabled=true
- else
-  if ToggleStroke then
-   ToggleStroke.Enabled=false
-  end
- end
+if Enabled then
+if not ToggleStroke then
+ToggleStroke=Instance.new("UIStroke")
+ToggleStroke.Name="ToggleStroke"
+ToggleStroke.Thickness=1.5
+ToggleStroke.Color=Color3.fromRGB(0,170,255)
+ToggleStroke.Parent=Button
+end
+ToggleStroke.Enabled=true
+else
+if ToggleStroke then
+ToggleStroke.Enabled=false
+end
+end
 end
 
 local function MakeToggle(Text)
- local Button=Instance.new("TextButton",Scroll)
- Button.Size=UDim2.new(1,0,0,28)
- Button.BackgroundColor3=Color3.fromRGB(55,55,65)
- Button.BorderSizePixel=0
- Button.Text=Text
- Button.TextColor3=Color3.fromRGB(255,255,255)
- Button.Font=Enum.Font.Cartoon
- Button.TextSize=13
- Button.AutoButtonColor=false
- Instance.new("UICorner",Button).CornerRadius=UDim.new(0,7)
- SetToggleStyle(Button,false)
- return Button
+local Button=Instance.new("TextButton",Scroll)
+Button.Size=UDim2.new(1,0,0,28)
+Button.BackgroundColor3=Color3.fromRGB(55,55,65)
+Button.BorderSizePixel=0
+Button.Text=Text
+Button.TextColor3=Color3.fromRGB(255,255,255)
+Button.Font=Enum.Font.Cartoon
+Button.TextSize=13
+Button.AutoButtonColor=false
+Instance.new("UICorner",Button).CornerRadius=UDim.new(0,7)
+SetToggleStyle(Button,false)
+return Button
 end
 
 local PlayerToggle=MakeToggle("PLAYER HITBOX")
@@ -185,6 +186,16 @@ SpeedBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 SpeedBar.BorderSizePixel=0
 Instance.new("UICorner",SpeedBar).CornerRadius=UDim.new(1,0)
 
+local SpeedBarLabel=Instance.new("TextLabel",SpeedFrame)
+SpeedBarLabel.Size=UDim2.new(1,-45,0,16)
+SpeedBarLabel.Position=UDim2.new(0,0,0,29)
+SpeedBarLabel.BackgroundTransparency=1
+SpeedBarLabel.Text="SPEED BOOST"
+SpeedBarLabel.TextColor3=Color3.fromRGB(130,135,150)
+SpeedBarLabel.Font=Enum.Font.Cartoon
+SpeedBarLabel.TextSize=10
+SpeedBarLabel.TextXAlignment=Enum.TextXAlignment.Left
+
 local SpeedFill=Instance.new("Frame",SpeedBar)
 SpeedFill.Size=UDim2.new((WalkSpeedValue-1)/14,0,1,0)
 SpeedFill.BackgroundColor3=Color3.fromRGB(0,170,255)
@@ -206,51 +217,51 @@ Instance.new("UICorner",SpeedValue).CornerRadius=UDim.new(0,5)
 local SpeedDragging=false
 
 local function SetSpeed(Value)
- Value=math.clamp(tonumber(Value) or 7,1,15)
- WalkSpeedValue=Value
- SpeedValue.Text=tostring(Value)
- SpeedFill.Size=UDim2.new((Value-1)/14,0,1,0)
+Value=math.clamp(tonumber(Value) or 7,1,15)
+WalkSpeedValue=Value
+SpeedValue.Text=tostring(Value)
+SpeedFill.Size=UDim2.new((Value-1)/14,0,1,0)
 end
 
 local function UpdateSpeedFromInput(Input)
- local X=math.clamp(
-  Input.Position.X-SpeedBar.AbsolutePosition.X,
-  0,
-  SpeedBar.AbsoluteSize.X
- )
+local X=math.clamp(
+Input.Position.X-SpeedBar.AbsolutePosition.X,
+0,
+SpeedBar.AbsoluteSize.X
+)
 
- local Percent=X/SpeedBar.AbsoluteSize.X
- local Value=math.floor(1+(Percent*14)+0.5)
+local Percent=X/SpeedBar.AbsoluteSize.X
+local Value=math.floor(1+(Percent*14)+0.5)
 
- SetSpeed(Value)
+SetSpeed(Value)
 end
 
 SpeedToggle.MouseButton1Click:Connect(function()
- SpeedBoostEnabled=not SpeedBoostEnabled
- SetToggleStyle(SpeedToggle,SpeedBoostEnabled)
+SpeedBoostEnabled=not SpeedBoostEnabled
+SetToggleStyle(SpeedToggle,SpeedBoostEnabled)
 end)
 
 SpeedBar.InputBegan:Connect(function(Input)
- if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-  SpeedDragging=true
-  UpdateSpeedFromInput(Input)
- end
+if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+SpeedDragging=true
+UpdateSpeedFromInput(Input)
+end
 end)
 
 UserInputService.InputChanged:Connect(function(Input)
- if SpeedDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
-  UpdateSpeedFromInput(Input)
- end
+if SpeedDragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+UpdateSpeedFromInput(Input)
+end
 end)
 
 UserInputService.InputEnded:Connect(function(Input)
- if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-  SpeedDragging=false
- end
+if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+SpeedDragging=false
+end
 end)
 
 SpeedValue.FocusLost:Connect(function()
- SetSpeed(SpeedValue.Text)
+SetSpeed(SpeedValue.Text)
 end)
 
 --// JUMP BOOST
@@ -258,24 +269,24 @@ local JumpToggle=MakeToggle("JUMP BOOST")
 JumpToggle.LayoutOrder=5
 
 local function UpdateJumpBoost()
- local Character=LocalPlayer.Character
- local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+local Character=LocalPlayer.Character
+local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
 
- if not Humanoid then return end
+if not Humanoid then return end
 
- Humanoid.UseJumpPower=true
+Humanoid.UseJumpPower=true
 
- if JumpBoostEnabled then
-  Humanoid.JumpPower=JumpPowerValue
- else
-  Humanoid.JumpPower=DefaultJumpPower
- end
+if JumpBoostEnabled then
+Humanoid.JumpPower=JumpPowerValue
+else
+Humanoid.JumpPower=DefaultJumpPower
+end
 end
 
 JumpToggle.MouseButton1Click:Connect(function()
- JumpBoostEnabled=not JumpBoostEnabled
- SetToggleStyle(JumpToggle,JumpBoostEnabled)
- UpdateJumpBoost()
+JumpBoostEnabled=not JumpBoostEnabled
+SetToggleStyle(JumpToggle,JumpBoostEnabled)
+UpdateJumpBoost()
 end)
 
 --// SIZE
@@ -308,14 +319,14 @@ SizeLabel.TextSize=13
 SizeLabel.TextXAlignment=Enum.TextXAlignment.Left
 
 Box.FocusLost:Connect(function()
- local Value=tonumber(Box.Text)
+local Value=tonumber(Box.Text)
 
- if Value then
-  HitboxSize=math.clamp(Value,1,100)
- end
+if Value then
+HitboxSize=math.clamp(Value,1,100)
+end
 
- Box.Text=tostring(HitboxSize)
- SizeLabel.Text="Size: "..HitboxSize
+Box.Text=tostring(HitboxSize)
+SizeLabel.Text="Size: "..HitboxSize
 end)
 
 --// LOW CPU
@@ -324,363 +335,364 @@ LowCpuToggle.LayoutOrder=7
 
 --// PLAYER HITBOX
 local function ApplyPlayerHitbox(Player)
- if Player==LocalPlayer or not PlayerHitboxEnabled then return end
+if Player==LocalPlayer or not PlayerHitboxEnabled then return end
 
- local Character=Player.Character
- if not Character then return end
+local Character=Player.Character
+if not Character then return end
 
- local Root=Character:FindFirstChild("HumanoidRootPart")
- if not Root then return end
+local Root=Character:FindFirstChild("HumanoidRootPart")
+if not Root then return end
 
- if not OriginalData[Player] then
-  OriginalData[Player]={
-   Size=Root.Size,
-   Transparency=Root.Transparency,
-   CanCollide=Root.CanCollide,
-   Massless=Root.Massless
-  }
- end
+if not OriginalData[Player] then
+OriginalData[Player]={
+Size=Root.Size,
+Transparency=Root.Transparency,
+CanCollide=Root.CanCollide,
+Massless=Root.Massless
+}
+end
 
- Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
- Root.Transparency=HitboxTransparency
- Root.CanCollide=false
- Root.Massless=true
+Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
+Root.Transparency=HitboxTransparency
+Root.CanCollide=false
+Root.Massless=true
 end
 
 local function RestorePlayerHitbox(Player)
- local Data=OriginalData[Player]
- if not Data then return end
+local Data=OriginalData[Player]
+if not Data then return end
 
- local Character=Player.Character
- local Root=Character and Character:FindFirstChild("HumanoidRootPart")
+local Character=Player.Character
+local Root=Character and Character:FindFirstChild("HumanoidRootPart")
 
- if Root then
-  Root.Size=Data.Size
-  Root.Transparency=Data.Transparency
-  Root.CanCollide=Data.CanCollide
-  Root.Massless=Data.Massless
- end
+if Root then
+Root.Size=Data.Size
+Root.Transparency=Data.Transparency
+Root.CanCollide=Data.CanCollide
+Root.Massless=Data.Massless
+end
 
- OriginalData[Player]=nil
+OriginalData[Player]=nil
 end
 
 local function UpdatePlayerHitboxes()
- for _,Player in ipairs(Players:GetPlayers()) do
-  if Player~=LocalPlayer then
-   if PlayerHitboxEnabled then
-    ApplyPlayerHitbox(Player)
-   else
-    RestorePlayerHitbox(Player)
-   end
-  end
- end
+for _,Player in ipairs(Players:GetPlayers()) do
+if Player~=LocalPlayer then
+if PlayerHitboxEnabled then
+ApplyPlayerHitbox(Player)
+else
+RestorePlayerHitbox(Player)
+end
+end
+end
 end
 
 --// MOB HITBOX
 local function IsMob(Model)
- if not Model:IsA("Model") then return false end
- if Players:GetPlayerFromCharacter(Model) then return false end
+if not Model:IsA("Model") then return false end
+if Players:GetPlayerFromCharacter(Model) then return false end
 
- local Humanoid=Model:FindFirstChildOfClass("Humanoid")
- local Root=Model:FindFirstChild("HumanoidRootPart")
+local Humanoid=Model:FindFirstChildOfClass("Humanoid")
+local Root=Model:FindFirstChild("HumanoidRootPart")
 
- return Humanoid~=nil and Root~=nil
+return Humanoid~=nil and Root~=nil
 end
 
 local function ApplyMobHitbox(Model)
- if not MobHitboxEnabled then return end
+if not MobHitboxEnabled then return end
 
- local Root=Model:FindFirstChild("HumanoidRootPart")
- if not Root then return end
+local Root=Model:FindFirstChild("HumanoidRootPart")
+if not Root then return end
 
- if not OriginalData[Model] then
-  OriginalData[Model]={
-   Size=Root.Size,
-   Transparency=Root.Transparency,
-   CanCollide=Root.CanCollide,
-   Massless=Root.Massless
-  }
- end
+if not OriginalData[Model] then
+OriginalData[Model]={
+Size=Root.Size,
+Transparency=Root.Transparency,
+CanCollide=Root.CanCollide,
+Massless=Root.Massless
+}
+end
 
- Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
- Root.Transparency=HitboxTransparency
- Root.CanCollide=false
- Root.Massless=true
+Root.Size=Vector3.new(HitboxSize,HitboxSize,HitboxSize)
+Root.Transparency=HitboxTransparency
+Root.CanCollide=false
+Root.Massless=true
 end
 
 local function RestoreMobHitbox(Model)
- local Data=OriginalData[Model]
- if not Data then return end
+local Data=OriginalData[Model]
+if not Data then return end
 
- local Root=Model:FindFirstChild("HumanoidRootPart")
+local Root=Model:FindFirstChild("HumanoidRootPart")
 
- if Root then
-  Root.Size=Data.Size
-  Root.Transparency=Data.Transparency
-  Root.CanCollide=Data.CanCollide
-  Root.Massless=Data.Massless
- end
+if Root then
+Root.Size=Data.Size
+Root.Transparency=Data.Transparency
+Root.CanCollide=Data.CanCollide
+Root.Massless=Data.Massless
+end
 
- OriginalData[Model]=nil
+OriginalData[Model]=nil
 end
 
 local function UpdateMobHitboxes()
- for _,Obj in ipairs(Workspace:GetDescendants()) do
-  if IsMob(Obj) then
-   if MobHitboxEnabled then
-    ApplyMobHitbox(Obj)
-   else
-    RestoreMobHitbox(Obj)
-   end
-  end
- end
+for _,Obj in ipairs(Workspace:GetDescendants()) do
+if IsMob(Obj) then
+if MobHitboxEnabled then
+ApplyMobHitbox(Obj)
+else
+RestoreMobHitbox(Obj)
+end
+end
+end
 end
 
 --// ESP
 local function GetPlayerColor(Player)
- if Player.Team and Player.Team.TeamColor then
-  return Player.Team.TeamColor.Color
- end
+if Player.Team and Player.Team.TeamColor then
+return Player.Team.TeamColor.Color
+end
 
- return Color3.fromRGB(255,255,255)
+return Color3.fromRGB(255,255,255)
 end
 
 local function RemoveESP(Player)
- local Billboard=ESPs[Player]
+local Billboard=ESPs[Player]
 
- if Billboard then
-  Billboard:Destroy()
-  ESPs[Player]=nil
- end
+if Billboard then
+Billboard:Destroy()
+ESPs[Player]=nil
+end
 end
 
 local function CreateESP(Player)
- if Player==LocalPlayer or not ESPEnabled then return end
+if Player==LocalPlayer or not ESPEnabled then return end
 
- local Character=Player.Character
- if not Character then return end
+local Character=Player.Character
+if not Character then return end
 
- local Head=Character:FindFirstChild("Head")
- local Humanoid=Character:FindFirstChildOfClass("Humanoid")
+local Head=Character:FindFirstChild("Head")
+local Humanoid=Character:FindFirstChildOfClass("Humanoid")
 
- if not Head or not Humanoid then return end
+if not Head or not Humanoid then return end
 
- RemoveESP(Player)
+RemoveESP(Player)
 
- local Billboard=Instance.new("BillboardGui")
- Billboard.Name="PlayerInfoESP"
- Billboard.Adornee=Head
- Billboard.Size=UDim2.new(0,180,0,55)
- Billboard.StudsOffset=Vector3.new(0,3.2,0)
- Billboard.AlwaysOnTop=true
- Billboard.MaxDistance=math.huge
- Billboard.Parent=Head
+local Billboard=Instance.new("BillboardGui")
+Billboard.Name="PlayerInfoESP"
+Billboard.Adornee=Head
+Billboard.Size=UDim2.new(0,180,0,55)
+Billboard.StudsOffset=Vector3.new(0,3.2,0)
+Billboard.AlwaysOnTop=true
+Billboard.MaxDistance=math.huge
+Billboard.Parent=Head
 
- local Text=Instance.new("TextLabel",Billboard)
- Text.Name="Info"
- Text.Size=UDim2.new(1,0,1,0)
- Text.BackgroundTransparency=1
- Text.TextStrokeTransparency=0.25
- Text.Font=Enum.Font.Cartoon
- Text.TextSize=13
- Text.TextWrapped=true
- Text.TextYAlignment=Enum.TextYAlignment.Center
+local Text=Instance.new("TextLabel",Billboard)
+Text.Name="Info"
+Text.Size=UDim2.new(1,0,1,0)
+Text.BackgroundTransparency=1
+Text.TextStrokeTransparency=0.25
+Text.Font=Enum.Font.Cartoon
+Text.TextSize=13
+Text.TextWrapped=true
+Text.TextYAlignment=Enum.TextYAlignment.Center
 
- ESPs[Player]=Billboard
+ESPs[Player]=Billboard
 
- task.spawn(function()
-  while Billboard.Parent and Player.Parent and Character.Parent and ESPEnabled do
-   local Health=math.floor(Humanoid.Health+0.5)
-   local MaxHealth=math.floor(Humanoid.MaxHealth+0.5)
+task.spawn(function()
+while Billboard.Parent and Player.Parent and Character.Parent and ESPEnabled do
+local Health=math.floor(Humanoid.Health+0.5)
+local MaxHealth=math.floor(Humanoid.MaxHealth+0.5)
 
-   local Root=Character:FindFirstChild("HumanoidRootPart")
-   local MyCharacter=LocalPlayer.Character
-   local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+local Root=Character:FindFirstChild("HumanoidRootPart")
+local MyCharacter=LocalPlayer.Character
+local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
 
-   local M=0
+local M=0
 
-   if Root and MyRoot then
-    local Distance=(MyRoot.Position-Root.Position).Magnitude
-    M=math.floor(Distance/10+0.5)
-   end
+if Root and MyRoot then
+local Distance=(MyRoot.Position-Root.Position).Magnitude
+M=math.floor(Distance/10+0.5)
+end
 
-   Text.Text=Player.DisplayName.." | "..M.."m\nHealth: "..Health.." / "..MaxHealth
-   Text.TextColor3=GetPlayerColor(Player)
+Text.Text=Player.DisplayName.." | "..M.."m\nHealth: "..Health.." / "..MaxHealth
+Text.TextColor3=GetPlayerColor(Player)
 
-   task.wait(0.1)
-  end
+task.wait(0.1)
+end
 
-  if Billboard.Parent then
-   Billboard:Destroy()
-  end
+if Billboard.Parent then
+Billboard:Destroy()
+end
 
-  if ESPs[Player]==Billboard then
-   ESPs[Player]=nil
-  end
- end)
+if ESPs[Player]==Billboard then
+ESPs[Player]=nil
+end
+end)
 end
 
 local function UpdateESP()
- for _,Player in ipairs(Players:GetPlayers()) do
-  if Player~=LocalPlayer then
-   if ESPEnabled then
-    CreateESP(Player)
-   else
-    RemoveESP(Player)
-   end
-  end
- end
+for _,Player in ipairs(Players:GetPlayers()) do
+if Player~=LocalPlayer then
+if ESPEnabled then
+CreateESP(Player)
+else
+RemoveESP(Player)
+end
+end
+end
 end
 
 local function UpdateDistanceDots()
- if not ESPEnabled then return end
+if not ESPEnabled then return end
 
- for _,Player in ipairs(Players:GetPlayers()) do
-  if Player~=LocalPlayer then
-   local Character=Player.Character
-   local Root=Character and Character:FindFirstChild("HumanoidRootPart")
+for _,Player in ipairs(Players:GetPlayers()) do
+if Player~=LocalPlayer then
+local Character=Player.Character
+local Root=Character and Character:FindFirstChild("HumanoidRootPart")
 
-   if Root then
-    local MyCharacter=LocalPlayer.Character
-    local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+if Root then
+local MyCharacter=LocalPlayer.Character
+local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
 
-    if MyRoot then
-     local Distance=(MyRoot.Position-Root.Position).Magnitude
-     local Billboard=ESPs[Player]
+if MyRoot then  
+ local Distance=(MyRoot.Position-Root.Position).Magnitude  
+ local Billboard=ESPs[Player]  
 
-     if not Billboard then
-      CreateESP(Player)
-      Billboard=ESPs[Player]
-     end
+ if not Billboard then  
+  CreateESP(Player)  
+  Billboard=ESPs[Player]  
+ end  
 
-     if Billboard then
-      Billboard.Enabled=true
-     end
-    end
-   end
-  end
- end
+ if Billboard then  
+  Billboard.Enabled=true  
+ end  
+end
+
+end
+end
+end
 end
 
 --// LOW CPU
 local function StartLowCpu()
- if LowCpuRunning then return end
+if LowCpuRunning then return end
 
- LowCpuRunning=true
+LowCpuRunning=true
 
- task.spawn(function()
-  while LowCpuEnabled do
-   UpdatePlayerHitboxes()
-   UpdateMobHitboxes()
-   task.wait(0.5)
-  end
+task.spawn(function()
+while LowCpuEnabled do
+UpdatePlayerHitboxes()
+UpdateMobHitboxes()
+task.wait(0.5)
+end
 
-  LowCpuRunning=false
- end)
+LowCpuRunning=false
+end)
 end
 
 --// TOGGLES
 PlayerToggle.MouseButton1Click:Connect(function()
- PlayerHitboxEnabled=not PlayerHitboxEnabled
- SetToggleStyle(PlayerToggle,PlayerHitboxEnabled)
- UpdatePlayerHitboxes()
+PlayerHitboxEnabled=not PlayerHitboxEnabled
+SetToggleStyle(PlayerToggle,PlayerHitboxEnabled)
+UpdatePlayerHitboxes()
 end)
 
 MobToggle.MouseButton1Click:Connect(function()
- MobHitboxEnabled=not MobHitboxEnabled
- SetToggleStyle(MobToggle,MobHitboxEnabled)
- UpdateMobHitboxes()
+MobHitboxEnabled=not MobHitboxEnabled
+SetToggleStyle(MobToggle,MobHitboxEnabled)
+UpdateMobHitboxes()
 end)
 
 ESPToggle.MouseButton1Click:Connect(function()
- ESPEnabled=not ESPEnabled
- SetToggleStyle(ESPToggle,ESPEnabled)
- UpdateESP()
+ESPEnabled=not ESPEnabled
+SetToggleStyle(ESPToggle,ESPEnabled)
+UpdateESP()
 end)
 
 LowCpuToggle.MouseButton1Click:Connect(function()
- LowCpuEnabled=not LowCpuEnabled
- SetToggleStyle(LowCpuToggle,LowCpuEnabled)
+LowCpuEnabled=not LowCpuEnabled
+SetToggleStyle(LowCpuToggle,LowCpuEnabled)
 
- if LowCpuEnabled then
-  StartLowCpu()
- end
+if LowCpuEnabled then
+StartLowCpu()
+end
 end)
 
 --// PLAYER ADDED
 Players.PlayerAdded:Connect(function(Player)
- Player.CharacterAdded:Connect(function()
-  task.wait(0.5)
+Player.CharacterAdded:Connect(function()
+task.wait(0.5)
 
-  if PlayerHitboxEnabled then
-   ApplyPlayerHitbox(Player)
-  end
+if PlayerHitboxEnabled then
+ApplyPlayerHitbox(Player)
+end
 
-  if ESPEnabled then
-   CreateESP(Player)
-  end
- end)
+if ESPEnabled then
+CreateESP(Player)
+end
+end)
 end)
 
 Players.PlayerRemoving:Connect(function(Player)
- RestorePlayerHitbox(Player)
- RemoveESP(Player)
- OriginalData[Player]=nil
+RestorePlayerHitbox(Player)
+RemoveESP(Player)
+OriginalData[Player]=nil
 end)
 
 --// CHARACTER ADDED
 LocalPlayer.CharacterAdded:Connect(function(Character)
- task.wait(0.5)
+task.wait(0.5)
 
- local Humanoid=Character:FindFirstChildOfClass("Humanoid")
+local Humanoid=Character:FindFirstChildOfClass("Humanoid")
 
- if Humanoid then
-  Humanoid.UseJumpPower=true
+if Humanoid then
+Humanoid.UseJumpPower=true
 
-  if JumpBoostEnabled then
-   Humanoid.JumpPower=JumpPowerValue
-  else
-   Humanoid.JumpPower=DefaultJumpPower
-  end
- end
+if JumpBoostEnabled then
+Humanoid.JumpPower=JumpPowerValue
+else
+Humanoid.JumpPower=DefaultJumpPower
+end
+end
 end)
 
 --// HITBOX UPDATE
 Connections[#Connections+1]=RunService.Heartbeat:Connect(function()
- if not LowCpuEnabled then
-  if PlayerHitboxEnabled then
-   UpdatePlayerHitboxes()
-  end
+if not LowCpuEnabled then
+if PlayerHitboxEnabled then
+UpdatePlayerHitboxes()
+end
 
-  if MobHitboxEnabled then
-   UpdateMobHitboxes()
-  end
- end
+if MobHitboxEnabled then
+UpdateMobHitboxes()
+end
+end
 end)
 
 --// SPEED BOOST
 Connections[#Connections+1]=RunService.Heartbeat:Connect(function()
- if not SpeedBoostEnabled then return end
+if not SpeedBoostEnabled then return end
 
- local Character=LocalPlayer.Character
- local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
- local Root=Character and Character:FindFirstChild("HumanoidRootPart")
+local Character=LocalPlayer.Character
+local Humanoid=Character and Character:FindFirstChildOfClass("Humanoid")
+local Root=Character and Character:FindFirstChild("HumanoidRootPart")
 
- if Humanoid and Root and not Humanoid.SeatPart and Humanoid.MoveDirection.Magnitude>0 then
-  Root.CanCollide=false
-  Root.CFrame=Root.CFrame+(Humanoid.MoveDirection*WalkSpeedValue)
- end
+if Humanoid and Root and not Humanoid.SeatPart and Humanoid.MoveDirection.Magnitude>0 then
+Root.CanCollide=false
+Root.CFrame=Root.CFrame+(Humanoid.MoveDirection*WalkSpeedValue)
+end
 end)
 
 --// DISTANCE UPDATE
 task.spawn(function()
- while Gui.Parent do
-  if ESPEnabled then
-   UpdateDistanceDots()
-  end
+while Gui.Parent do
+if ESPEnabled then
+UpdateDistanceDots()
+end
 
-  task.wait(0.25)
- end
+task.wait(0.25)
+end
 end)
 
 --// MINIMIZE
@@ -688,64 +700,64 @@ local OpenSize=UDim2.new(0,220,0,275)
 local ClosedSize=UDim2.new(0,40,0,15)
 
 local function SetChildrenVisible(State)
- Title.Visible=State
- SubTitle.Visible=State
- Close.Visible=State
- Scroll.Visible=State
+Title.Visible=State
+SubTitle.Visible=State
+Close.Visible=State
+Scroll.Visible=State
 end
 
 Arrow.MouseButton1Click:Connect(function()
- Minimized=not Minimized
+Minimized=not Minimized
 
- if Minimized then
-  Arrow.Text="▲"
-  Arrow.Size=UDim2.new(0,20,0,15)
-  Arrow.Position=UDim2.new(0,10,0,0)
-  SetChildrenVisible(false)
+if Minimized then
+Arrow.Text="▲"
+Arrow.Size=UDim2.new(0,20,0,15)
+Arrow.Position=UDim2.new(0,10,0,0)
+SetChildrenVisible(false)
 
-  TweenService:Create(
-   Main,
-   TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
-   {Size=ClosedSize}
-  ):Play()
- else
-  Arrow.Text="▼"
-  Arrow.Size=UDim2.new(0,25,0,25)
-  Arrow.Position=UDim2.new(1,-30,0,4)
+TweenService:Create(
+Main,
+TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+{Size=ClosedSize}
+):Play()
+else
+Arrow.Text="▼"
+Arrow.Size=UDim2.new(0,25,0,25)
+Arrow.Position=UDim2.new(1,-30,0,4)
 
-  TweenService:Create(
-   Main,
-   TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
-   {Size=OpenSize}
-  ):Play()
+TweenService:Create(
+Main,
+TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+{Size=OpenSize}
+):Play()
 
-  task.delay(0.2,function()
-   if not Minimized then
-    SetChildrenVisible(true)
-   end
-  end)
- end
+task.delay(0.2,function()
+if not Minimized then
+SetChildrenVisible(true)
+end
+end)
+end
 end)
 --// CLOSE
 Close.MouseButton1Click:Connect(function()
- for _,Connection in ipairs(Connections) do
-  pcall(function()
-   Connection:Disconnect()
-  end)
- end
+for _,Connection in ipairs(Connections) do
+pcall(function()
+Connection:Disconnect()
+end)
+end
 
- for _,Player in ipairs(Players:GetPlayers()) do
-  RestorePlayerHitbox(Player)
-  RemoveESP(Player)
- end
+for _,Player in ipairs(Players:GetPlayers()) do
+RestorePlayerHitbox(Player)
+RemoveESP(Player)
+end
 
- for Model,Data in pairs(OriginalData) do
-  if typeof(Model)=="Instance" and Model:IsA("Model") then
-   RestoreMobHitbox(Model)
-  end
- end
+for Model,Data in pairs(OriginalData) do
+if typeof(Model)=="Instance" and Model:IsA("Model") then
+RestoreMobHitbox(Model)
+end
+end
 
- Gui:Destroy()
+Gui:Destroy()
 end)
 
 --// DRAG MOBILE + PC
@@ -754,34 +766,34 @@ local DragStart
 local StartPos
 
 local function UpdateDrag(Input)
- local Delta=Input.Position-DragStart
+local Delta=Input.Position-DragStart
 
- Main.Position=UDim2.new(
-  StartPos.X.Scale,
-  StartPos.X.Offset+Delta.X,
-  StartPos.Y.Scale,
-  StartPos.Y.Offset+Delta.Y
- )
+Main.Position=UDim2.new(
+StartPos.X.Scale,
+StartPos.X.Offset+Delta.X,
+StartPos.Y.Scale,
+StartPos.Y.Offset+Delta.Y
+)
 end
 
 Title.InputBegan:Connect(function(Input)
- if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-  Dragging=true
-  DragStart=Input.Position
-  StartPos=Main.Position
- end
+if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+Dragging=true
+DragStart=Input.Position
+StartPos=Main.Position
+end
 end)
 
 UserInputService.InputChanged:Connect(function(Input)
- if Dragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
-  UpdateDrag(Input)
- end
+if Dragging and (Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch) then
+UpdateDrag(Input)
+end
 end)
 
 UserInputService.InputEnded:Connect(function(Input)
- if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-  Dragging=false
- end
+if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
+Dragging=false
+end
 end)
 
 SetSpeed(7)

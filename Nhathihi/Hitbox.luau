@@ -684,32 +684,48 @@ task.spawn(function()
 end)
 
 --// MINIMIZE
+local OpenSize=UDim2.new(0,220,0,275)
+local ClosedSize=UDim2.new(0,40,0,15)
+
+local function SetChildrenVisible(State)
+ Title.Visible=State
+ SubTitle.Visible=State
+ Close.Visible=State
+ Scroll.Visible=State
+end
+
 Arrow.MouseButton1Click:Connect(function()
  Minimized=not Minimized
 
  if Minimized then
   Arrow.Text="▲"
-  Scroll.Visible=false
-  SubTitle.Visible=false
+  Arrow.Size=UDim2.new(0,20,0,15)
+  Arrow.Position=UDim2.new(0,10,0,0)
+  SetChildrenVisible(false)
 
   TweenService:Create(
    Main,
-   TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
-   {Size=UDim2.new(0,220,0,35)}
+   TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+   {Size=ClosedSize}
   ):Play()
  else
   Arrow.Text="▼"
-  Scroll.Visible=true
-  SubTitle.Visible=true
+  Arrow.Size=UDim2.new(0,25,0,25)
+  Arrow.Position=UDim2.new(1,-30,0,4)
 
   TweenService:Create(
    Main,
-   TweenInfo.new(0.2,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
-   {Size=UDim2.new(0,220,0,275)}
+   TweenInfo.new(0.3,Enum.EasingStyle.Quad,Enum.EasingDirection.Out),
+   {Size=OpenSize}
   ):Play()
+
+  task.delay(0.2,function()
+   if not Minimized then
+    SetChildrenVisible(true)
+   end
+  end)
  end
 end)
-
 --// CLOSE
 Close.MouseButton1Click:Connect(function()
  for _,Connection in ipairs(Connections) do

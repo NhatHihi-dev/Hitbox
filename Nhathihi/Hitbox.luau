@@ -1,10 +1,10 @@
-local CoreGui=game:GetService("CoreGui")
 local Players=game:GetService("Players")
 local RunService=game:GetService("RunService")
-local UIS=game:GetService("UserInputService")
 local TweenService=game:GetService("TweenService")
-local LocalPlayer=Players.LocalPlayer
+local UIS=game:GetService("UserInputService")
+local CoreGui=game:GetService("CoreGui")
 local Workspace=game:GetService("Workspace")
+local LocalPlayer=Players.LocalPlayer
 
 pcall(function()
 	local Old=CoreGui:FindFirstChild("PlayerHitboxGui")
@@ -56,7 +56,7 @@ if not Gui.Parent then
 	Gui.Parent=LocalPlayer:WaitForChild("PlayerGui")
 end
 
-local Main=Instance.new("Frame")
+local Main=Instance.new("Frame",Gui)
 Main.Name="Main"
 Main.Size=UDim2.new(0,220,0,240)
 Main.Position=UDim2.new(0.5,-110,0.5,-120)
@@ -64,123 +64,83 @@ Main.BackgroundColor3=Color3.fromRGB(18,18,24)
 Main.BorderSizePixel=0
 Main.ClipsDescendants=true
 Main.Active=true
-Main.Parent=Gui
 
-local MainCorner=Instance.new("UICorner")
-MainCorner.CornerRadius=UDim.new(0,8)
-MainCorner.Parent=Main
+local MainCorner=Instance.new("UICorner",Main)
+MainCorner.CornerRadius=UDim.new(0,9)
 
-local MainStroke=Instance.new("UIStroke")
-MainStroke.Thickness=1.5
+local MainStroke=Instance.new("UIStroke",Main)
 MainStroke.Color=Color3.fromRGB(0,170,255)
-MainStroke.Parent=Main
+MainStroke.Thickness=1.5
 
-local Dragging=false
-local DragStart
-local StartPos
-
-Main.InputBegan:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		Dragging=true
-		DragStart=Input.Position
-		StartPos=Main.Position
-	end
-end)
-
-Main.InputChanged:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseMovement or Input.UserInputType==Enum.UserInputType.Touch then
-		Connections.DragInput=Input
-	end
-end)
-
-UIS.InputChanged:Connect(function(Input)
-	if Input==Connections.DragInput and Dragging then
-		local Delta=Input.Position-DragStart
-		Main.Position=UDim2.new(StartPos.X.Scale,StartPos.X.Offset+Delta.X,StartPos.Y.Scale,StartPos.Y.Offset+Delta.Y)
-	end
-end)
-
-UIS.InputEnded:Connect(function(Input)
-	if Input.UserInputType==Enum.UserInputType.MouseButton1 or Input.UserInputType==Enum.UserInputType.Touch then
-		Dragging=false
-	end
-end)
-
-local Title=Instance.new("TextLabel")
+local Title=Instance.new("TextLabel",Main)
 Title.Name="Title"
-Title.Size=UDim2.new(1,-55,0,28)
-Title.Position=UDim2.new(0,10,0,2)
+Title.Size=UDim2.new(1,-80,0,28)
+Title.Position=UDim2.new(0,10,0,3)
 Title.BackgroundTransparency=1
 Title.Text="HITBOX + ESP"
-Title.TextColor3=Color3.fromRGB(0,170,255)
-Title.TextSize=14
+Title.TextColor3=Color3.fromRGB(100,200,255)
 Title.Font=Enum.Font.Cartoon
+Title.TextSize=17
 Title.TextXAlignment=Enum.TextXAlignment.Left
-Title.Parent=Main
 
-local SubTitle=Instance.new("TextLabel")
+local SubTitle=Instance.new("TextLabel",Main)
 SubTitle.Name="SubTitle"
-SubTitle.Size=UDim2.new(1,-20,0,16)
-SubTitle.Position=UDim2.new(0,10,0,22)
+SubTitle.Size=UDim2.new(1,-80,0,14)
+SubTitle.Position=UDim2.new(0,10,0,25)
 SubTitle.BackgroundTransparency=1
 SubTitle.Text="Nhat HiHi"
-SubTitle.TextColor3=Color3.fromRGB(130,130,140)
-SubTitle.TextSize=8
+SubTitle.TextColor3=Color3.fromRGB(120,120,130)
 SubTitle.Font=Enum.Font.Cartoon
+SubTitle.TextSize=8
 SubTitle.TextXAlignment=Enum.TextXAlignment.Left
-SubTitle.Parent=Main
 
-local Close=Instance.new("TextButton")
-Close.Name="Close"
-Close.Size=UDim2.new(0,25,0,25)
-Close.Position=UDim2.new(1,-30,0,3)
-Close.BackgroundTransparency=1
-Close.Text="X"
-Close.TextColor3=Color3.fromRGB(255,80,80)
-Close.TextSize=16
-Close.Font=Enum.Font.Cartoon
-Close.Parent=Main
-
-local Arrow=Instance.new("TextButton")
+local Arrow=Instance.new("TextButton",Main)
 Arrow.Name="Arrow"
 Arrow.Size=UDim2.new(0,25,0,25)
-Arrow.Position=UDim2.new(0,5,0,3)
+Arrow.Position=UDim2.new(1,-30,0,4)
 Arrow.BackgroundTransparency=1
 Arrow.Text="▼"
 Arrow.TextColor3=Color3.fromRGB(255,255,255)
-Arrow.TextSize=14
 Arrow.Font=Enum.Font.Cartoon
-Arrow.ZIndex=10
-Arrow.Parent=Main
+Arrow.TextSize=13
+Arrow.AutoButtonColor=false
+Arrow.ZIndex=5
 
-local OpenSize=UDim2.new(0,220,0,240)
-local ClosedSize=UDim2.new(0,40,0,15)
+local Close=Instance.new("TextButton",Main)
+Close.Name="Close"
+Close.Size=UDim2.new(0,25,0,25)
+Close.Position=UDim2.new(1,-60,0,4)
+Close.BackgroundTransparency=1
+Close.Text="X"
+Close.TextColor3=Color3.fromRGB(255,255,255)
+Close.Font=Enum.Font.Cartoon
+Close.TextSize=15
+Close.AutoButtonColor=false
+Close.ZIndex=5
 
-local Scroll=Instance.new("ScrollingFrame")
+local Scroll=Instance.new("ScrollingFrame",Main)
 Scroll.Name="Scroll"
-Scroll.Size=UDim2.new(1,-10,1,-35)
-Scroll.Position=UDim2.new(0,5,0,32)
+Scroll.Size=UDim2.new(1,-20,1,-65)
+Scroll.Position=UDim2.new(0,10,0,58)
 Scroll.BackgroundTransparency=1
 Scroll.BorderSizePixel=0
 Scroll.ScrollBarThickness=3
 Scroll.ScrollBarImageColor3=Color3.fromRGB(0,170,255)
 Scroll.CanvasSize=UDim2.new(0,0,0,0)
 Scroll.AutomaticCanvasSize=Enum.AutomaticSize.Y
-Scroll.Parent=Main
+Scroll.ScrollingDirection=Enum.ScrollingDirection.Y
 
-local Layout=Instance.new("UIListLayout")
+local Layout=Instance.new("UIListLayout",Scroll)
 Layout.Padding=UDim.new(0,5)
 Layout.HorizontalAlignment=Enum.HorizontalAlignment.Center
 Layout.SortOrder=Enum.SortOrder.LayoutOrder
-Layout.Parent=Scroll
 
-local Padding=Instance.new("UIPadding")
-Padding.PaddingTop=UDim.new(0,2)
+local Padding=Instance.new("UIPadding",Scroll)
 Padding.PaddingBottom=UDim.new(0,8)
-Padding.Parent=Scroll
 
 local function SetToggleStyle(Button,Enabled)
 	local Stroke=Button:FindFirstChild("ToggleStroke")
+
 	if Enabled then
 		if not Stroke then
 			Stroke=Instance.new("UIStroke")
@@ -189,6 +149,7 @@ local function SetToggleStyle(Button,Enabled)
 			Stroke.Color=Color3.fromRGB(0,170,255)
 			Stroke.Parent=Button
 		end
+
 		Stroke.Enabled=true
 	else
 		if Stroke then
@@ -199,18 +160,18 @@ end
 
 local function CreateToggle(Text)
 	local Button=Instance.new("TextButton")
-	Button.Size=UDim2.new(1,-10,0,30)
-	Button.BackgroundColor3=Color3.fromRGB(28,30,38)
+	Button.Size=UDim2.new(1,0,0,28)
+	Button.BackgroundColor3=Color3.fromRGB(55,55,65)
 	Button.BorderSizePixel=0
 	Button.Text=Text
-	Button.TextColor3=Color3.fromRGB(235,235,235)
+	Button.TextColor3=Color3.fromRGB(255,255,255)
 	Button.TextSize=13
 	Button.Font=Enum.Font.Cartoon
 	Button.AutoButtonColor=false
 	Button.Parent=Scroll
 
 	local Corner=Instance.new("UICorner")
-	Corner.CornerRadius=UDim.new(0,6)
+	Corner.CornerRadius=UDim.new(0,7)
 	Corner.Parent=Button
 
 	SetToggleStyle(Button,false)
@@ -219,11 +180,11 @@ end
 
 local function CreateLabel(Text)
 	local Label=Instance.new("TextLabel")
-	Label.Size=UDim2.new(1,-10,0,24)
+	Label.Size=UDim2.new(1,0,0,18)
 	Label.BackgroundTransparency=1
 	Label.Text=Text
-	Label.TextColor3=Color3.fromRGB(210,210,210)
-	Label.TextSize=12
+	Label.TextColor3=Color3.fromRGB(180,180,190)
+	Label.TextSize=11
 	Label.Font=Enum.Font.Cartoon
 	Label.TextXAlignment=Enum.TextXAlignment.Left
 	Label.Parent=Scroll
@@ -232,8 +193,8 @@ end
 
 local function CreateBox(Default)
 	local Box=Instance.new("TextBox")
-	Box.Size=UDim2.new(1,-10,0,30)
-	Box.BackgroundColor3=Color3.fromRGB(28,30,38)
+	Box.Size=UDim2.new(1,0,0,28)
+	Box.BackgroundColor3=Color3.fromRGB(30,35,45)
 	Box.BorderSizePixel=0
 	Box.Text=tostring(Default)
 	Box.PlaceholderText=tostring(Default)
@@ -247,6 +208,7 @@ local function CreateBox(Default)
 	local Corner=Instance.new("UICorner")
 	Corner.CornerRadius=UDim.new(0,6)
 	Corner.Parent=Box
+
 	return Box
 end
 
@@ -262,54 +224,47 @@ local TPNearestButton=CreateToggle("TWEEN NEARBY PLAYERS")
 CreateLabel("TWEEN SPEED")
 
 local SpeedFrame=Instance.new("Frame")
-SpeedFrame.Size=UDim2.new(1,-10,0,42)
-SpeedFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SpeedFrame.Size=UDim2.new(1,0,0,38)
+SpeedFrame.BackgroundColor3=Color3.fromRGB(30,35,45)
 SpeedFrame.BorderSizePixel=0
 SpeedFrame.Parent=Scroll
 
-local SpeedCorner=Instance.new("UICorner")
+local SpeedCorner=Instance.new("UICorner",SpeedFrame)
 SpeedCorner.CornerRadius=UDim.new(0,6)
-SpeedCorner.Parent=SpeedFrame
 
-local SpeedBar=Instance.new("Frame")
-SpeedBar.Size=UDim2.new(1,-60,0,5)
-SpeedBar.Position=UDim2.new(0,10,0.5,-2)
+local SpeedBar=Instance.new("Frame",SpeedFrame)
+SpeedBar.Size=UDim2.new(1,-58,0,5)
+SpeedBar.Position=UDim2.new(0,8,0.5,-2)
 SpeedBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 SpeedBar.BorderSizePixel=0
-SpeedBar.Parent=SpeedFrame
 
-local SpeedFill=Instance.new("Frame")
+local SpeedFill=Instance.new("Frame",SpeedBar)
 SpeedFill.Size=UDim2.new((LerpSpeed-10)/340,0,1,0)
 SpeedFill.BackgroundColor3=Color3.fromRGB(0,170,255)
 SpeedFill.BorderSizePixel=0
-SpeedFill.Parent=SpeedBar
 
-local SpeedFillCorner=Instance.new("UICorner")
+local SpeedFillCorner=Instance.new("UICorner",SpeedFill)
 SpeedFillCorner.CornerRadius=UDim.new(1,0)
-SpeedFillCorner.Parent=SpeedFill
 
-local SpeedValue=Instance.new("TextBox")
-SpeedValue.Size=UDim2.new(0,45,0,28)
-SpeedValue.Position=UDim2.new(1,-50,0.5,-14)
+local SpeedValue=Instance.new("TextBox",SpeedFrame)
+SpeedValue.Size=UDim2.new(0,42,0,25)
+SpeedValue.Position=UDim2.new(1,-48,0.5,-12)
 SpeedValue.BackgroundColor3=Color3.fromRGB(38,40,48)
 SpeedValue.BorderSizePixel=0
 SpeedValue.Text=tostring(LerpSpeed)
 SpeedValue.TextColor3=Color3.fromRGB(255,255,255)
-SpeedValue.TextSize=12
+SpeedValue.TextSize=11
 SpeedValue.Font=Enum.Font.Cartoon
 SpeedValue.ClearTextOnFocus=false
-SpeedValue.Parent=SpeedFrame
 
-local SpeedValueCorner=Instance.new("UICorner")
+local SpeedValueCorner=Instance.new("UICorner",SpeedValue)
 SpeedValueCorner.CornerRadius=UDim.new(0,5)
-SpeedValueCorner.Parent=SpeedValue
 
 local SpeedDragging=false
 
 local function SetTweenSpeed(Value)
 	LerpSpeed=math.clamp(math.floor(Value+0.5),10,350)
-	local Percent=(LerpSpeed-10)/340
-	SpeedFill.Size=UDim2.new(Percent,0,1,0)
+	SpeedFill.Size=UDim2.new((LerpSpeed-10)/340,0,1,0)
 	SpeedValue.Text=tostring(LerpSpeed)
 end
 
@@ -317,7 +272,7 @@ local function UpdateSpeedFromX(X)
 	local StartX=SpeedBar.AbsolutePosition.X
 	local Width=SpeedBar.AbsoluteSize.X
 	local Percent=math.clamp((X-StartX)/Width,0,1)
-	SetTweenSpeed(10+(340*Percent))
+	SetTweenSpeed(10+340*Percent)
 end
 
 SpeedBar.InputBegan:Connect(function(Input)
@@ -341,6 +296,7 @@ end)
 
 SpeedValue.FocusLost:Connect(function()
 	local Number=tonumber(SpeedValue.Text)
+
 	if Number then
 		SetTweenSpeed(Number)
 	else
@@ -353,54 +309,47 @@ SetTweenSpeed(LerpSpeed)
 CreateLabel("HEALTH SAFE MODE")
 
 local HealthFrame=Instance.new("Frame")
-HealthFrame.Size=UDim2.new(1,-10,0,42)
-HealthFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+HealthFrame.Size=UDim2.new(1,0,0,38)
+HealthFrame.BackgroundColor3=Color3.fromRGB(30,35,45)
 HealthFrame.BorderSizePixel=0
 HealthFrame.Parent=Scroll
 
-local HealthCorner=Instance.new("UICorner")
+local HealthCorner=Instance.new("UICorner",HealthFrame)
 HealthCorner.CornerRadius=UDim.new(0,6)
-HealthCorner.Parent=HealthFrame
 
-local HealthBar=Instance.new("Frame")
-HealthBar.Size=UDim2.new(1,-60,0,5)
-HealthBar.Position=UDim2.new(0,10,0.5,-2)
+local HealthBar=Instance.new("Frame",HealthFrame)
+HealthBar.Size=UDim2.new(1,-58,0,5)
+HealthBar.Position=UDim2.new(0,8,0.5,-2)
 HealthBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 HealthBar.BorderSizePixel=0
-HealthBar.Parent=HealthFrame
 
-local HealthFill=Instance.new("Frame")
+local HealthFill=Instance.new("Frame",HealthBar)
 HealthFill.Size=UDim2.new(HealthThreshold/100,0,1,0)
 HealthFill.BackgroundColor3=Color3.fromRGB(0,170,255)
 HealthFill.BorderSizePixel=0
-HealthFill.Parent=HealthBar
 
-local HealthFillCorner=Instance.new("UICorner")
+local HealthFillCorner=Instance.new("UICorner",HealthFill)
 HealthFillCorner.CornerRadius=UDim.new(1,0)
-HealthFillCorner.Parent=HealthFill
 
-local HealthValue=Instance.new("TextBox")
-HealthValue.Size=UDim2.new(0,45,0,28)
-HealthValue.Position=UDim2.new(1,-50,0.5,-14)
+local HealthValue=Instance.new("TextBox",HealthFrame)
+HealthValue.Size=UDim2.new(0,42,0,25)
+HealthValue.Position=UDim2.new(1,-48,0.5,-12)
 HealthValue.BackgroundColor3=Color3.fromRGB(38,40,48)
 HealthValue.BorderSizePixel=0
 HealthValue.Text=tostring(HealthThreshold)
 HealthValue.TextColor3=Color3.fromRGB(255,255,255)
-HealthValue.TextSize=12
+HealthValue.TextSize=11
 HealthValue.Font=Enum.Font.Cartoon
 HealthValue.ClearTextOnFocus=false
-HealthValue.Parent=HealthFrame
 
-local HealthValueCorner=Instance.new("UICorner")
+local HealthValueCorner=Instance.new("UICorner",HealthValue)
 HealthValueCorner.CornerRadius=UDim.new(0,5)
-HealthValueCorner.Parent=HealthValue
 
 local HealthDragging=false
 
 local function SetHealthThreshold(Value)
 	HealthThreshold=math.clamp(math.floor(Value+0.5),0,100)
-	local Percent=HealthThreshold/100
-	HealthFill.Size=UDim2.new(Percent,0,1,0)
+	HealthFill.Size=UDim2.new(HealthThreshold/100,0,1,0)
 	HealthValue.Text=tostring(HealthThreshold)
 end
 
@@ -408,7 +357,7 @@ local function UpdateHealthFromX(X)
 	local StartX=HealthBar.AbsolutePosition.X
 	local Width=HealthBar.AbsoluteSize.X
 	local Percent=math.clamp((X-StartX)/Width,0,1)
-	SetHealthThreshold(100*Percent)
+	SetHealthThreshold(Percent*100)
 end
 
 HealthBar.InputBegan:Connect(function(Input)
@@ -432,6 +381,7 @@ end)
 
 HealthValue.FocusLost:Connect(function()
 	local Number=tonumber(HealthValue.Text)
+
 	if Number then
 		SetHealthThreshold(Number)
 	else
@@ -446,54 +396,47 @@ local SafeFlyButton=CreateToggle("SAFE FLY")
 CreateLabel("HEALTH SAFE")
 
 local SafeHealthFrame=Instance.new("Frame")
-SafeHealthFrame.Size=UDim2.new(1,-10,0,42)
-SafeHealthFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SafeHealthFrame.Size=UDim2.new(1,0,0,38)
+SafeHealthFrame.BackgroundColor3=Color3.fromRGB(30,35,45)
 SafeHealthFrame.BorderSizePixel=0
 SafeHealthFrame.Parent=Scroll
 
-local SafeHealthCorner=Instance.new("UICorner")
+local SafeHealthCorner=Instance.new("UICorner",SafeHealthFrame)
 SafeHealthCorner.CornerRadius=UDim.new(0,6)
-SafeHealthCorner.Parent=SafeHealthFrame
 
-local SafeHealthBar=Instance.new("Frame")
-SafeHealthBar.Size=UDim2.new(1,-60,0,5)
-SafeHealthBar.Position=UDim2.new(0,10,0.5,-2)
+local SafeHealthBar=Instance.new("Frame",SafeHealthFrame)
+SafeHealthBar.Size=UDim2.new(1,-58,0,5)
+SafeHealthBar.Position=UDim2.new(0,8,0.5,-2)
 SafeHealthBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 SafeHealthBar.BorderSizePixel=0
-SafeHealthBar.Parent=SafeHealthFrame
 
-local SafeHealthFill=Instance.new("Frame")
+local SafeHealthFill=Instance.new("Frame",SafeHealthBar)
 SafeHealthFill.Size=UDim2.new(SafeFlyHealth/100,0,1,0)
 SafeHealthFill.BackgroundColor3=Color3.fromRGB(0,170,255)
 SafeHealthFill.BorderSizePixel=0
-SafeHealthFill.Parent=SafeHealthBar
 
-local SafeHealthFillCorner=Instance.new("UICorner")
+local SafeHealthFillCorner=Instance.new("UICorner",SafeHealthFill)
 SafeHealthFillCorner.CornerRadius=UDim.new(1,0)
-SafeHealthFillCorner.Parent=SafeHealthFill
 
-local SafeHealthValue=Instance.new("TextBox")
-SafeHealthValue.Size=UDim2.new(0,45,0,28)
-SafeHealthValue.Position=UDim2.new(1,-50,0.5,-14)
+local SafeHealthValue=Instance.new("TextBox",SafeHealthFrame)
+SafeHealthValue.Size=UDim2.new(0,42,0,25)
+SafeHealthValue.Position=UDim2.new(1,-48,0.5,-12)
 SafeHealthValue.BackgroundColor3=Color3.fromRGB(38,40,48)
 SafeHealthValue.BorderSizePixel=0
 SafeHealthValue.Text=tostring(SafeFlyHealth)
 SafeHealthValue.TextColor3=Color3.fromRGB(255,255,255)
-SafeHealthValue.TextSize=12
+SafeHealthValue.TextSize=11
 SafeHealthValue.Font=Enum.Font.Cartoon
 SafeHealthValue.ClearTextOnFocus=false
-SafeHealthValue.Parent=SafeHealthFrame
 
-local SafeHealthValueCorner=Instance.new("UICorner")
+local SafeHealthValueCorner=Instance.new("UICorner",SafeHealthValue)
 SafeHealthValueCorner.CornerRadius=UDim.new(0,5)
-SafeHealthValueCorner.Parent=SafeHealthValue
 
 local SafeHealthDragging=false
 
 local function SetSafeFlyHealth(Value)
 	SafeFlyHealth=math.clamp(math.floor(Value+0.5),0,100)
-	local Percent=SafeFlyHealth/100
-	SafeHealthFill.Size=UDim2.new(Percent,0,1,0)
+	SafeHealthFill.Size=UDim2.new(SafeFlyHealth/100,0,1,0)
 	SafeHealthValue.Text=tostring(SafeFlyHealth)
 end
 
@@ -501,7 +444,7 @@ local function UpdateSafeHealthFromX(X)
 	local StartX=SafeHealthBar.AbsolutePosition.X
 	local Width=SafeHealthBar.AbsoluteSize.X
 	local Percent=math.clamp((X-StartX)/Width,0,1)
-	SetSafeFlyHealth(100*Percent)
+	SetSafeFlyHealth(Percent*100)
 end
 
 SafeHealthBar.InputBegan:Connect(function(Input)
@@ -525,6 +468,7 @@ end)
 
 SafeHealthValue.FocusLost:Connect(function()
 	local Number=tonumber(SafeHealthValue.Text)
+
 	if Number then
 		SetSafeFlyHealth(Number)
 	else
@@ -537,54 +481,47 @@ SetSafeFlyHealth(SafeFlyHealth)
 CreateLabel("SAFE MODE TWEEN SPEED")
 
 local SafeSpeedFrame=Instance.new("Frame")
-SafeSpeedFrame.Size=UDim2.new(1,-10,0,42)
-SafeSpeedFrame.BackgroundColor3=Color3.fromRGB(28,30,38)
+SafeSpeedFrame.Size=UDim2.new(1,0,0,38)
+SafeSpeedFrame.BackgroundColor3=Color3.fromRGB(30,35,45)
 SafeSpeedFrame.BorderSizePixel=0
 SafeSpeedFrame.Parent=Scroll
 
-local SafeSpeedCorner=Instance.new("UICorner")
+local SafeSpeedCorner=Instance.new("UICorner",SafeSpeedFrame)
 SafeSpeedCorner.CornerRadius=UDim.new(0,6)
-SafeSpeedCorner.Parent=SafeSpeedFrame
 
-local SafeSpeedBar=Instance.new("Frame")
-SafeSpeedBar.Size=UDim2.new(1,-60,0,5)
-SafeSpeedBar.Position=UDim2.new(0,10,0.5,-2)
+local SafeSpeedBar=Instance.new("Frame",SafeSpeedFrame)
+SafeSpeedBar.Size=UDim2.new(1,-58,0,5)
+SafeSpeedBar.Position=UDim2.new(0,8,0.5,-2)
 SafeSpeedBar.BackgroundColor3=Color3.fromRGB(55,55,65)
 SafeSpeedBar.BorderSizePixel=0
-SafeSpeedBar.Parent=SafeSpeedFrame
 
-local SafeSpeedFill=Instance.new("Frame")
+local SafeSpeedFill=Instance.new("Frame",SafeSpeedBar)
 SafeSpeedFill.Size=UDim2.new((SafeFlySpeed-100)/400,0,1,0)
 SafeSpeedFill.BackgroundColor3=Color3.fromRGB(0,170,255)
 SafeSpeedFill.BorderSizePixel=0
-SafeSpeedFill.Parent=SafeSpeedBar
 
-local SafeSpeedFillCorner=Instance.new("UICorner")
+local SafeSpeedFillCorner=Instance.new("UICorner",SafeSpeedFill)
 SafeSpeedFillCorner.CornerRadius=UDim.new(1,0)
-SafeSpeedFillCorner.Parent=SafeSpeedFill
 
-local SafeSpeedValue=Instance.new("TextBox")
-SafeSpeedValue.Size=UDim2.new(0,45,0,28)
-SafeSpeedValue.Position=UDim2.new(1,-50,0.5,-14)
+local SafeSpeedValue=Instance.new("TextBox",SafeSpeedFrame)
+SafeSpeedValue.Size=UDim2.new(0,42,0,25)
+SafeSpeedValue.Position=UDim2.new(1,-48,0.5,-12)
 SafeSpeedValue.BackgroundColor3=Color3.fromRGB(38,40,48)
 SafeSpeedValue.BorderSizePixel=0
 SafeSpeedValue.Text=tostring(SafeFlySpeed)
 SafeSpeedValue.TextColor3=Color3.fromRGB(255,255,255)
-SafeSpeedValue.TextSize=12
+SafeSpeedValue.TextSize=11
 SafeSpeedValue.Font=Enum.Font.Cartoon
 SafeSpeedValue.ClearTextOnFocus=false
-SafeSpeedValue.Parent=SafeSpeedFrame
 
-local SafeSpeedValueCorner=Instance.new("UICorner")
+local SafeSpeedValueCorner=Instance.new("UICorner",SafeSpeedValue)
 SafeSpeedValueCorner.CornerRadius=UDim.new(0,5)
-SafeSpeedValueCorner.Parent=SafeSpeedValue
 
 local SafeSpeedDragging=false
 
 local function SetSafeFlySpeed(Value)
 	SafeFlySpeed=math.clamp(math.floor(Value+0.5),100,500)
-	local Percent=(SafeFlySpeed-100)/400
-	SafeSpeedFill.Size=UDim2.new(Percent,0,1,0)
+	SafeSpeedFill.Size=UDim2.new((SafeFlySpeed-100)/400,0,1,0)
 	SafeSpeedValue.Text=tostring(SafeFlySpeed)
 end
 
@@ -592,7 +529,7 @@ local function UpdateSafeSpeedFromX(X)
 	local StartX=SafeSpeedBar.AbsolutePosition.X
 	local Width=SafeSpeedBar.AbsoluteSize.X
 	local Percent=math.clamp((X-StartX)/Width,0,1)
-	SetSafeFlySpeed(100+(400*Percent))
+	SetSafeFlySpeed(100+400*Percent)
 end
 
 SafeSpeedBar.InputBegan:Connect(function(Input)
@@ -616,6 +553,7 @@ end)
 
 SafeSpeedValue.FocusLost:Connect(function()
 	local Number=tonumber(SafeSpeedValue.Text)
+
 	if Number then
 		SetSafeFlySpeed(Number)
 	else
@@ -630,6 +568,7 @@ local LowCpuToggle=CreateToggle("REDUCE CPU LOAD")
 local function SaveOriginal(Root)
 	if not Root or not Root:IsA("BasePart") then return end
 	if OriginalData[Root] then return end
+
 	OriginalData[Root]={
 		Size=Root.Size,
 		Transparency=Root.Transparency,
@@ -641,6 +580,7 @@ end
 
 local function RestoreOriginal(Root)
 	local Data=OriginalData[Root]
+
 	if Data and Root and Root.Parent then
 		Root.Size=Data.Size
 		Root.Transparency=Data.Transparency
@@ -649,15 +589,18 @@ local function RestoreOriginal(Root)
 		Root.CanQuery=Data.CanQuery
 
 		local BoxPart=Root.Parent:FindFirstChild("VisibleHitbox")
+
 		if BoxPart then
 			BoxPart:Destroy()
 		end
 	end
+
 	OriginalData[Root]=nil
 end
 
 local function ModifyHitbox(Model,Color)
 	local Root=Model and Model:FindFirstChild("HumanoidRootPart")
+
 	if not Root or not Root:IsA("BasePart") then return end
 
 	SaveOriginal(Root)
@@ -688,6 +631,7 @@ local function RestoreAllHitboxes()
 	for Root in pairs(OriginalData) do
 		RestoreOriginal(Root)
 	end
+
 	table.clear(OriginalData)
 end
 
@@ -699,6 +643,7 @@ local function GetPlayerColor(Player)
 			return Color3.fromRGB(255,60,60)
 		end
 	end
+
 	return Color3.fromRGB(255,60,60)
 end
 
@@ -716,6 +661,7 @@ local function UpdateMobHitboxes()
 	if not MobHitboxEnabled then return end
 
 	local Enemies=Workspace:FindFirstChild("Enemies")
+
 	if not Enemies then return end
 
 	for _,Mob in ipairs(Enemies:GetChildren()) do
@@ -724,7 +670,6 @@ local function UpdateMobHitboxes()
 		end
 	end
 end
-
 local function CreateESP(Player)
 	if not ESPEnabled or Player==LocalPlayer then return end
 
@@ -751,14 +696,14 @@ local function CreateESP(Player)
 	Billboard.MaxDistance=math.huge
 	Billboard.Parent=Head
 
-	local Text=Instance.new("TextLabel")
+	local Text=Instance.new("TextLabel",Billboard)
 	Text.Size=UDim2.new(1,0,1,0)
 	Text.BackgroundTransparency=1
-	Text.TextColor3=Color3.fromRGB(255,255,255)
-	Text.TextStrokeTransparency=0
-	Text.TextSize=12
+	Text.TextColor3=GetPlayerColor(Player)
+	Text.TextStrokeTransparency=0.25
+	Text.TextSize=13
 	Text.Font=Enum.Font.Cartoon
-	Text.Parent=Billboard
+	Text.TextWrapped=true
 
 	ESPs[Player]=Billboard
 
@@ -771,13 +716,32 @@ local function CreateESP(Player)
 				local Distance=(MyRoot.Position-Root.Position).Magnitude
 				local Meters=math.floor(Distance/10+0.5)
 
+				local Level="?"
+
+				pcall(function()
+					local Data=Player:FindFirstChild("Data")
+					local LevelValue=Data and Data:FindFirstChild("Level")
+
+					if LevelValue then
+						Level=tostring(LevelValue.Value)
+					end
+				end)
+
 				Text.Text=
 					Player.DisplayName..
-					"\n[Lv."..tostring(Player.Data and Player.Data.Level and Player.Data.Level.Value or "?").."]"..
+					"\n[Lv."..Level.."]"..
 					"\nHealth: "..math.floor(Humanoid.Health).." | "..Meters.."m"
 			end
 
 			task.wait(0.1)
+		end
+
+		if Billboard.Parent then
+			Billboard:Destroy()
+		end
+
+		if ESPs[Player]==Billboard then
+			ESPs[Player]=nil
 		end
 	end)
 end
@@ -787,6 +751,7 @@ local function ClearAllESP()
 		if GuiObject then
 			GuiObject:Destroy()
 		end
+
 		ESPs[Player]=nil
 	end
 end
@@ -835,18 +800,27 @@ end)
 
 SizeBox.FocusLost:Connect(function()
 	local Number=tonumber(SizeBox.Text)
+
 	if Number then
 		HitboxSize=math.clamp(Number,1,100)
 		SizeBox.Text=tostring(HitboxSize)
 	else
 		SizeBox.Text=tostring(HitboxSize)
 	end
+
+	if PlayerHitboxEnabled then
+		UpdatePlayerHitboxes()
+	end
+
+	if MobHitboxEnabled then
+		UpdateMobHitboxes()
+	end
 end)
 
--- =================================================
 local function GetNearestPlayer()
 	local MyCharacter=LocalPlayer.Character
 	local MyRoot=MyCharacter and MyCharacter:FindFirstChild("HumanoidRootPart")
+
 	if not MyRoot then return nil end
 
 	local Nearest=nil
@@ -898,7 +872,11 @@ local function LerpUp(MyRoot)
 		end
 
 		local Alpha=math.clamp((LerpSpeed*Delta)/math.max(Distance,1),0,1)
-		MyRoot.CFrame=MyRoot.CFrame:Lerp(CFrame.new(Current.X,TargetY,Current.Z),Alpha)
+
+		MyRoot.CFrame=MyRoot.CFrame:Lerp(
+			CFrame.new(Current.X,TargetY,Current.Z),
+			Alpha
+		)
 	end
 
 	while TPLerping and HoldingAltitude and MyRoot and MyRoot.Parent do
@@ -909,6 +887,7 @@ local function LerpUp(MyRoot)
 		end
 
 		local Pos=MyRoot.Position
+
 		MyRoot.CFrame=CFrame.new(Pos.X,TargetY,Pos.Z)
 		MyRoot.AssemblyLinearVelocity=Vector3.zero
 		MyRoot.AssemblyAngularVelocity=Vector3.zero
@@ -968,10 +947,12 @@ local function LerpToNearestPlayer()
 		local Distance=(MyRoot.Position-TargetRoot.Position).Magnitude
 		local Speed=Distance<=100 and 1500 or LerpSpeed
 		local TargetPosition=TargetRoot.Position-Vector3.new(0,5,0)
-
 		local Alpha=math.clamp((Speed*Delta)/math.max(Distance,1),0,1)
 
-		MyRoot.CFrame=MyRoot.CFrame:Lerp(CFrame.new(TargetPosition),Alpha)
+		MyRoot.CFrame=MyRoot.CFrame:Lerp(
+			CFrame.new(TargetPosition),
+			Alpha
+		)
 	end
 end
 
@@ -1092,7 +1073,11 @@ Connections.SafeFly=RunService.RenderStepped:Connect(function(Delta)
 			local Difference=SafeFlyTargetY-CurrentY
 
 			if math.abs(Difference)<=1 then
-				HRP.CFrame=CFrame.new(HRP.Position.X,SafeFlyTargetY,HRP.Position.Z)
+				HRP.CFrame=CFrame.new(
+					HRP.Position.X,
+					SafeFlyTargetY,
+					HRP.Position.Z
+				)
 			else
 				local Move=math.min(math.abs(Difference),SafeFlySpeed*Delta)
 				local Direction=Difference>0 and 1 or -1
@@ -1108,6 +1093,7 @@ end)
 
 local function LowCpuSmooth()
 	if LowCpuRunning then return end
+
 	LowCpuRunning=true
 
 	local Lighting=game:GetService("Lighting")
@@ -1130,6 +1116,10 @@ local function LowCpuSmooth()
 	end)
 
 	for _,Object in ipairs(Lighting:GetChildren()) do
+		if not LowCpuEnabled then
+			break
+		end
+
 		if Object:IsA("BlurEffect")
 		or Object:IsA("SunRaysEffect")
 		or Object:IsA("ColorCorrectionEffect")
@@ -1197,8 +1187,12 @@ LowCpuToggle.MouseButton1Click:Connect(function()
 	end
 end)
 
+local OpenSize=UDim2.new(0,220,0,240)
+local ClosedSize=UDim2.new(0,40,0,15)
+
 local function SetChildrenVisible(State)
 	Title.Visible=State
+	SubTitle.Visible=State
 	Close.Visible=State
 	Scroll.Visible=State
 end
@@ -1221,7 +1215,9 @@ Arrow.MouseButton1Click:Connect(function()
 	else
 		Arrow.Text="▼"
 		Arrow.Size=UDim2.new(0,25,0,25)
-		Arrow.Position=UDim2.new(0,-30,0,4)
+		Arrow.Position=UDim2.new(1,-30,0,4)
+
+		Scroll.CanvasPosition=Vector2.new(0,0)
 
 		TweenService:Create(
 			Main,
@@ -1234,6 +1230,49 @@ Arrow.MouseButton1Click:Connect(function()
 				SetChildrenVisible(true)
 			end
 		end)
+	end
+end)
+
+local Dragging=false
+local DragStart
+local StartPos
+
+local function UpdateDrag(Input)
+	local Delta=Input.Position-DragStart
+
+	Main.Position=UDim2.new(
+		StartPos.X.Scale,
+		StartPos.X.Offset+Delta.X,
+		StartPos.Y.Scale,
+		StartPos.Y.Offset+Delta.Y
+	)
+end
+
+local function StartDrag(Input)
+	if Input.UserInputType==Enum.UserInputType.MouseButton1
+	or Input.UserInputType==Enum.UserInputType.Touch then
+		Dragging=true
+		DragStart=Input.Position
+		StartPos=Main.Position
+
+		local Connection
+		Connection=Input.Changed:Connect(function()
+			if Input.UserInputState==Enum.UserInputState.End then
+				Dragging=false
+				Connection:Disconnect()
+			end
+		end)
+	end
+end
+
+Main.InputBegan:Connect(StartDrag)
+
+UIS.InputChanged:Connect(function(Input)
+	if Dragging and (
+		Input.UserInputType==Enum.UserInputType.MouseMovement
+		or Input.UserInputType==Enum.UserInputType.Touch
+	) then
+		UpdateDrag(Input)
 	end
 end)
 
@@ -1250,10 +1289,8 @@ end)
 Connections.ESPLoop=RunService.Heartbeat:Connect(function()
 	if ESPEnabled then
 		for _,Player in ipairs(Players:GetPlayers()) do
-			if Player~=LocalPlayer and Player.Character then
-				if not ESPs[Player] then
-					CreateESP(Player)
-				end
+			if Player~=LocalPlayer and Player.Character and not ESPs[Player] then
+				CreateESP(Player)
 			end
 		end
 	end

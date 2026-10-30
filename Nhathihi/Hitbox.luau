@@ -66,7 +66,7 @@ SubTitle.BackgroundTransparency=1
 SubTitle.Text="Nhat HiHi"
 SubTitle.TextColor3=Color3.fromRGB(130,135,150)
 SubTitle.Font=Enum.Font.Cartoon
-SubTitle.TextSize=9
+SubTitle.TextSize=10
 SubTitle.TextXAlignment=Enum.TextXAlignment.Left
 
 local Arrow=Instance.new("TextButton",Main)
@@ -157,7 +157,7 @@ PlayerToggle.LayoutOrder=1
 local MobToggle=MakeToggle("MOB HITBOX")
 MobToggle.LayoutOrder=2
 
-local ESPToggle=MakeToggle("ESP")
+local ESPToggle=MakeToggle("ESP PLAYER")
 ESPToggle.LayoutOrder=3
 
 --// SPEED BOOST
@@ -312,7 +312,7 @@ local SizeLabel=Instance.new("TextLabel",SizeRow)
 SizeLabel.Size=UDim2.new(1,-85,0,27)
 SizeLabel.Position=UDim2.new(0,85,0,1)
 SizeLabel.BackgroundTransparency=1
-SizeLabel.Text="Size: "..HitboxSize
+SizeLabel.Text="Size Hitbox: "..HitboxSize
 SizeLabel.TextColor3=Color3.fromRGB(255,255,255)
 SizeLabel.Font=Enum.Font.Cartoon
 SizeLabel.TextSize=13
